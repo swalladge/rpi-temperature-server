@@ -20,6 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+# this file originally sourced from https://github.com/adafruit/Adafruit_Python_MCP9808
+# modifications may have been made
+
 # Can enable debug output by uncommenting:
 #import logging
 #logging.basicConfig(level=logging.DEBUG)
@@ -28,10 +31,6 @@ import time
 
 import Adafruit_MCP9808.MCP9808 as MCP9808
 
-
-# Define a function to convert celsius to fahrenheit.
-def c_to_f(c):
-	return c * 9.0 / 5.0 + 32.0
 
 # Default constructor will use the default I2C address (0x18) and pick a default I2C bus.
 #
@@ -53,5 +52,5 @@ sensor.begin()
 print('Press Ctrl-C to quit.')
 while True:
 	temp = sensor.readTempC()
-	print('Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(temp, c_to_f(temp)))
+	print('Temperature: {0:0.3F}°C'.format(temp))
 	time.sleep(1.0)
