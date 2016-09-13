@@ -2,6 +2,8 @@
 
 # script to set up the environment ready for running
 
+set -e
+
 # create virtual env
 pyvenv env
 source env/bin/activate
