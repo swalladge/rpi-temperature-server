@@ -15,12 +15,14 @@ a work in progress...
    tutorial](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c), or the
    [Archwiki](https://wiki.archlinux.org/index.php/Raspberry_Pi#I2C).
 
-3. Ensure that at least `python` (version 3) and `pip` are installed on the RPi.
+3. Ensure that at least `python` (version 3), `pip`, and `python3-venv` (sometimes included with python) are installed on the RPi.
 ```
 # Note: On Raspbian, "python" runs Python V2.* and "python3" runs Python V3.*
 # To see the version of Python 3 (rather than Python 2)
 python3 --version
 Python 3.4.2
+# and to install python3-venv, if needed
+sudo apt-get install python3-venv
 ```
 
 4. run the following commands on the RPi:
@@ -29,10 +31,6 @@ Python 3.4.2
 # clone the repo
 git clone https://github.com/swalladge/rpi-temperature-server.git
 cd rpi-temperature-server
-
-# install pyvenv (Python Virtual Environment)
-# Note: This is for Raspbian, where pyvenv is not bundled into Python
-sudo apt-get install python3-venv
 
 # run the setup script
 ./setup.sh
