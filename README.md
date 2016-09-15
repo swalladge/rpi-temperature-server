@@ -16,13 +16,23 @@ a work in progress...
    [Archwiki](https://wiki.archlinux.org/index.php/Raspberry_Pi#I2C).
 
 3. Ensure that at least `python` (version 3) and `pip` are installed on the RPi.
+```
+# Note: On Raspbian, "python" runs Python V2.* and "python3" runs Python V3.*
+# To see the version of Python 3 (rather than Python 2)
+python3 --version
+Python 3.4.2
+```
 
 4. run the following commands on the RPi:
 
 ```
-# clone the repo (alternatively use the https url)
-git clone git@github.com:swalladge/rpi-temperature-server.git
+# clone the repo
+git clone https://github.com/swalladge/rpi-temperature-server.git
 cd rpi-temperature-server
+
+# install pyvenv (Python Virtual Environment)
+# Note: This is for Raspbian, where pyvenv is not bundled into Python
+sudo apt-get install python3-venv
 
 # run the setup script
 ./setup.sh

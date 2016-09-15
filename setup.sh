@@ -15,7 +15,7 @@ pip install -r requirements.txt
 # (didn't work with pip :shrug:)
 git clone https://github.com/adafruit/Adafruit_Python_MCP9808.git
 cd Adafruit_Python_MCP9808
-python setup.py install
+sudo python setup.py install
 cd ..
 
 # anything else needed here...
