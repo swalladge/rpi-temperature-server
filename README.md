@@ -22,29 +22,31 @@ This is known to work on both ArchLinux and Raspbian
 2. Ensure that I2C is enabled on the RPi - some useful resources include an [Adafruit
    tutorial](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c), or the
    [Archwiki](https://wiki.archlinux.org/index.php/Raspberry_Pi#I2C).
-   The gist of it is:
+
+    On Raspbian, the basics are:
 
     ```
     sudo raspi-config
     ```
 
-    Choose Advanced Options
+    - Choose Advanced Options
+    - Choose I2C
+    - Say yes to enable
+    - Reboot
 
-    Choose I2C
-
-    Say yes to enable
-
-    Reboot
-
-3. Ensure that at least `python` (version 3), `pip`, and `python3-venv` (sometimes included with python) are installed on the RPi.
+3. Python 3 is required to install and run the software. You will also need `pip` and the `venv` module for setting up
+   virtual environments. Note: you may run into trouble with the setup script when using python < 3.4, due to pip not
+   being installed in the virtual environment by default. Therefore this project only officially supports python 3.4 or
+   a later version.
 
     ```
-    # Note: On Raspbian, "python" runs Python V2.* and "python3" runs Python V3.*
-    # To see the version of Python 3 (rather than Python 2)
-    python3 --version
-    Python 3.4.2
-    # and to install python3-venv, if needed
-    sudo apt-get install python3-venv
+    # Note: On Raspbian (and possible other distros), python2 may be the default
+    # To check, run:
+    python --version
+    # if the output shows something like:
+    # Python 2.7.12
+    # then you may need to install python 3 to run the setup script.
+    # Raspbian also requires installing the `python3-venv` package.
     ```
 
 4. Run the following commands on the RPi:
@@ -58,6 +60,7 @@ This is known to work on both ArchLinux and Raspbian
     ./setup.sh
 
     # activate the virtualenv
+    # note: once in the venv, python and pip will be the correct version, regardless of the system default
     source env/bin/activate
 
     # now you're good to go!

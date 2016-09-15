@@ -5,8 +5,11 @@
 set -e
 
 # create virtual env
-pyvenv env
+# use `python3` for compatibility with systems still using python2 as default
+python3 -m venv env
 source env/bin/activate
+
+# note: we are in the venv now, so python/pip will be the right version
 
 # install requirements
 pip install -r requirements.txt
