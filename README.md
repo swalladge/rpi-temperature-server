@@ -23,38 +23,44 @@ This is known to work on both ArchLinux and Raspbian
    tutorial](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c), or the
    [Archwiki](https://wiki.archlinux.org/index.php/Raspberry_Pi#I2C).
    The gist of it is:
-```
-sudo raspi-config
-```
-Choose Advanced Options
-Choose I2C
-Say yes to enable
-Reboot
+
+    ```
+    sudo raspi-config
+    ```
+
+    Choose Advanced Options
+
+    Choose I2C
+
+    Say yes to enable
+
+    Reboot
 
 3. Ensure that at least `python` (version 3), `pip`, and `python3-venv` (sometimes included with python) are installed on the RPi.
-```
-# Note: On Raspbian, "python" runs Python V2.* and "python3" runs Python V3.*
-# To see the version of Python 3 (rather than Python 2)
-python3 --version
-Python 3.4.2
-# and to install python3-venv, if needed
-sudo apt-get install python3-venv
-```
 
-4. run the following commands on the RPi:
+    ```
+    # Note: On Raspbian, "python" runs Python V2.* and "python3" runs Python V3.*
+    # To see the version of Python 3 (rather than Python 2)
+    python3 --version
+    Python 3.4.2
+    # and to install python3-venv, if needed
+    sudo apt-get install python3-venv
+    ```
 
-```
-# clone the repo
-git clone https://github.com/swalladge/rpi-temperature-server.git
-cd rpi-temperature-server
+4. Run the following commands on the RPi:
 
-# run the setup script
-./setup.sh
+    ```
+    # clone the repo
+    git clone https://github.com/swalladge/rpi-temperature-server.git
+    cd rpi-temperature-server
 
-# activate the virtualenv
-source env/bin/activate
+    # run the setup script
+    ./setup.sh
 
-# now you're good to go!
-# run the following to test the sensors
-sudo python simpletest.py
-```
+    # activate the virtualenv
+    source env/bin/activate
+
+    # now you're good to go!
+    # run the following to test the sensors
+    sudo python simpletest.py
+    ```
