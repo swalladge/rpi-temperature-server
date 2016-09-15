@@ -15,7 +15,7 @@ a work in progress...
    tutorial](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c), or the
    [Archwiki](https://wiki.archlinux.org/index.php/Raspberry_Pi#I2C).
 
-3. Ensure that at least `python` (version 3) and `pip` are installed on the RPi.
+3. Ensure that at least `python` (version 3), `pip`, and `python3-venv` (sometimes included with python)  are installed on the RPi.
 
 4. run the following commands on the RPi:
 
