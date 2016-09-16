@@ -20,6 +20,10 @@ The useful parts are:
 - [Jumper wires M-F](https://littlebirdelectronics.com.au/products/jumper-wires-premium-6-m-f-pack-of-10) - male end goes into the breadboard, female onto the RPi GPIO pins.
 - while you are ordering, it is always handy to have [M-M](https://littlebirdelectronics.com.au/products/jumper-wires-premium-6-m-m-pack-of-10) and [F-F](https://littlebirdelectronics.com.au/products/jumper-wires-premium-6-f-f-pack-of-10) jumper wires also, just in case.
 
+You can do without the breadboard, if you like, and connect with F-F jumper wires direct from the GPIO pins to the header pins on the MCP9808.
+Or use a [GPIO ribbon cable](https://littlebirdelectronics.com.au/products/raspberry-pi-gpio-ribbon-cable-40-pin-6-rpi2-b) to get out of the RPi and go from there to the breadboard using M-M or direct to MCP9808 header using M-F.
+Pick an option, depending on your RPi case and how neat you want it to look.
+
 ## Installation instructions
 
 1. The hardware comes with a separate header strip. 
