@@ -9,6 +9,17 @@ This is known to work on both ArchLinux and Raspbian
 
 # Test code
 
+## Hardware
+
+The temperature sensor can be bought in Australia through (for example) [Little Bird Electronics](https://littlebirdelectronics.com.au).
+
+The useful parts are:
+
+- [MCP9808 Temperature Sensor](https://littlebirdelectronics.com.au/products/mcp9808-high-accuracy-i2c-temperature-sensor-breakout-board) which comes on a small board and with a header strip.
+- [Breadboard](https://littlebirdelectronics.com.au/products/breadboard-mini-modular-green), any will do.
+- [Jumper wires M-F](https://littlebirdelectronics.com.au/products/jumper-wires-premium-6-m-f-pack-of-10) - male end goes into the breadboard, female onto the RPi GPIO pins.
+- while you are ordering, it is always handy to have [M-M](https://littlebirdelectronics.com.au/products/jumper-wires-premium-6-m-m-pack-of-10) and [F-F](https://littlebirdelectronics.com.au/products/jumper-wires-premium-6-f-f-pack-of-10) jumper wires also, just in case.
+
 ## Installation instructions
 
 1. The hardware comes with a separate header strip. 
