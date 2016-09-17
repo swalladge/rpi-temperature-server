@@ -80,5 +80,6 @@ Pick an option, depending on your RPi case and how neat you want it to look.
 
     # now you're good to go!
     # run the following to test the sensors
+    # (note, you may or may not need `sudo` - if it doesn't work with, try without)
     sudo python simpletest.py
     ```
