@@ -69,6 +69,10 @@ class db():
         # TODO
         return True
 
+    def get_temperature_max(self, lower, upper):
+        """ returns the maximum temperature for range """
+        # TODO
+        return True
 
     def commit(self):
         try:

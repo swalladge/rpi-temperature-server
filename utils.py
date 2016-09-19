@@ -9,3 +9,9 @@ def now(integer=False):
         return round(datetime.datetime.utcnow().timestamp())
     else:
         return datetime.datetime.utcnow().timestamp()
+
+def validate_bounds(lower, upper):
+    # TODO: stuff
+    # throw error if not good
+
+    return (lower, upper)

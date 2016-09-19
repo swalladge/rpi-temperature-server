@@ -12,3 +12,8 @@ listen_port = 8888
 
 # whether to run in debug mode or not
 debug_mode = True
+
+# whether running on a RPi or not
+# when False, enables test mode on the temperature retrieving module
+# set to True when getting actual temperature on the RPi
+on_rpi = False

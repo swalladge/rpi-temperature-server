@@ -5,7 +5,6 @@
 
 import tornado.ioloop
 from tornado.web import Application, url
-
 from tornado.escape import json_decode
 
 import json
@@ -24,6 +23,11 @@ class temperature_handler(BaseHandler):
 
         lower = self.get_query_argument('from', None)
         upper = self.get_query_argument('to', None)
+
+        try:
+            lower, upper = utils.validate_bounds(lower, upper)
+        except:
+            return self.send_error(400, reason='invalid range (from-to)')
 
         # check if a particular time was requested
         if timestamp:
@@ -67,6 +71,23 @@ class current_temp_handler(BaseHandler):
             return self.send_error(500, reason='database error')
 
 
+class stats_temp_handler(BaseHandler):
+    """ handles requests for generated statistics
+        (max, min, etc...) for a time range """
+
+    def get(self, stats_type):
+
+        lower = self.get_query_argument('from', None)
+        upper = self.get_query_argument('to', None)
+
+        try:
+            lower, upper = utils.validate_bounds(lower, upper)
+        except:
+            return self.send_error(400, reason='invalid range (from-to)')
+
+        # TODO: return data based on stats_type
+
+
 def main():
     db = database.db(cfg.database_url)
     db.create_all()
@@ -76,6 +97,7 @@ def main():
         url(r'^/api/temperature/(\d+)/?$', temperature_handler),
         url(r'^/api/temperature/current/?$', current_temp_handler),
         url(r'^/api/temperature/now/?$', current_temp_handler),
+        url(r'^/api/temperature/(max|min|ave)/?$', stats_temp_handler),
         ],
         debug=cfg.debug_mode,
         db=db
@@ -83,6 +105,8 @@ def main():
 
     server.listen(cfg.listen_port)
     tornado.ioloop.IOLoop.current().start()
+
+    # TODO: periodically get and save temperature
 
 
 if __name__ == '__main__':
