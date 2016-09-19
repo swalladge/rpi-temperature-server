@@ -50,15 +50,9 @@ class temperature_handler(BaseHandler):
 
         # otherwise, use the temperature range
         else:
-            # TODO
-            # validate lower/upper bounds
-            # call database and get stuff
-            # must also make sure range isn't too large
-            temps = self.db.get_temperature_list(None, None)
-            if temps:
-                return self.send_data(temps)
-            else:
-                return self.send_error(404, reason='no results')
+            # TODO make sure range isn't too large
+            temps = self.db.get_temperature_list(lower, upper)
+            return self.send_data(temps)
 
 
 class current_temp_handler(BaseHandler):

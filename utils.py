@@ -2,6 +2,7 @@
 
 import datetime
 import math
+import utils
 
 
 def now(integer=False):
@@ -13,12 +14,15 @@ def now(integer=False):
 
 def validate_bounds(lower, upper):
 
+    if upper is None:
+        upper = utils.now(True)
+
+    if lower is None:
+        lower = 0
+
     # make sure we have valid numbers
     lower = math.ceil(float(lower))
     upper = int(float(upper))
-
-    # lower bound should not be greater than upper bound
-    assert lower <= upper
 
     # sensible values
     assert lower >= 0

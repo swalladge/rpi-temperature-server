@@ -1,7 +1,12 @@
 
+# python stuff
 __pycache__/
 env/
+
+# adafruit python repo
 Adafruit_Python_MCP9808/
 
+# db files
 *.db
 *.sqlite3
+*-journal
