@@ -94,5 +94,5 @@ Pick an option, depending on your RPi case and how neat you want it to look.
     sudo setfacl -m group:sensor:rw /dev/i2c-1
     ```
 
-6. Login as testuser and do the steps at item 4 above, without using "sudo" at the end.
+6. Login as testuser and do the steps at item 4 above, without using "sudo" at the end. It is recommended that you run the application software as an ordinary (unpriv) user. This avoids you accidentally modifying (or breaking) your operating system installation while playing with the application.
 
