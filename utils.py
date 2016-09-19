@@ -1,6 +1,6 @@
 # utility standalone functions to be used throughout the server
 
-import datetime
+import time
 import math
 import utils
 
@@ -8,9 +8,9 @@ import utils
 def now(integer=False):
     """ returns the current utc timestamp - optionally as an int"""
     if integer:
-        return round(datetime.datetime.utcnow().timestamp())
+        return round(time.time())
     else:
-        return datetime.datetime.utcnow().timestamp()
+        return time.time()
 
 def validate_bounds(lower, upper):
 
