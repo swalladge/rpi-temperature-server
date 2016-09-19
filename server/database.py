@@ -1,7 +1,8 @@
 
 # sqlalchemy parts we want to use
-from sqlalchemy import create_engine, Column, Integer, Float, Sequence, func
+from sqlalchemy import (create_engine, Column, Integer, Float, Sequence, func)
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import sessionmaker
 
 # for logging in the future
@@ -19,6 +20,18 @@ class Temperature(Base):
 
     timestamp = Column(Integer, nullable=False)
     temperature = Column(Float, nullable=False)
+
+    # static property for getting item closest to certain timestamp
+    # terrible hack but works for now
+    relative = 0
+
+    @hybrid_property
+    def distance(self):
+        return abs(self.relative - self.timestamp)
+
+    @distance.expression
+    def distance(cls):
+        return func.abs(cls.relative - cls.timestamp)
 
     def __repr__(self):
         return "Temperature {}°C at {}".\
@@ -47,6 +60,14 @@ class db():
         t = query.one()
         # note: it's a two tuple - (temperature_object, timestamp)
         return t[0].dict()
+
+    def get_temperature_at(self, timestamp):
+        # uses awful hack to order it correctly...
+        Temperature.relative = timestamp
+        query = self.session.query(Temperature)
+        query = query.order_by(Temperature.distance)
+        temp = query.first()
+        return temp.dict()
 
     def get_temperature_list(self, lower, upper):
         """ returns a list of temperatures within (and including) the lower and

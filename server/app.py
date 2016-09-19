@@ -32,6 +32,7 @@ class temperature_handler(BaseHandler):
             return self.send_error(400, reason='invalid from and/or to parameters')
 
         # check if a particular time was requested
+        # return the closest time in database to timestamp
         if timestamp:
 
             # validate the timestamp
@@ -42,11 +43,11 @@ class temperature_handler(BaseHandler):
                 return self.send_error(400, reason='invalid timestamp')
 
             # see if we have a temperature for that time
-            t = self.db.get_temperature(timestamp)
+            t = self.db.get_temperature_at(timestamp)
             if t:
                 return self.send_data(t)
             else:
-                return self.send_error(404, reason='timestamp not logged')
+                return self.send_error(500, reason='database error')
 
         # otherwise, use the temperature range
         else:
