@@ -82,8 +82,8 @@ Pick an option, depending on your RPi case and how neat you want it to look.
     git clone https://github.com/swalladge/rpi-temperature-server.git
     cd rpi-temperature-server
 
-    # run the setup script
-    ./setup.sh
+    # run the server setup script
+    ./server_setup.sh
 
     # activate the virtualenv
     # note: once in the venv, python and pip will be the correct version, regardless of the system default

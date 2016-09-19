@@ -85,10 +85,15 @@ class stats_temp_handler(BaseHandler):
 
 
 def main():
+    # init the database
     db = database.db(cfg.database_url)
     db.create_all()
 
+    # init the temperature sensor
     temp = hardware.Temperature(db, cfg.sensor_params)
+    temp.save_current()
+
+    # set up the server app
     server = Application([
         url(r'^/api/temperature/?$', temperature_handler),
         url(r'^/api/temperature/(\d+)/?$', temperature_handler),
@@ -99,12 +104,11 @@ def main():
         debug=cfg.debug_mode,
         db=db
     )
-
     server.listen(cfg.listen_port)
 
+    # log the temperature at intervals
     PeriodicCallback(temp.save_current, int(cfg.temp_interval) * 1000).start()
     tornado.ioloop.IOLoop.current().start()
-
 
 
 if __name__ == '__main__':

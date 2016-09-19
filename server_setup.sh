@@ -12,7 +12,7 @@ source env/bin/activate
 # note: we are in the venv now, so python/pip will be the right version
 
 # install requirements
-pip install -r requirements.txt
+pip install -r server/requirements.txt
 
 # install adafruit library manually
 # (didn't work with pip :shrug:)
