@@ -33,7 +33,7 @@ or on error:
     "reason": "invalid parameters",
     "success": false
 }
-
+```
 
 ### GET /api/temperature/current
 
