@@ -64,7 +64,18 @@ Pick an option, depending on your RPi case and how neat you want it to look.
     # Raspbian also requires installing the `python3-venv` package.
     ```
 
-4. Run the following commands on the RPi:
+4. Give access to the I2C bus (and thus the temperature sensor) to a group and create an ordinary user:
+
+    ```
+    # Create a group
+    sudo addgroup sensor
+    # Create a user in the group
+    sudo adduser --ingroup sensor testuser
+    # Give the group read-write access to the I2C device
+    sudo setfacl -m group:sensor:rw /dev/i2c-1
+    ```
+
+5. Login as 'testuser' and run the following commands on the RPi:
 
     ```
     # clone the repo
@@ -80,19 +91,8 @@ Pick an option, depending on your RPi case and how neat you want it to look.
 
     # now you're good to go!
     # run the following to test the sensors
-    # (note, you may or may not need `sudo` - if it doesn't work with, try without)
-    sudo python simpletest.py
-    ```
-5. You can give access to the I2C bus (and thus the temperature sensor) to an ordinary user:
-
-    ```
-    # Create a group
-    sudo addgroup sensor
-    # Create a user in the group
-    sudo adduser --ingroup sensor testuser
-    # Give the group read-write access to the I2C device
-    sudo setfacl -m group:sensor:rw /dev/i2c-1
+    python simpletest.py
     ```
 
-6. Login as testuser and do the steps at item 4 above, without using "sudo" at the end. It is recommended that you run the application software as an ordinary (unpriv) user. This avoids you accidentally modifying (or breaking) your operating system installation while playing with the application.
+    It is recommended that you run the application software as an ordinary (unpriv) user, like in these instructions. This avoids you accidentally modifying (or breaking) your operating system installation while playing with the application.
 
