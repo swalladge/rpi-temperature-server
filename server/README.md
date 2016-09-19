@@ -39,16 +39,9 @@ or on error:
 
 Returns the current temperature.
 
-```json
-{
-    "data": {
-        "temperature": 36.3,
-        "timestamp": 1474264875
-    },
-    "status": 200,
-    "success": true
-}
-```
+### GET /api/temperature/:timestamp
+
+Returns the temperature at `timestamp` if available, otherwise temperature for closest available time.
 
 ### GET /api/temperature/
 
@@ -58,6 +51,10 @@ Parameters:
 
 - `from` - [timestamp] start date of temperature range (default: 0)
 - `to` - [timestamp] end date of temperature range (default: current time)
+
+### Example json responses
+
+Array of temperatures (ie. if more than one). Response as given by the `/api/temperature/?params...` endpoint.
 
 ```json
 {
@@ -75,6 +72,19 @@ Parameters:
             "timestamp": 1474264500
         }
     ],
+    "status": 200,
+    "success": true
+}
+```
+
+Single temperature - response given by endpoints that are designed to give a single value.
+
+```json
+{
+    "data": {
+        "temperature": 36.3,
+        "timestamp": 1474264875
+    },
     "status": 200,
     "success": true
 }
