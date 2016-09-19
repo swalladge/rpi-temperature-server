@@ -66,8 +66,12 @@ class db():
 
     def save_temperature(self, temp, time):
         """ log the temperature in the database """
-        # TODO
-        return True
+
+        t = Temperature()
+        t.timestamp = time
+        t.temperature = temp
+        self.session.add(t)
+        return self.commit()
 
     def get_temperature_max(self, lower, upper):
         """ returns the maximum temperature for range """

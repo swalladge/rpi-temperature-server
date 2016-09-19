@@ -17,3 +17,15 @@ debug_mode = True
 # when False, enables test mode on the temperature retrieving module
 # set to True when getting actual temperature on the RPi
 on_rpi = False
+
+
+# params to pass to the sensor init function
+# use to override defaults
+sensor_params=None
+sensor_params={'address': 0x20,
+               'busnum': 2
+}
+
+# how often to log the temperature in seconds
+temp_interval = 5 * 60  # 5 minutes
+temp_interval = 5  # 5 seconds

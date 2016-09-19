@@ -6,6 +6,7 @@
 import tornado.ioloop
 from tornado.web import Application, url
 from tornado.escape import json_decode
+from tornado.ioloop import PeriodicCallback
 
 import json
 
@@ -13,6 +14,7 @@ import database
 import config as cfg
 import utils
 from basehanders import BaseHandler
+import hardware
 
 
 class temperature_handler(BaseHandler):
@@ -92,6 +94,7 @@ def main():
     db = database.db(cfg.database_url)
     db.create_all()
 
+    temp = hardware.Temperature(db, cfg.sensor_params)
     server = Application([
         url(r'^/api/temperature/?$', temperature_handler),
         url(r'^/api/temperature/(\d+)/?$', temperature_handler),
@@ -104,9 +107,10 @@ def main():
     )
 
     server.listen(cfg.listen_port)
+
+    PeriodicCallback(temp.save_current, int(cfg.temp_interval) * 1000).start()
     tornado.ioloop.IOLoop.current().start()
 
-    # TODO: periodically get and save temperature
 
 
 if __name__ == '__main__':
