@@ -29,7 +29,7 @@ class temperature_handler(BaseHandler):
         try:
             lower, upper = utils.validate_bounds(lower, upper)
         except:
-            return self.send_error(400, reason='invalid range (from-to)')
+            return self.send_error(400, reason='invalid from and/or to parameters')
 
         # check if a particular time was requested
         if timestamp:

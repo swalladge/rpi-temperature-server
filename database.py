@@ -1,6 +1,6 @@
 
 # sqlalchemy parts we want to use
-from sqlalchemy import create_engine, Column, Integer, Float, Sequence
+from sqlalchemy import create_engine, Column, Integer, Float, Sequence, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -22,7 +22,7 @@ class Temperature(Base):
 
     def __repr__(self):
         return "Temperature {}°C at {}".\
-               format(self.t, self.timestamp)
+               format(self.temperature, self.timestamp)
 
     def dict(self):
         return {
@@ -42,27 +42,23 @@ class db():
         """ create all the tables and such """
         self.metadata.create_all(self.engine)
 
-
     def get_current_temperature(self):
-        # TODO
-        # dummy data now for testing
-        t = Temperature()
-        t.timestamp = utils.now(True)
-        t.temperature = 18.5
-        return t.dict()
+        query = self.session.query(Temperature, func.max(Temperature.timestamp))
+        t = query.one()
+        # note: it's a two tuple - (temperature_object, timestamp)
+        return t[0].dict()
 
     def get_temperature_list(self, lower, upper):
         """ returns a list of temperatures within (and including) the lower and
         upper timestamp bounds """
-        # TODO
-        # dummy data now for testing
-        t = Temperature()
-        t.timestamp = utils.now(True)
-        t.temperature = 18.5
-        t2 = Temperature()
-        t2.timestamp = utils.now(True)
-        t2.temperature = 18.5
-        return [t.dict(), t2.dict()]
+
+        query = self.session.query(Temperature)
+        filtered = query.filter(Temperature.timestamp >= lower,
+                                Temperature.timestamp <= upper)
+
+        # return a list of dictionaries
+        temps = list(map(lambda t: t.dict(), filtered.all()))
+        return temps
 
     def save_temperature(self, temp, time):
         """ log the temperature in the database """
@@ -77,6 +73,8 @@ class db():
         """ returns the maximum temperature for range """
         # TODO
         return True
+
+    # TODO: more functions for max/min/ave/all/etc...
 
     def commit(self):
         try:
