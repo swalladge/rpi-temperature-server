@@ -18,7 +18,7 @@ class Temperature():
                 self.sensor = MCP9808.MCP9808(**sensor_params)
             else:
                 self.sensor = MCP9808.MCP9808()
-            sensor.begin()
+            self.sensor.begin()
         else:
             self.fake = True
             self.sensor = None
