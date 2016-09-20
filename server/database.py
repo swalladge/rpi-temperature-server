@@ -98,7 +98,11 @@ class db():
         t = filtered.first()
         # t is a two-tuple: (average, number_of_points)
         if t:
-            return t
+            return {'ave': t[0],
+                    'count': t[1],
+                    'lower': lower,
+                    'upper': upper
+            }
 
     def get_temperature_min(self, lower, upper):
         query = self.session.query(Temperature, func.count('*'), func.min(Temperature.temperature))
@@ -108,7 +112,9 @@ class db():
         t = filtered.first()
         if t:
             return {'min': t[0].dict() if t[0] else None,
-                    'count': t[1]
+                    'count': t[1],
+                    'lower': lower,
+                    'upper': upper
             }
 
     def get_temperature_max(self, lower, upper):
@@ -119,44 +125,10 @@ class db():
         t = filtered.first()
         if t:
             return {'max': t[0].dict() if t[0] else None,
-                    'count': t[1]
+                    'count': t[1],
+                    'lower': lower,
+                    'upper': upper
             }
-
-    def get_temperature_stats(self, stats_type, lower, upper):
-        """ returns the requested temperature stat(s) for a range """
-
-        query = self.session.query(Temperature, func.min(Temperature.temperature))
-        filtered = query.filter(Temperature.timestamp >= lower,
-                                Temperature.timestamp <= upper)
-        max = -999 # Start below zero Kelvin
-        min = 999 # Start from above the sensor valid range
-        total = 0
-
-        if filtered.count() > 0:
-            for record in filtered:
-                total = total + record.temperature
-                if record.temperature > max:
-                    max = record.temperature
-                if record.temperature < min:
-                    min = record.temperature
-
-            if stats_type == 'max':
-                return {'max': max}
-            elif stats_type == 'min':
-                return {'min': min}
-            elif stats_type == 'ave':
-                return {'ave': total / filtered.count()}
-            elif stats_type == 'stats':
-                return {
-                    'ave': total / filtered.count(),
-                    'max': max,
-                    'min': min
-                    }
-            else:
-                return False
-
-        # No records in query, so we cannot calculate stats
-        return False
 
     def commit(self):
         try:

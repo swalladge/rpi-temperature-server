@@ -91,12 +91,7 @@ class stats_temp_handler(BaseHandler):
         elif stats_type == 'ave':
             ave = self.db.get_temperature_avg(lower, upper)
             if ave:
-                data = {'ave': ave[0],
-                        'count': ave[1],
-                        'lower': lower,
-                        'upper': upper
-                }
-                return self.send_data(data)
+                return self.send_data(ave)
 
         return self.send_error(500, reason='error retrieving {}'.format(stats_type))
 
