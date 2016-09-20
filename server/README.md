@@ -69,6 +69,11 @@ Parameters:
 - `from` - [timestamp] start date of temperature range (default: 0)
 - `to` - [timestamp] end date of temperature range (default: current time)
 
+Response data fields:
+
+- `count`: number of data points
+- `lower`: interpreted lower bound
+- `upper`: interpreted upper bound
 
 Example response:
 
@@ -100,6 +105,13 @@ Example response:
 Get the maximum, minimum, or average temperatures for a given range.
 
 Parameters as for getting an array of temperatures.
+
+Response data fields:
+
+- `count`, `lower`, `upper` as above
+- `ave`: average temperature as a float number
+- `max`: maximum temperature as a temperature dictionary with `temperature` and `timestamp` fields
+- `min`: as with `max` but for minimum temperature
 
 Example responses - average:
 
