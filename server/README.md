@@ -37,47 +37,9 @@ or on error:
 
 ### GET /api/temperature/current
 
-Returns the current temperature.
+Returns the current temperature (ie. last recorded temperature in database).
 
-### GET /api/temperature/:timestamp
-
-Returns the temperature at `timestamp` if available, otherwise temperature for closest available time.
-
-### GET /api/temperature/
-
-Returns an array of temperatures.
-
-Parameters:
-
-- `from` - [timestamp] start date of temperature range (default: 0)
-- `to` - [timestamp] end date of temperature range (default: current time)
-
-### Example json responses
-
-Array of temperatures (ie. if more than one). Response as given by the `/api/temperature/?params...` endpoint.
-
-```json
-{
-    "data": [
-        {
-            "temperature": 24.9,
-            "timestamp": 1474264300
-        },
-        {
-            "temperature": 25.0,
-            "timestamp": 1474264400
-        },
-        {
-            "temperature": 25.1,
-            "timestamp": 1474264500
-        }
-    ],
-    "status": 200,
-    "success": true
-}
-```
-
-Single temperature - response given by endpoints that are designed to give a single value.
+Example response:
 
 ```json
 {
@@ -89,3 +51,86 @@ Single temperature - response given by endpoints that are designed to give a sin
     "success": true
 }
 ```
+
+
+### GET /api/temperature/:timestamp
+
+Returns the temperature at `timestamp` if available, otherwise temperature for closest available time.
+
+Response follows the same schema as for the current temperature endpoint.
+
+
+### GET /api/temperature/
+
+Returns an array of temperatures.
+
+Parameters:
+
+- `from` - [timestamp] start date of temperature range (default: 0)
+- `to` - [timestamp] end date of temperature range (default: current time)
+
+
+Example response:
+
+```json
+{
+    "data": {
+        "count": 2,
+        "lower": 1474357000,
+        "temperature_array": [
+            {
+                "temperature": 5.7,
+                "timestamp": 1474357004
+            },
+            {
+                "temperature": 25.3,
+                "timestamp": 1474357009
+            }
+        ],
+        "upper": 1474357010
+    },
+    "status": 200,
+    "success": true
+}
+```
+
+
+### GET /api/temperature/(max|min|ave)
+
+Get the maximum, minimum, or average temperatures for a given range.
+
+Parameters as for getting an array of temperatures.
+
+Example responses - average:
+
+```json
+{
+    "data": {
+        "ave": 19.64,
+        "count": 1173,
+        "lower": 0,
+        "upper": 1474357267
+    },
+    "status": 200,
+    "success": true
+}
+```
+
+And minimum:
+
+```json
+{
+    "data": {
+        "count": 1180,
+        "lower": 0,
+        "max": {
+            "temperature": 40.0,
+            "timestamp": 1474354142
+        },
+        "upper": 1474357301
+    },
+    "status": 200,
+    "success": true
+}
+```
+
