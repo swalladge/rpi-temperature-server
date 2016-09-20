@@ -82,8 +82,11 @@ class stats_temp_handler(BaseHandler):
         except:
             return self.send_error(400, reason='invalid range (from-to)')
 
-        # TODO: return data based on stats_type
-
+        stats = self.db.get_temperature_stats(stats_type, lower, upper)
+        if stats:
+            return self.send_data(stats)
+        else:
+            return self.send_error(400, reason='no records found for stats calculation')
 
 def main():
     # init the database
@@ -100,7 +103,7 @@ def main():
         url(r'^/api/temperature/(\d+)/?$', temperature_handler),
         url(r'^/api/temperature/current/?$', current_temp_handler),
         url(r'^/api/temperature/now/?$', current_temp_handler),
-        url(r'^/api/temperature/(max|min|ave)/?$', stats_temp_handler),
+        url(r'^/api/temperature/(max|min|ave|stats)/?$', stats_temp_handler),
         ],
         debug=cfg.debug_mode,
         db=db

@@ -90,12 +90,41 @@ class db():
         self.session.add(t)
         return self.commit()
 
-    def get_temperature_max(self, lower, upper):
-        """ returns the maximum temperature for range """
-        # TODO
-        return True
+    def get_temperature_stats(self, stats_type, lower, upper):
+        """ returns the requested temperature stat(s) for a range """
 
-    # TODO: more functions for max/min/ave/all/etc...
+        query = self.session.query(Temperature)
+        filtered = query.filter(Temperature.timestamp >= lower,
+                                Temperature.timestamp <= upper)
+        max = -999 # Start below zero Kelvin
+        min = 999 # Start from above the sensor valid range
+        total = 0
+
+        if filtered.count() > 0:
+            for record in filtered:
+                total = total + record.temperature
+                if record.temperature > max:
+                    max = record.temperature
+                if record.temperature < min:
+                    min = record.temperature
+
+            if stats_type == 'max':
+                return {'max': max}
+            elif stats_type == 'min':
+                return {'min': min}
+            elif stats_type == 'ave':
+                return {'ave': total / filtered.count()}
+            elif stats_type == 'stats':
+                return {
+                    'ave': total / filtered.count(),
+                    'max': max,
+                    'min': min
+                    }
+            else:
+                return False
+
+        # No records in query, so we cannot calculate stats
+        return False
 
     def commit(self):
         try:
