@@ -7,6 +7,7 @@ import tornado.ioloop
 from tornado.web import Application, url
 from tornado.escape import json_decode
 from tornado.ioloop import PeriodicCallback
+import tornado.options
 
 import json
 
@@ -89,6 +90,10 @@ class stats_temp_handler(BaseHandler):
             return self.send_error(400, reason='no records found for stats calculation')
 
 def main():
+
+    # let tornado grab command line args (ie. for setting log files)
+    tornado.options.parse_command_line()
+
     # init the database
     db = database.db(cfg.database_url)
     db.create_all()

@@ -3,4 +3,4 @@
 set -e
 
 source env/bin/activate
-exec python server/app.py
+exec python server/app.py "$@"
