@@ -1,7 +1,7 @@
 
 # rpi-temperature-server
 
-Project to have a server and web app for displaying the temperature and various stats from a Raspberry Pi with a MCP9808
+A project to have a server and web app for displaying the temperature and various stats from a Raspberry Pi with a MCP9808
 temperature sensor.
 
 Copyright © 2016 Samuel Walladge, Phil Davis
@@ -13,8 +13,6 @@ The code and instructions here are for the Adafruit MCP9808 Temperature Sensor.
 Hardware information can be found at [Adafruit Temperature Sensor Guide](https://cdn-learn.adafruit.com/downloads/pdf/adafruit-mcp9808-precision-i2c-temperature-sensor-guide.pdf)
 This is known to work on both ArchLinux and Raspbian.
 
-
-# Test code
 
 ## Hardware
 
@@ -31,7 +29,8 @@ You can do without the breadboard, if you like, and connect with F-F jumper wire
 Or use a [GPIO ribbon cable](https://littlebirdelectronics.com.au/products/raspberry-pi-gpio-ribbon-cable-40-pin-6-rpi2-b) to get out of the RPi and go from there to the breadboard using M-M or direct to MCP9808 header using M-F.
 Pick an option, depending on your RPi case and how neat you want it to look.
 
-## Installation instructions
+
+## Installation instructions (with test code to verify)
 
 1. The hardware comes with a separate header strip. 
    [Solder](https://learn.adafruit.com/adafruit-mcp9808-precision-i2c-temperature-sensor-guide/wiring) 
