@@ -90,10 +90,42 @@ class db():
         self.session.add(t)
         return self.commit()
 
+    def get_temperature_avg(self, lower, upper):
+        query = self.session.query(func.avg(Temperature.temperature), func.count('*'))
+        filtered = query.filter(Temperature.timestamp >= lower,
+                                Temperature.timestamp <= upper)
+
+        t = filtered.first()
+        # t is a two-tuple: (average, number_of_points)
+        if t:
+            return t
+
+    def get_temperature_min(self, lower, upper):
+        query = self.session.query(Temperature, func.count('*'), func.min(Temperature.temperature))
+        filtered = query.filter(Temperature.timestamp >= lower,
+                                Temperature.timestamp <= upper)
+
+        t = filtered.first()
+        if t:
+            return {'min': t[0].dict() if t[0] else None,
+                    'count': t[1]
+            }
+
+    def get_temperature_max(self, lower, upper):
+        query = self.session.query(Temperature, func.count('*'), func.max(Temperature.temperature))
+        filtered = query.filter(Temperature.timestamp >= lower,
+                                Temperature.timestamp <= upper)
+
+        t = filtered.first()
+        if t:
+            return {'max': t[0].dict() if t[0] else None,
+                    'count': t[1]
+            }
+
     def get_temperature_stats(self, stats_type, lower, upper):
         """ returns the requested temperature stat(s) for a range """
 
-        query = self.session.query(Temperature)
+        query = self.session.query(Temperature, func.min(Temperature.temperature))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
         max = -999 # Start below zero Kelvin
