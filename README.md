@@ -96,3 +96,15 @@ Pick an option, depending on your RPi case and how neat you want it to look.
 
     It is recommended that you run the application software as an ordinary (unpriv) user, like in these instructions. This avoids you accidentally modifying (or breaking) your operating system installation while playing with the application.
 
+## License
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+

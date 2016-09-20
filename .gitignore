@@ -10,3 +10,6 @@ Adafruit_Python_MCP9808/
 *.db
 *.sqlite3
 *-journal
+
+# logs
+*.log
