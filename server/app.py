@@ -53,7 +53,12 @@ class temperature_handler(BaseHandler):
         else:
             # TODO make sure range isn't too large
             temps = self.db.get_temperature_list(lower, upper)
-            return self.send_data(temps)
+            data = {'count': len(temps),
+                    'temperature_array': temps,
+                    'lower': lower,
+                    'upper': upper
+            }
+            return self.send_data(data)
 
 
 class current_temp_handler(BaseHandler):
