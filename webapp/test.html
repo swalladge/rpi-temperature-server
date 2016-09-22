@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rickshaw test</title>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/d3/d3.min.js"></script>
+    <script src="bower_components/rickshaw/rickshaw.js"></script>
+    <link rel="stylesheet" href="bower_components/rickshaw/rickshaw.css">
+  </head>
+  <style>
+    html {
+      box-sizing: border-box;
+    }
+
+    * {
+      box-sizing: inherit;
+    }
+
+    #chart_container, #chart {
+      width: 100%;
+    }
+  </style>
+  <body>
+
+    <h1>Demo Graph</h1>
+
+		<div id="chart_container">
+						<div id="chart"></div>
+		</div>
+
+    <script>
+      var data = [
+
+               {
+            "temperature": 19.0625,
+            "timestamp": 1474520108
+        },
+        {
+            "temperature": 19.125,
+            "timestamp": 1474520408
+        },
+        {
+            "temperature": 19.25,
+            "timestamp": 1474520708
+        },
+        {
+            "temperature": 19.3125,
+            "timestamp": 1474521008
+        },
+        {
+            "temperature": 19.25,
+            "timestamp": 1474521308
+        },
+        {
+            "temperature": 19.4375,
+            "timestamp": 1474521608
+        },
+        {
+            "temperature": 19.4375,
+            "timestamp": 1474521908
+        },
+        {
+            "temperature": 19.5625,
+            "timestamp": 1474522208
+        },
+        {
+            "temperature": 19.5,
+            "timestamp": 1474522508
+        },
+        {
+            "temperature": 19.5,
+            "timestamp": 1474522808
+        },
+        {
+            "temperature": 19.625,
+            "timestamp": 1474523108
+        },
+        {
+            "temperature": 19.5625,
+            "timestamp": 1474523408
+        },
+        {
+            "temperature": 19.5625,
+            "timestamp": 1474523708
+        }
+
+      ];
+
+      // thedata = [ { y: 18.6875, x: 1474291065 }, { y: 18.8125, x: 1474291365 }, { y: 18.5625, x: 1474291665 }, { y: 18.625, x: 1474519207 } ];
+
+      thedata = data.map(function(e) {
+        return {x: e.timestamp, y: e.temperature };
+      });
+
+      var graph = new Rickshaw.Graph( {
+      element: document.querySelector('#chart'),
+      renderer: "scatterplot",
+      height: 500,
+      padding: {right: 0.05, left: 0.05},
+      min: -80,
+      max: 80,
+      series: [
+        {
+          name: 'temperature',
+          color: 'steelblue',
+          data: thedata
+        }
+     ]
+    } );
+
+    var x_axis = new Rickshaw.Graph.Axis.Time( {
+        graph: graph,
+        height: 800,
+        timeFixture: new Rickshaw.Fixtures.Time.Local()
+    } );
+
+		var y_axis = new Rickshaw.Graph.Axis.Y( {
+        graph: graph,
+        pixelsPerTick: 30,
+        tickFormat: function(e) {return e + '°C'; },
+        //element: document.getElementById('y_axis'),
+		} );
+
+    new Rickshaw.Graph.HoverDetail( { 
+      graph: graph,
+      xFormatter: function(x) {
+         return   new Date(x * 1000).toLocaleString();
+        //return new Date( (x) * 1000 ).toUTCString();
+      }
+
+    });
+
+ 		graph.render();
+    </script>
+  </body>
+</html>
