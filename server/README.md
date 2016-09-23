@@ -68,12 +68,15 @@ Parameters:
 
 - `from` - [timestamp] start date of temperature range (default: 0)
 - `to` - [timestamp] end date of temperature range (default: current time)
+- `limit` - [integer] limit the number of temperature entries returned (default: `temp_max_length` as configured in
+  config.py). Note: a limit parameter higher than set in server config will be ignored.
 
 Response data fields:
 
-- `count`: number of data points
+- `count`: number of data points returned
 - `lower`: interpreted lower bound
 - `upper`: interpreted upper bound
+- `full_count`: total number of data points available in range
 
 Example response:
 
@@ -81,6 +84,7 @@ Example response:
 {
     "data": {
         "count": 2,
+        "full_count": 2,
         "lower": 1474357000,
         "temperature_array": [
             {

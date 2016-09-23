@@ -26,9 +26,11 @@ class temperature_handler(BaseHandler):
 
         lower = self.get_query_argument('from', None)
         upper = self.get_query_argument('to', None)
+        limit = self.get_query_argument('limit', cfg.temp_max_length)
 
         try:
             lower, upper = utils.validate_bounds(lower, upper)
+            limit = min(int(limit), cfg.temp_max_length)
         except:
             return self.send_error(400, reason='invalid from and/or to parameters')
 
@@ -52,7 +54,7 @@ class temperature_handler(BaseHandler):
 
         # otherwise, use the temperature range
         else:
-            temps, n = self.db.get_temperature_list(lower, upper)
+            temps, n = self.db.get_temperature_list(lower, upper, limit)
             data = {'count': len(temps),
                     'temperature_array': temps,
                     'lower': lower,
