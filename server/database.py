@@ -73,13 +73,25 @@ class db():
         """ returns a list of temperatures within (and including) the lower and
         upper timestamp bounds """
 
-        query = self.session.query(Temperature)
-        filtered = query.filter(Temperature.timestamp >= lower,
-                                Temperature.timestamp <= upper)
+        # set up the actual query
+        query = self.session.query(Temperature).filter(
+                                    Temperature.timestamp >= lower,
+                                    Temperature.timestamp <= upper)
 
-        # return a list of dictionaries
-        temps = list(map(lambda t: t.dict(), filtered.all()))
-        return temps
+        # get number of rows
+        n = self.session.query(func.count(Temperature.id)).filter(
+                                    Temperature.timestamp >= lower,
+                                    Temperature.timestamp <= upper).first()[0]
+
+        # check if the number of rows returned will be too long
+        if n > config.temp_max_length:
+            # if so, skip every jump_th row
+            jump = (n // config.temp_max_length ) + 1
+            query = query.filter(Temperature.id % jump == 0)
+
+        # return a list of dictionaries, and number of total rows in that range
+        temps = list(map(lambda t: t.dict(), query.all()))
+        return (temps, n)
 
     def save_temperature(self, temp, time):
         """ log the temperature in the database """
@@ -91,7 +103,7 @@ class db():
         return self.commit()
 
     def get_temperature_avg(self, lower, upper):
-        query = self.session.query(func.avg(Temperature.temperature), func.count('*'))
+        query = self.session.query(func.avg(Temperature.temperature), func.count(Temperature.id))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
 
@@ -105,7 +117,7 @@ class db():
             }
 
     def get_temperature_min(self, lower, upper):
-        query = self.session.query(Temperature, func.count('*'), func.min(Temperature.temperature))
+        query = self.session.query(Temperature, func.count(Temperature.id), func.min(Temperature.temperature))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
 
@@ -118,7 +130,7 @@ class db():
             }
 
     def get_temperature_max(self, lower, upper):
-        query = self.session.query(Temperature, func.count('*'), func.max(Temperature.temperature))
+        query = self.session.query(Temperature, func.count(Temperature.id), func.max(Temperature.temperature))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
 

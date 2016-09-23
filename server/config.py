@@ -27,4 +27,7 @@ sensor_params=None
 # }
 
 # how often to log the temperature in seconds
-temp_interval = 5 * 60  # 5 minutes
+temp_interval = 5 * 60  # 5 minutes = 288 per 24 hours = 2016 per week
+
+# max number of entries allowed to send (when requested a list of temps)
+temp_max_length = 300

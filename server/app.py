@@ -52,12 +52,12 @@ class temperature_handler(BaseHandler):
 
         # otherwise, use the temperature range
         else:
-            # TODO make sure range isn't too large
-            temps = self.db.get_temperature_list(lower, upper)
+            temps, n = self.db.get_temperature_list(lower, upper)
             data = {'count': len(temps),
                     'temperature_array': temps,
                     'lower': lower,
-                    'upper': upper
+                    'upper': upper,
+                    'full_count': n
             }
             return self.send_data(data)
 
