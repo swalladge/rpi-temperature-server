@@ -1,5 +1,6 @@
 
 
+from tornado.log import gen_log
 import config as cfg
 import utils
 import database
@@ -34,5 +35,6 @@ class Temperature():
         else:
             temp = self.sensor.readTempC()
         time = utils.now(True)
+        gen_log.info('Logging temperature: {:0.5f}°C at timestamp {}'.format(temp, time))
         return self.db.save_temperature(temp, time)
 
