@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Test #2 - ajax</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Temperature</title>
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/d3/d3.min.js"></script>
+    <script src="/bower_components/moment/min/moment.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="bower_components/metrics-graphics/dist/metricsgraphics.min.js"></script>
     <script src="js/main.js"></script>
 
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="bower_components/metrics-graphics/dist/metricsgraphics.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
@@ -27,15 +36,30 @@
 
     <h2> Limits </h2>
 
-    <p> Note: expects a unix timestamp </p>
-    <form>
-      <p>
-        Lower: <input id="lower-limit" type="text"/>
-      </p>
-      <p>
-        Upper: <input id="upper-limit" type="text"/>
-      </p>
-    </form>
+
+    <!-- from https://eonasdan.github.io/bootstrap-datetimepicker/#linked-pickers -->
+    <div class="container">
+        <div class='col-md-5'>
+            <div class="form-group">
+                <div class='input-group date' id='lower-datepicker'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-5'>
+            <div class="form-group">
+                <div class='input-group date' id='upper-datepicker'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <h2> Maximum Temperature </h2>
     <form>
