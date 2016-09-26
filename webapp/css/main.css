@@ -1,0 +1,11 @@
+    html {
+      box-sizing: border-box;
+    }
+
+    * {
+      box-sizing: inherit;
+    }
+
+    #chart_container, #chart {
+      width: 100%;
+    }
