@@ -5,10 +5,10 @@
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/d3/d3.min.js"></script>
-    <script src="bower_components/rickshaw/rickshaw.js"></script>
+    <script src="bower_components/metrics-graphics/dist/metricsgraphics.min.js"></script>
     <script src="js/main.js"></script>
 
-    <link rel="stylesheet" href="bower_components/rickshaw/rickshaw.css">
+    <link rel="stylesheet" href="bower_components/metrics-graphics/dist/metricsgraphics.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
   
@@ -58,6 +58,16 @@
     </form>
 
     <div id="ave-temp"></div>
+
+    <h2> Graph </h2>
+
+    <form>
+      <input id="update-graph-btn" name="update-graph-btn" type="button" value="Update" />
+    </form>
+
+    <div id="chart_container">
+      <div id="chart"></div>
+    </div>
 
   </body>
 </html>

@@ -31,6 +31,8 @@ Temperature.prototype.errorFunc = function(res, textstatus, error, title) {
   if (textstatus && error) {
     msg = msg + ' (' + error + ')';
   }
+
+  // TODO: use these messages for something useful in the UI
   console.log(title + ':');
   console.log(msg);
 };
@@ -40,6 +42,16 @@ Temperature.prototype.getCurrent = function() {
     jsonp: false,
     dataType: 'json',
     method: 'GET',
+    error: this.errorFunc.bind(this)
+  });
+};
+
+Temperature.prototype.getList = function(from, to) {
+  return $.ajax(this.endpoint, {
+    jsonp: false,
+    dataType: 'json',
+    method: 'GET',
+    data: {'from': from, 'to': to},
     error: this.errorFunc.bind(this)
   });
 };
@@ -55,10 +67,44 @@ Temperature.prototype.getStat = function(type, from, to) {
 };
 
 
+function updateGraph(e) {
+  var from = $('#lower-limit').val() || undefined;
+  var to = $('#upper-limit').val() || undefined;
+
+  t.getList(from, to).done(function(res, statustext) {
+
+    if (res.data.count == 0) {
+      console.log('No data for that range!');
+      // TODO: do something useful for this
+    }
+
+    var data = res.data.temperature_array.map(function(e) {
+      return {date: new Date(e.timestamp*1000), value: e.temperature };
+    });
+
+    // TODO: fancier stuff for graph
+    // ideas:
+    //     - display date/time range in title
+    //     - display number of data points and number of points dropped
+
+    MG.data_graphic({
+      title: 'Temperature',
+      description: 'temps for a range...',
+      data: data,
+      width: 600,
+      height: 250,
+      target: '#chart',
+      x_accessor: 'date',
+      y_accessor: 'value'
+    });
+  });
+}
+
+
 $( function() {
   var serverName = localStorage.tempServerName;
   var nameInput = $('#server-name');
-  var t = new Temperature();
+  window.t = new Temperature();
 
   // click handler for form
   $('#update-details-btn').on('click', function(e) {
@@ -136,5 +182,6 @@ $( function() {
     });
   });
 
+  $('#update-graph-btn').on('click', updateGraph);
 });
 
