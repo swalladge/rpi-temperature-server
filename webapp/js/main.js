@@ -44,6 +44,16 @@ Temperature.prototype.getCurrent = function() {
   });
 };
 
+Temperature.prototype.getMax = function(from, to) {
+  return $.ajax(this.endpoint + 'max', {
+    jsonp: false,
+    dataType: 'json',
+    method: 'GET',
+    data: {'from': from, 'to': to},
+    error: this.errorFunc.bind(this)
+  });
+};
+
 
 $( function() {
   var serverName = localStorage.tempServerName;
@@ -70,6 +80,19 @@ $( function() {
     t.getCurrent().done(function(res, statustext) {
       var temp = res.data.temperature;
       $('#current-temp').text(temp + '°C');
+      console.log(res);
+      console.log(statustext);
+    });
+  });
+
+  $('#update-max-btn').on('click', function(e) {
+    var from = $('#lower-limit').val() || undefined;
+    var to = $('#upper-limit').val() || undefined;
+
+    t.getMax(from, to).done(function(res, statustext) {
+      var temp = res.data.max.temperature;
+      var timestamp = res.data.max.timestamp;
+      $('#max-temp').text(temp + '°C');
       console.log(res);
       console.log(statustext);
     });
