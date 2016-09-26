@@ -25,14 +25,39 @@
     <input id="update-current-btn" type="button" value="update" />
     <div id="current-temp"></div>
 
-    <h2> Max Temperature </h2>
+    <h2> Limits </h2>
+
+    <p> Note: expects a unix timestamp </p>
     <form>
-      <input id="lower-limit" type="text"/>
-      <input id="upper-limit" type="text"/>
+      <p>
+        Lower: <input id="lower-limit" type="text"/>
+      </p>
+      <p>
+        Upper: <input id="upper-limit" type="text"/>
+      </p>
+    </form>
+
+    <h2> Maximum Temperature </h2>
+    <form>
       <input id="update-max-btn" name="update-max-btn" type="button" value="Update" />
     </form>
 
     <div id="max-temp"></div>
+
+
+    <h2> Minimum Temperature </h2>
+    <form>
+      <input id="update-min-btn" name="update-min-btn" type="button" value="Update" />
+    </form>
+
+    <div id="min-temp"></div>
+
+    <h2> Average Temperature </h2>
+    <form>
+      <input id="update-ave-btn" name="update-ave-btn" type="button" value="Update" />
+    </form>
+
+    <div id="ave-temp"></div>
 
   </body>
 </html>

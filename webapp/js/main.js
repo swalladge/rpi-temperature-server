@@ -44,8 +44,8 @@ Temperature.prototype.getCurrent = function() {
   });
 };
 
-Temperature.prototype.getMax = function(from, to) {
-  return $.ajax(this.endpoint + 'max', {
+Temperature.prototype.getStat = function(type, from, to) {
+  return $.ajax(this.endpoint + type, {
     jsonp: false,
     dataType: 'json',
     method: 'GET',
@@ -89,17 +89,50 @@ $( function() {
     var from = $('#lower-limit').val() || undefined;
     var to = $('#upper-limit').val() || undefined;
 
-    t.getMax(from, to).done(function(res, statustext) {
+    t.getStat('max', from, to).done(function(res, statustext) {
       console.log(res);
       console.log(statustext);
 
       var temp = res.data.max.temperature;
       var timestamp = res.data.max.timestamp;
-      var text = temp + '°C ';
+      var text = temp.toFixed(2) + '°C ';
       var d = new Date(timestamp*1000);
       text += ' at ' + d.toLocaleTimeString() + ' ' + d.toLocaleDateString();
 
       $('#max-temp').text(text);
+    });
+  });
+
+  $('#update-min-btn').on('click', function(e) {
+    var from = $('#lower-limit').val() || undefined;
+    var to = $('#upper-limit').val() || undefined;
+
+    t.getStat('min', from, to).done(function(res, statustext) {
+      console.log(res);
+      console.log(statustext);
+
+      var temp = res.data.min.temperature;
+      var timestamp = res.data.min.timestamp;
+      var text = temp.toFixed(2) + '°C ';
+      var d = new Date(timestamp*1000);
+      text += ' at ' + d.toLocaleTimeString() + ' ' + d.toLocaleDateString();
+
+      $('#min-temp').text(text);
+    });
+  });
+
+  $('#update-ave-btn').on('click', function(e) {
+    var from = $('#lower-limit').val() || undefined;
+    var to = $('#upper-limit').val() || undefined;
+
+    t.getStat('ave', from, to).done(function(res, statustext) {
+      console.log(res);
+      console.log(statustext);
+
+      var temp = res.data.ave;
+      var text = temp.toFixed(2) + '°C ';
+
+      $('#ave-temp').text(text);
     });
   });
 
