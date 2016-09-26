@@ -76,6 +76,7 @@ function updateGraph(e) {
     if (res.data.count == 0) {
       console.log('No data for that range!');
       // TODO: do something useful for this
+      return;
     }
 
     var data = res.data.temperature_array.map(function(e) {
