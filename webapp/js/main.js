@@ -90,11 +90,16 @@ $( function() {
     var to = $('#upper-limit').val() || undefined;
 
     t.getMax(from, to).done(function(res, statustext) {
-      var temp = res.data.max.temperature;
-      var timestamp = res.data.max.timestamp;
-      $('#max-temp').text(temp + '°C');
       console.log(res);
       console.log(statustext);
+
+      var temp = res.data.max.temperature;
+      var timestamp = res.data.max.timestamp;
+      var text = temp + '°C ';
+      var d = new Date(timestamp*1000);
+      text += ' at ' + d.toLocaleTimeString() + ' ' + d.toLocaleDateString();
+
+      $('#max-temp').text(text);
     });
   });
 
