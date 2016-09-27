@@ -132,7 +132,7 @@ Example responses - average:
 }
 ```
 
-And minimum:
+And maximum:
 
 ```json
 {
