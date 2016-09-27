@@ -23,14 +23,24 @@
   </head>
   
   <body>
+
+    <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="text-center container-fluid">
+        <p class="h1 white-text">Temperature</p>
+      </div>
+    </nav>
+
     <div class="container">
 
-      <h1> Temperature </h1>
-
-      <p>
-        Current server: <span class="server-name-display"></span>
-        <input value="Change Server" type="button" class="btn btn-default" id="change-server" data-toggle="modal" data-target="#server-conf-modal" />
-      </p>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">Config</h2>
+        </div>
+        <div class="panel-body">
+          <span>Current server: <span class="server-name-display"></span></span>
+          <input value="Change Server" type="button" class="btn btn-default" id="change-server" data-toggle="modal" data-target="#server-conf-modal" />
+        </div>
+      </div>
 
       <div class="jumbotron">
         <div class="big text-center"><span class="current-temperature"></span>°C</div>
@@ -65,6 +75,10 @@
                    </span>
                 </div>
               </div>
+            </div>
+            <div>
+              <!-- this button force-redraws everything. TODO: make it more obvious or move it -->
+              <input type="button" class="btn btn-primary" value="Redraw" />
             </div>
           </div>
         </div>
@@ -106,14 +120,13 @@
       </div>
 
 
-      <h2> Graph </h2>
-
-      <form>
-        <input id="update-graph-btn" name="update-graph-btn" type="button" class="btn btn-default" value="Update" />
-      </form>
-
-      <div id="chart_container">
-        <div id="chart"></div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">Graph</h2>
+        </div>
+        <div class="panel-body">
+          <div id="chart"></div>
+        </div>
       </div>
 
     </div>
@@ -134,7 +147,8 @@
             <input class="form-control" id="server-name" name="server-name" type="text"/>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Save and Close</button>
+              <input type="button" class="btn btn-default" data-dismiss="modal" value="Close" />
+              <input type="button" id="server-conf-save" class="btn btn-primary" value="Save" />
           </div>
         </div>
       </div>

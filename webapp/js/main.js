@@ -159,30 +159,28 @@ function updateStats() {
     var temp = res.data.ave;
     $('.ave-temperature').text(temp.toFixed(2));
   });
+
+  updateGraph();
 }
 
 
 $( function() {
   var serverName = localStorage.tempServerName;
-  var nameInput = $('#server-name');
   window.t = new Temperature();
 
   // initial fill in server name if available
   if (serverName) {
-    nameInput.val(serverName);
+    $('#server-name').val(serverName);
     $('.server-name-display').text(serverName);
     t.init(serverName);
   } else {
     t.init('');
+    serverName = '';
   }
 
   // initually get temp, and update current temp every 5 minutes
   updateCurrent();
   setInterval(updateCurrent, 300000);
-
-
-  // graph button
-  $('#update-graph-btn').on('click', updateGraph);
 
   // set up the date pickers
   var yesterday = moment().subtract(1, 'days');
@@ -216,11 +214,24 @@ $( function() {
       updateStats();
   });
 
-  $('#server-conf-modal').on('hide.bs.modal', function(e) {
-    serverName = nameInput.val();
-    $('.server-name-display').text(serverName);
-    localStorage.tempServerName = serverName;
-    t.init(serverName);
+  $('#server-conf-save').on('click', function(e) {
+    tempServerName = $('#server-name').val();
+
+    // check if server name had changed
+    if (tempServerName != serverName) {
+      serverName = tempServerName;
+      $('.server-name-display').text(serverName);
+      localStorage.tempServerName = serverName;
+      t.init(serverName);
+      updateCurrent();
+      updateStats();
+    }
+
+    $('#server-conf-modal').modal('hide');
+  });
+
+  $('#server-conf-modal').on('hidden.bs.modal', function(e) {
+      $('#server-name').val(serverName);
   });
 
   // initial get stats
