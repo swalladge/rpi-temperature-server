@@ -168,7 +168,7 @@ $( function() {
   var serverName = localStorage.tempServerName;
   window.t = new Temperature();
 
-  // initial fill in server name if available
+  // initially fill in server name if available
   if (serverName) {
     $('#server-name').val(serverName);
     $('.server-name-display').text(serverName);
@@ -178,8 +178,10 @@ $( function() {
     serverName = '';
   }
 
-  // initually get temp, and update current temp every 5 minutes
+  // initially get temp, and update current temp every 5 minutes
   updateCurrent();
+  // TODO: Enhance the database and API so we can find out the temp_interval
+  // that currently lives only in config.py
   setInterval(updateCurrent, 300000);
 
   // set up the date pickers
