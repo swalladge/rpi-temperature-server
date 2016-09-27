@@ -1,11 +1,10 @@
-    html {
-      box-sizing: border-box;
-    }
 
-    * {
-      box-sizing: inherit;
-    }
 
-    #chart_container, #chart {
-      width: 100%;
-    }
+#chart {
+  width: 100%;
+}
+
+.big {
+  font-size: 200%;
+  font-weight: bold;
+}

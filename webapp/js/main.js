@@ -117,6 +117,15 @@ function updateGraph(e) {
   });
 }
 
+function updateCurrent() {
+    t.getCurrent().done(function(res, statustext) {
+      var temp = res.data.temperature.toFixed(1);
+      $('.current-temperature').text(temp);
+      console.log(res);
+      console.log(statustext);
+    });
+}
+
 
 $( function() {
   var serverName = localStorage.tempServerName;
@@ -132,15 +141,9 @@ $( function() {
     t.init('');
   }
 
-  // update current temp button
-  $('#update-current-btn').on('click', function(e) {
-    t.getCurrent().done(function(res, statustext) {
-      var temp = res.data.temperature;
-      $('#current-temp').text(temp + '°C');
-      console.log(res);
-      console.log(statustext);
-    });
-  });
+  // initually get temp, and update current temp every 5 minutes
+  updateCurrent();
+  setInterval(updateCurrent, 300000);
 
   $('#update-max-btn').on('click', function(e) {
     var limit = getLimits();
