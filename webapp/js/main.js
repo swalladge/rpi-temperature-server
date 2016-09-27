@@ -66,12 +66,25 @@ Temperature.prototype.getStat = function(type, from, to) {
   });
 };
 
+// utility function to grab the upper and lower timestamps from the date pickers
+function getLimits() {
+  var limits = {};
+  try {
+    limits.from = $('#lower-datepicker').data('DateTimePicker').date().unix();
+  } catch (e) {
+  }
+  try {
+    limits.to = $('#upper-datepicker').data('DateTimePicker').date().unix();
+  } catch (e) {
+  }
+
+  return limits;
+}
 
 function updateGraph(e) {
-  var from = $('#lower-datepicker').data("DateTimePicker").date().unix() || undefined;
-  var to = $('#upper-datepicker').data("DateTimePicker").date().unix() || undefined;
+  var limit = getLimits();
 
-  t.getList(from, to).done(function(res, statustext) {
+  t.getList(limit.from, limit.to).done(function(res, statustext) {
 
     if (res.data.count == 0) {
       console.log('No data for that range!');
@@ -133,10 +146,9 @@ $( function() {
   });
 
   $('#update-max-btn').on('click', function(e) {
-    var from = $('#lower-datepicker').data("DateTimePicker").date().unix() || undefined;
-    var to = $('#upper-datepicker').data("DateTimePicker").date().unix() || undefined;
+    var limit = getLimits();
 
-    t.getStat('max', from, to).done(function(res, statustext) {
+    t.getStat('max', limit.from, limit.to).done(function(res, statustext) {
       console.log(res);
       console.log(statustext);
 
@@ -151,10 +163,9 @@ $( function() {
   });
 
   $('#update-min-btn').on('click', function(e) {
-    var from = $('#lower-datepicker').data("DateTimePicker").date().unix() || undefined;
-    var to = $('#upper-datepicker').data("DateTimePicker").date().unix() || undefined;
+    var limit = getLimits();
 
-    t.getStat('min', from, to).done(function(res, statustext) {
+    t.getStat('min', limit.from, limit.to).done(function(res, statustext) {
       console.log(res);
       console.log(statustext);
 
@@ -169,10 +180,9 @@ $( function() {
   });
 
   $('#update-ave-btn').on('click', function(e) {
-    var from = $('#lower-datepicker').data("DateTimePicker").date().unix() || undefined;
-    var to = $('#upper-datepicker').data("DateTimePicker").date().unix() || undefined;
+    var limit = getLimits();
 
-    t.getStat('ave', from, to).done(function(res, statustext) {
+    t.getStat('ave', limit.from, limit.to).done(function(res, statustext) {
       console.log(res);
       console.log(statustext);
 
@@ -187,14 +197,33 @@ $( function() {
   $('#update-graph-btn').on('click', updateGraph);
 
   // set up the date pickers
-  $('#lower-datepicker').datetimepicker();
+  var yesterday = moment().subtract(1, 'days');
+  var now = moment();
+  $('#lower-datepicker').datetimepicker({
+    defaultDate: yesterday,
+    focusOnShow: false,
+    stepping: 5,
+    maxDate: now,
+    showClear: true,
+    showClose: true,
+    useCurrent: false
+  });
   $('#upper-datepicker').datetimepicker({
-      useCurrent: false //Important! See issue #1075
+    defaultDate: now,
+    minDate: yesterday,
+    focusOnShow: false,
+    stepping: 5,
+    showClear: true,
+    showClose: true,
+    useCurrent: false //Important! See issue #1075
   });
-  $("#lower-datepicker").on("dp.change", function (e) {
-      $('#upper-datepicker').data("DateTimePicker").minDate(e.date);
+
+  // link the two
+  $('#lower-datepicker').on('dp.change', function (e) {
+      $('#upper-datepicker').data('DateTimePicker').minDate(e.date);
   });
-  $("#upper-datepicker").on("dp.change", function (e) {
-      $('#lower-datepicker').data("DateTimePicker").maxDate(e.date);
+  $('#upper-datepicker').on('dp.change', function (e) {
+      $('#lower-datepicker').data('DateTimePicker').maxDate(e.date);
   });
+
 });
