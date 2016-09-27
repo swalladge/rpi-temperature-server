@@ -123,16 +123,10 @@ $( function() {
   var nameInput = $('#server-name');
   window.t = new Temperature();
 
-  // click handler for form
-  $('#update-details-btn').on('click', function(e) {
-    serverName = nameInput.val();
-    localStorage.tempServerName = serverName;
-    t.init(serverName);
-  });
-
   // initial fill in server name if available
   if (serverName) {
     nameInput.val(serverName);
+    $('.server-name-display').text(serverName);
     t.init(serverName);
   } else {
     t.init('');
@@ -227,6 +221,13 @@ $( function() {
   });
   $('#upper-datepicker').on('dp.change', function (e) {
       $('#lower-datepicker').data('DateTimePicker').maxDate(e.date);
+  });
+
+  $('#server-conf-modal').on('hide.bs.modal', function(e) {
+    serverName = nameInput.val();
+    $('.server-name-display').text(serverName);
+    localStorage.tempServerName = serverName;
+    t.init(serverName);
   });
 
 });

@@ -16,81 +16,108 @@
     <script src="js/main.js"></script>
 
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="bower_components/metrics-graphics/dist/metricsgraphics.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
   
   <body>
-    <h1> Temperature functions testing </h1>
-
-    <form>
-      <input id="server-name" name="server-name" type="text"/>
-      <input id="update-details-btn" name="update-details-btn" type="button" value="Update" />
-    </form>
-
-    <h2> Current Temperature </h2>
-
-    <input id="update-current-btn" type="button" value="update" />
-    <div id="current-temp"></div>
-
-    <h2> Limits </h2>
-
-
-    <!-- from https://eonasdan.github.io/bootstrap-datetimepicker/#linked-pickers -->
     <div class="container">
-        <div class='col-md-5'>
-            <div class="form-group">
-                <div class='input-group date' id='lower-datepicker'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class='col-md-5'>
-            <div class="form-group">
-                <div class='input-group date' id='upper-datepicker'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
+
+      <h1> Temperature </h1>
+
+      <p>
+        Current server: <span class="server-name-display"></span>
+        <input value="Change Server" type="button" class="btn btn-default" id="change-server" data-toggle="modal" data-target="#server-conf-modal" />
+      </p>
+
+      <h2> Current Temperature </h2>
+
+      <input id="update-current-btn" type="button" class="btn btn-default" value="update" />
+      <div id="current-temp"></div>
+
+      <h2> Limits </h2>
+
+
+      <!-- from https://eonasdan.github.io/bootstrap-datetimepicker/#linked-pickers -->
+      <div class="container">
+          <div class='col-md-5'>
+              <div class="form-group">
+                  <div class='input-group date' id='lower-datepicker'>
+                      <input type='text' class="form-control" />
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+              </div>
+          </div>
+          <div class='col-md-5'>
+              <div class="form-group">
+                  <div class='input-group date' id='upper-datepicker'>
+                      <input type='text' class="form-control" />
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <h2> Maximum Temperature </h2>
+      <form>
+        <input id="update-max-btn" name="update-max-btn" type="button" class="btn btn-default" value="Update" />
+      </form>
+
+      <div id="max-temp"></div>
+
+
+      <h2> Minimum Temperature </h2>
+      <form>
+        <input id="update-min-btn" name="update-min-btn" type="button" class="btn btn-default" value="Update" />
+      </form>
+
+      <div id="min-temp"></div>
+
+      <h2> Average Temperature </h2>
+      <form>
+        <input id="update-ave-btn" name="update-ave-btn" type="button" class="btn btn-default" value="Update" />
+      </form>
+
+      <div id="ave-temp"></div>
+
+      <h2> Graph </h2>
+
+      <form>
+        <input id="update-graph-btn" name="update-graph-btn" type="button" class="btn btn-default" value="Update" />
+      </form>
+
+      <div id="chart_container">
+        <div id="chart"></div>
+      </div>
+
     </div>
 
-    <h2> Maximum Temperature </h2>
-    <form>
-      <input id="update-max-btn" name="update-max-btn" type="button" value="Update" />
-    </form>
+    <!-- MODALS -->
 
-    <div id="max-temp"></div>
-
-
-    <h2> Minimum Temperature </h2>
-    <form>
-      <input id="update-min-btn" name="update-min-btn" type="button" value="Update" />
-    </form>
-
-    <div id="min-temp"></div>
-
-    <h2> Average Temperature </h2>
-    <form>
-      <input id="update-ave-btn" name="update-ave-btn" type="button" value="Update" />
-    </form>
-
-    <div id="ave-temp"></div>
-
-    <h2> Graph </h2>
-
-    <form>
-      <input id="update-graph-btn" name="update-graph-btn" type="button" value="Update" />
-    </form>
-
-    <div id="chart_container">
-      <div id="chart"></div>
+    <div class="modal fade" id="server-conf-modal" tabindex="-1" role="dialog" aria-labelledby="server-conf-modal-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="server-conf-modal-label">Change Server</h4>
+          </div>
+          <div class="modal-body">
+            <p>
+              Please enter the url for the temperature server below.
+            </p>
+            <input class="form-control" id="server-name" name="server-name" type="text"/>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Save and Close</button>
+          </div>
+        </div>
+      </div>
     </div>
 
   </body>
