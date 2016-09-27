@@ -96,20 +96,23 @@ function updateGraph(e) {
       return {date: new Date(e.timestamp*1000), value: e.temperature };
     });
 
-    // TODO: fancier stuff for graph
-    // ideas:
-    //     - display date/time range in title
-    //     - display number of data points and number of points dropped
+    var desc  = '<p>The temperature between <b>' +  (moment.unix(res.data.lower)).toLocaleString();
+        desc += '</b> and <b>' +  (moment.unix(res.data.upper)).toLocaleString() + '</b></p>';
+        desc += '<p>' + res.data.count + '/' + res.data.full_count + ' data points shown</p>';
+
+    // TODO: display the description above/below the graph as well?
 
     MG.data_graphic({
       title: 'Temperature',
-      description: 'temps for a range...',
+      description: desc,
       data: data,
-      width: 600,
-      height: 250,
+      full_width: true,
+      height: 350,
       target: '#chart',
       x_accessor: 'date',
-      y_accessor: 'value'
+      y_accessor: 'value',
+      x_label: 'Date',
+      y_label: 'Temperature (°C)'
     });
   });
 }
