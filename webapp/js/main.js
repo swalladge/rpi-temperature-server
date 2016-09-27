@@ -1,4 +1,7 @@
 
+// important global variables we need
+window.currentInterval = null;
+window.t = null;
 
 var Temperature = function() {
   this.url = null;
@@ -11,6 +14,7 @@ var Temperature = function() {
 Temperature.prototype.init = function(url) {
   this.url = url;
   this.endpoint = url + '/api/temperature/';
+  this.baseEndpoint = url + '/api/';
   this.ready = true;
 };
 
@@ -35,6 +39,15 @@ Temperature.prototype.errorFunc = function(res, textstatus, error, title) {
   // TODO: use these messages for something useful in the UI
   console.log(title + ':');
   console.log(msg);
+};
+
+Temperature.prototype.getInfo = function() {
+  return $.ajax(this.baseEndpoint + 'info', {
+    jsonp: false,
+    dataType: 'json',
+    method: 'GET',
+    error: this.errorFunc.bind(this)
+  });
 };
 
 Temperature.prototype.getCurrent = function() {
@@ -163,6 +176,37 @@ function updateStats() {
   updateGraph();
 }
 
+// gets the server info - once this is done, let's set up everything else (since
+// we know the server is running
+function getInitialServerSetup() {
+  t.getInfo().done(function(res, statustext) {
+    console.log(res);
+
+    // show a connected message
+    var info = 'Currently connected to ';
+    if (res.data.server_name) {
+      info += '<strong>' + res.data.server_name + '</strong>';
+    } else {
+      info += '<strong>' + t.url + '</strong>';
+    }
+    $('.server-info').html(info);
+
+
+    // initially get temp, and update current temp every 5 minutes
+    updateCurrent();
+
+    // set up the interval based on the server's logging interval
+    if (currentInterval) {
+      currentInterval.clear();
+    }
+    currentInterval = setInterval(updateCurrent, res.data.log_interval * 1000);
+
+    // update the stats
+    updateStats();
+
+  });
+}
+
 
 $( function() {
   var serverName = localStorage.tempServerName;
@@ -171,18 +215,17 @@ $( function() {
   // initially fill in server name if available
   if (serverName) {
     $('#server-name').val(serverName);
-    $('.server-name-display').text(serverName);
+    $('.server-url-display').text(serverName);
     t.init(serverName);
   } else {
     t.init('');
     serverName = '';
   }
 
-  // initially get temp, and update current temp every 5 minutes
-  updateCurrent();
-  // TODO: Enhance the database and API so we can find out the temp_interval
-  // that currently lives only in config.py
-  setInterval(updateCurrent, 300000);
+  // get info from the server
+  // also initiates other server requests
+  getInitialServerSetup();
+
 
   // set up the date pickers
   var yesterday = moment().subtract(1, 'days');
@@ -209,11 +252,9 @@ $( function() {
   // link the two
   $('#lower-datepicker').on('dp.change', function (e) {
       $('#upper-datepicker').data('DateTimePicker').minDate(e.date);
-      updateStats();
   });
   $('#upper-datepicker').on('dp.change', function (e) {
       $('#lower-datepicker').data('DateTimePicker').maxDate(e.date);
-      updateStats();
   });
 
   $('#requery-data').on('click', function(e) {
@@ -226,11 +267,9 @@ $( function() {
     // check if server name had changed
     if (tempServerName != serverName) {
       serverName = tempServerName;
-      $('.server-name-display').text(serverName);
       localStorage.tempServerName = serverName;
       t.init(serverName);
-      updateCurrent();
-      updateStats();
+      getInitialServerSetup();
     }
 
     $('#server-conf-modal').modal('hide');
@@ -240,6 +279,4 @@ $( function() {
       $('#server-name').val(serverName);
   });
 
-  // initial get stats
-  updateStats();
 });
