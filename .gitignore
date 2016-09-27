@@ -13,3 +13,10 @@ Adafruit_Python_MCP9808/
 
 # logs
 *.log
+
+# the live config
+/server/config.py
+
+# temporary/backup stuff
+*.temp
+*~

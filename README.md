@@ -1,7 +1,9 @@
 
 # rpi-temperature-server
 
-A project to have a server and web app for displaying the temperature and various stats from a Raspberry Pi with a MCP9808
+The project for PRT452, 2016.
+
+A server and web app for displaying the temperature and various stats from a Raspberry Pi with a MCP9808
 temperature sensor.
 
 Copyright © 2016 Samuel Walladge, Phil Davis

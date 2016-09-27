@@ -103,6 +103,23 @@ class stats_temp_handler(BaseHandler):
 
         return self.send_error(500, reason='error retrieving {}'.format(stats_type))
 
+class info_handler(BaseHandler):
+    """ handles requests for server config """
+
+    def get(self):
+        data = {}
+        data['log_interval'] = cfg.temp_interval
+        if cfg.server_name is not None:
+            data['server_name'] = cfg.server_name
+
+        data['live'] = cfg.on_rpi
+
+        if cfg.location is not None:
+            data['location'] = cfg.location
+
+        return self.send_data(data)
+
+
 def main():
 
     # let tornado grab command line args (ie. for setting log files)
@@ -123,6 +140,7 @@ def main():
         url(r'^/api/temperature/current/?$', current_temp_handler),
         url(r'^/api/temperature/now/?$', current_temp_handler),
         url(r'^/api/temperature/(max|min|ave)/?$', stats_temp_handler),
+        url(r'^/api/info/?$', info_handler),
         ],
         debug=cfg.debug_mode,
         db=db

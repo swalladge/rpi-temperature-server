@@ -150,3 +150,31 @@ And maximum:
 }
 ```
 
+### GET /api/info
+
+Retrieve some useful information from the server.
+
+Data attributes returned:
+
+- `live`: [boolean] whether or not the server is recording real data
+- `log_interval`: [number] the configured interval in seconds at which the server logs the current temperature.
+
+Other possible attributes if enabled in configuration:
+
+- `server_name`: [string] a descriptive name given to the server
+- `location`: [string] a text description of where the server is
+
+Example response:
+
+```json
+{
+    "data": {
+        "live": false,
+        "log_interval": 300,
+        "server_name": "the temperature server"
+    },
+    "status": 200,
+    "success": true
+}
+```
+
