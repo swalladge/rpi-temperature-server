@@ -214,6 +214,10 @@ $( function() {
       updateStats();
   });
 
+  $('#requery-data').on('click', function(e) {
+    updateStats();
+  });
+
   $('#server-conf-save').on('click', function(e) {
     tempServerName = $('#server-name').val();
 
