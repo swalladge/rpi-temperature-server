@@ -39,54 +39,72 @@
         </p>
       </div>
 
-      <h2> Limits </h2>
-
-
-      <!-- from https://eonasdan.github.io/bootstrap-datetimepicker/#linked-pickers -->
-      <div class="container">
-          <div class='col-md-5'>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">Date Range</h2>
+        </div>
+        <div class="panel-body">
+          <!-- from https://eonasdan.github.io/bootstrap-datetimepicker/#linked-pickers -->
+          <div class="container">
+            <div class='col-md-5'>
               <div class="form-group">
-                  <div class='input-group date' id='lower-datepicker'>
-                      <input type='text' class="form-control" />
-                      <span class="input-group-addon">
-                          <span class="glyphicon glyphicon-calendar"></span>
-                      </span>
+                <div class='input-group date' id='lower-datepicker'>
+                  <input type='text' class="form-control" />
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
                   </div>
-              </div>
-          </div>
-          <div class='col-md-5'>
+               </div>
+            </div>
+            <div class='col-md-5'>
               <div class="form-group">
-                  <div class='input-group date' id='upper-datepicker'>
-                      <input type='text' class="form-control" />
-                      <span class="input-group-addon">
-                          <span class="glyphicon glyphicon-calendar"></span>
-                      </span>
-                  </div>
+                <div class='input-group date' id='upper-datepicker'>
+                   <input type='text' class="form-control" />
+                   <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                   </span>
+                </div>
               </div>
+            </div>
           </div>
+        </div>
       </div>
 
-      <h2> Maximum Temperature </h2>
-      <form>
-        <input id="update-max-btn" name="update-max-btn" type="button" class="btn btn-default" value="Update" />
-      </form>
+      <div class="row text-center">
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title">Min</h2>
+            </div>
+            <div class="panel-body">
+              <p><span class="min-temperature"></span>°C</p>
+              <span class="min-temperature-date"></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title">Average</h2>
+            </div>
+            <div class="panel-body">
+              <p><span class="ave-temperature"></span>°C</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title">Max</h2>
+            </div>
+            <div class="panel-body">
+              <p><span class="max-temperature"></span>°C</p>
+              <span class="max-temperature-date"></span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <div id="max-temp"></div>
-
-
-      <h2> Minimum Temperature </h2>
-      <form>
-        <input id="update-min-btn" name="update-min-btn" type="button" class="btn btn-default" value="Update" />
-      </form>
-
-      <div id="min-temp"></div>
-
-      <h2> Average Temperature </h2>
-      <form>
-        <input id="update-ave-btn" name="update-ave-btn" type="button" class="btn btn-default" value="Update" />
-      </form>
-
-      <div id="ave-temp"></div>
 
       <h2> Graph </h2>
 

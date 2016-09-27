@@ -126,6 +126,41 @@ function updateCurrent() {
     });
 }
 
+function updateStats() {
+  var limit = getLimits();
+
+  t.getStat('max', limit.from, limit.to).done(function(res, statustext) {
+    console.log(res);
+    console.log(statustext);
+
+    var temp = res.data.max.temperature;
+    var timestamp = res.data.max.timestamp;
+
+    $('.max-temperature').text(temp.toFixed(2));
+    $('.max-temperature-date').text(moment.unix(timestamp).toLocaleString());
+
+  });
+
+  t.getStat('min', limit.from, limit.to).done(function(res, statustext) {
+    console.log(res);
+    console.log(statustext);
+
+    var temp = res.data.min.temperature;
+    var timestamp = res.data.min.timestamp;
+
+    $('.min-temperature').text(temp.toFixed(2));
+    $('.min-temperature-date').text(moment.unix(timestamp).toLocaleString());
+  });
+
+  t.getStat('ave', limit.from, limit.to).done(function(res, statustext) {
+    console.log(res);
+    console.log(statustext);
+
+    var temp = res.data.ave;
+    $('.ave-temperature').text(temp.toFixed(2));
+  });
+}
+
 
 $( function() {
   var serverName = localStorage.tempServerName;
@@ -145,53 +180,6 @@ $( function() {
   updateCurrent();
   setInterval(updateCurrent, 300000);
 
-  $('#update-max-btn').on('click', function(e) {
-    var limit = getLimits();
-
-    t.getStat('max', limit.from, limit.to).done(function(res, statustext) {
-      console.log(res);
-      console.log(statustext);
-
-      var temp = res.data.max.temperature;
-      var timestamp = res.data.max.timestamp;
-      var text = temp.toFixed(2) + '°C ';
-      var d = new Date(timestamp*1000);
-      text += ' at ' + d.toLocaleTimeString() + ' ' + d.toLocaleDateString();
-
-      $('#max-temp').text(text);
-    });
-  });
-
-  $('#update-min-btn').on('click', function(e) {
-    var limit = getLimits();
-
-    t.getStat('min', limit.from, limit.to).done(function(res, statustext) {
-      console.log(res);
-      console.log(statustext);
-
-      var temp = res.data.min.temperature;
-      var timestamp = res.data.min.timestamp;
-      var text = temp.toFixed(2) + '°C ';
-      var d = new Date(timestamp*1000);
-      text += ' at ' + d.toLocaleTimeString() + ' ' + d.toLocaleDateString();
-
-      $('#min-temp').text(text);
-    });
-  });
-
-  $('#update-ave-btn').on('click', function(e) {
-    var limit = getLimits();
-
-    t.getStat('ave', limit.from, limit.to).done(function(res, statustext) {
-      console.log(res);
-      console.log(statustext);
-
-      var temp = res.data.ave;
-      var text = temp.toFixed(2) + '°C ';
-
-      $('#ave-temp').text(text);
-    });
-  });
 
   // graph button
   $('#update-graph-btn').on('click', updateGraph);
@@ -221,9 +209,11 @@ $( function() {
   // link the two
   $('#lower-datepicker').on('dp.change', function (e) {
       $('#upper-datepicker').data('DateTimePicker').minDate(e.date);
+      updateStats();
   });
   $('#upper-datepicker').on('dp.change', function (e) {
       $('#lower-datepicker').data('DateTimePicker').maxDate(e.date);
+      updateStats();
   });
 
   $('#server-conf-modal').on('hide.bs.modal', function(e) {
@@ -233,4 +223,6 @@ $( function() {
     t.init(serverName);
   });
 
+  // initial get stats
+  updateStats();
 });
