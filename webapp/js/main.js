@@ -106,12 +106,12 @@ function removeAlerts(selector) {
 
 function showAlert(selector, type, title, msg) {
   var content = '<strong>' + title + '</strong>';
-      content += ' ' + msg;
+  content += ' ' + msg;
 
   var alert_html = '<div class="alert alert-' + type + ' alert-dismissible" role="alert"> \
                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">\
                    <span aria-hidden="true">&times;</span></button>';
-      alert_html += content + '</div>';
+  alert_html += content + '</div>';
 
   // remove the existing alerts
   removeAlerts(selector);
@@ -148,15 +148,14 @@ function updateGraph(e) {
       return {date: new Date(e.timestamp*1000), value: e.temperature };
     });
 
-    var desc  = '<p>The temperature between <b>' +  (moment.unix(res.data.lower)).toLocaleString();
-        desc += '</b> and <b>' +  (moment.unix(res.data.upper)).toLocaleString() + '</b></p>';
-        desc += '<p>' + res.data.count + '/' + res.data.full_count + ' data points shown</p>';
+    var desc  = '<p>Graph of the temperature between <b>' +  (moment.unix(res.data.lower)).toLocaleString();
+    desc += '</b> and <b>' +  (moment.unix(res.data.upper)).toLocaleString() + '</b></p>';
+    desc += '<p> Technical: showing ' + res.data.count + ' data points. (' + res.data.full_count + ' logged in date range)</p>';
 
     // TODO: display the description above/below the graph as well?
+    $('#chart-info').html(desc);
 
     MG.data_graphic({
-      title: 'Temperature',
-      description: desc,
       data: data,
       full_width: true,
       height: 350,
@@ -170,8 +169,8 @@ function updateGraph(e) {
 }
 
 function updateCurrent() {
-    t.getCurrent().done(function(res, statustext) {
-      var temp = res.data.temperature.toFixed(1);
+  t.getCurrent().done(function(res, statustext) {
+    var temp = res.data.temperature.toFixed(1);
       $('.current-temperature').text(temp);
     });
 }
@@ -184,7 +183,7 @@ function updateStats() {
       var temp = res.data.max.temperature;
       var timestamp = res.data.max.timestamp;
 
-      $('.max-temperature').text(temp.toFixed(2));
+      $('.max-temperature').text(temp.toFixed(1));
       $('.max-temperature-date').text(moment.unix(timestamp).toLocaleString());
     }
   });
@@ -194,7 +193,7 @@ function updateStats() {
       var temp = res.data.min.temperature;
       var timestamp = res.data.min.timestamp;
 
-      $('.min-temperature').text(temp.toFixed(2));
+      $('.min-temperature').text(temp.toFixed(1));
       $('.min-temperature-date').text(moment.unix(timestamp).toLocaleString());
     }
   });
@@ -202,7 +201,7 @@ function updateStats() {
   t.getStat('ave', limit.from, limit.to).done(function(res, statustext) {
     if (res.data.count > 0) {
       var temp = res.data.ave;
-      $('.ave-temperature').text(temp.toFixed(2));
+      $('.ave-temperature').text(temp.toFixed(1));
     }
   });
 
