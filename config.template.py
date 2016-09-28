@@ -17,6 +17,10 @@ listen_port = 8888
 # you are advised to set this to false when running in production
 debug_mode = True
 
+# whether you want to serve the webapp as well
+# if true, the webapp index will be accessible at the root of the server
+serve_webapp = True
+
 # whether running on a RPi or not
 # when False, enables test mode on the temperature retrieving module (ie. for
 # testing the server on your computer)
