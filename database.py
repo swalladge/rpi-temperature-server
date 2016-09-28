@@ -87,7 +87,9 @@ class db():
         if n > limit:
             # if so, skip every jump_th row
             jump = (n // limit) + 1
-            query = query.filter(Temperature.id % jump == 0)
+            first_id = query.first().id
+            last_id = first_id + n - 1
+            query = query.filter(((Temperature.id - first_id) % jump == 0) | (Temperature.id == last_id))
 
         # return:
         #   a list of dictionaries,
