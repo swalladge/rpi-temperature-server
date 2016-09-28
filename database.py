@@ -89,9 +89,13 @@ class db():
             jump = (n // limit) + 1
             query = query.filter(Temperature.id % jump == 0)
 
-        # return a list of dictionaries, and number of total rows in that range
+        # return:
+        #   a list of dictionaries,
+        #   number of rows selected in that range
+        #   timestamp of the first record
+        #   timestamp of the last record
         temps = list(map(lambda t: t.dict(), query.all()))
-        return (temps, n)
+        return (temps, n, query.first().timestamp, query.order_by('-timestamp').first().timestamp)
 
     def save_temperature(self, temp, time):
         """ log the temperature in the database """

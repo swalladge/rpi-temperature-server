@@ -25,12 +25,12 @@ class temperature_handler(BaseHandler):
     def get(self, timestamp=None):
         """return the temperature by key"""
 
-        lower = self.get_query_argument('from', None)
-        upper = self.get_query_argument('to', None)
+        from_timestamp = self.get_query_argument('from', None)
+        to_timestamp = self.get_query_argument('to', None)
         limit = self.get_query_argument('limit', cfg.temp_max_length)
 
         try:
-            lower, upper = utils.validate_bounds(lower, upper)
+            from_timestamp, to_timestamp = utils.validate_bounds(from_timestamp, to_timestamp)
             limit = min(int(limit), cfg.temp_max_length)
         except:
             return self.send_error(400, reason='invalid from and/or to parameters')
@@ -55,11 +55,13 @@ class temperature_handler(BaseHandler):
 
         # otherwise, use the temperature range
         else:
-            temps, n = self.db.get_temperature_list(lower, upper, limit)
+            temps, n, first_timestamp, last_timestamp = self.db.get_temperature_list(from_timestamp, to_timestamp, limit)
             data = {'count': len(temps),
                     'temperature_array': temps,
-                    'lower': lower,
-                    'upper': upper,
+                    'from': from_timestamp,
+                    'to': to_timestamp,
+                    'lower': first_timestamp,
+                    'upper': last_timestamp,
                     'full_count': n
             }
             return self.send_data(data)
@@ -83,22 +85,22 @@ class stats_temp_handler(BaseHandler):
 
     def get(self, stats_type):
 
-        lower = self.get_query_argument('from', None)
-        upper = self.get_query_argument('to', None)
+        from_timestamp = self.get_query_argument('from', None)
+        to_timestamp = self.get_query_argument('to', None)
 
         try:
-            lower, upper = utils.validate_bounds(lower, upper)
+            from_timestamp, to_timestamp = utils.validate_bounds(from_timestamp, to_timestamp)
         except:
             return self.send_error(400, reason='invalid range (from-to)')
 
         if stats_type == 'min':
-            stats = self.db.get_temperature_min(lower, upper)
+            stats = self.db.get_temperature_min(from_timestamp, to_timestamp)
             if stats: return self.send_data(stats)
         elif stats_type == 'max':
-            stats = self.db.get_temperature_max(lower, upper)
+            stats = self.db.get_temperature_max(from_timestamp, to_timestamp)
             if stats: return self.send_data(stats)
         elif stats_type == 'ave':
-            ave = self.db.get_temperature_avg(lower, upper)
+            ave = self.db.get_temperature_avg(from_timestamp, to_timestamp)
             if ave:
                 return self.send_data(ave)
 
