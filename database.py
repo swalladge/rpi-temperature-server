@@ -21,18 +21,6 @@ class Temperature(Base):
     timestamp = Column(Integer, nullable=False)
     temperature = Column(Float, nullable=False)
 
-    # static property for getting item closest to certain timestamp
-    # terrible hack but works for now
-    relative = 0
-
-    @hybrid_property
-    def distance(self):
-        return abs(self.relative - self.timestamp)
-
-    @distance.expression
-    def distance(cls):
-        return func.abs(cls.relative - cls.timestamp)
-
     def __repr__(self):
         return "Temperature {}°C at {}".\
                format(self.temperature, self.timestamp)
@@ -62,10 +50,8 @@ class db():
         return t[0].dict()
 
     def get_temperature_at(self, timestamp):
-        # uses awful hack to order it correctly...
-        Temperature.relative = timestamp
         query = self.session.query(Temperature)
-        query = query.order_by(Temperature.distance)
+        query = query.order_by(func.abs(Temperature.timestamp - timestamp))
         temp = query.first()
         return temp.dict()
 
