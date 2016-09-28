@@ -43,7 +43,7 @@ Temperature.prototype.errorFunc = function(res, textstatus, error, title) {
   this.ready = false;
 
   // say so in server info
-  $('.server-info').html('Not connected to any server.');
+  $('.server-info').html('Not connected to any server. Click the button below to configure.');
 };
 
 Temperature.prototype.getInfo = function() {
