@@ -3,12 +3,16 @@
 window.currentInterval = null;
 window.t = null;
 
+// fake ajax that doesn't do anything
+var fakeAjax = function() {
+}
+fakeAjax.prototype.done = function() {
+}
+
 var Temperature = function() {
   this.url = null;
   this.endpoint = null;
   this.ready = false;
-
-
 };
 
 Temperature.prototype.init = function(url) {
@@ -24,61 +28,96 @@ Temperature.prototype.errorFunc = function(res, textstatus, error, title) {
   // check if it was an error generated from the server or the client
   if (res && res.status >= 400) {
     msg = res.status;
-    title = title || 'Server Request Failed';
+    if (error) {
+      msg = msg + ' - ' + error;
+    }
+    title = title || 'Server Request Failed!';
   } else {
-    title = 'Server Request Failed';
-    msg =  'Either your internet connection is down, or the server is unreachable.';
+    title = 'Server Request Failed!';
+    msg = 'Either your internet connection is down, or the server is unreachable.';
   }
 
-  // build up the rest of the message
-  msg = msg + ' ' + textstatus;
-  if (textstatus && error) {
-    msg = msg + ' (' + error + ')';
-  }
+  // show the alert
+  showAlert('#alert-box', 'danger', title, msg);
+  // not ready any more
+  this.ready = false;
 
-  // TODO: use these messages for something useful in the UI
-  // Bootstrap alert thingies will be good
-  console.log(title + ':');
-  console.log(msg);
+  // say so in server info
+  $('.server-info').html('Not connected to any server.');
 };
 
 Temperature.prototype.getInfo = function() {
-  return $.ajax(this.baseEndpoint + 'info', {
-    jsonp: false,
-    dataType: 'json',
-    method: 'GET',
-    error: this.errorFunc.bind(this)
-  });
+  if (this.ready) {
+    return $.ajax(this.baseEndpoint + 'info', {
+      jsonp: false,
+      dataType: 'json',
+      method: 'GET',
+      error: this.errorFunc.bind(this)
+    });
+  } else {
+    return new fakeAjax();
+  }
 };
 
 Temperature.prototype.getCurrent = function() {
-  return $.ajax(this.endpoint + 'current', {
-    jsonp: false,
-    dataType: 'json',
-    method: 'GET',
-    error: this.errorFunc.bind(this)
-  });
+  if (this.ready) {
+    return $.ajax(this.endpoint + 'current', {
+      jsonp: false,
+      dataType: 'json',
+      method: 'GET',
+      error: this.errorFunc.bind(this)
+    });
+  } else {
+    return new fakeAjax();
+  }
 };
 
 Temperature.prototype.getList = function(from, to) {
-  return $.ajax(this.endpoint, {
-    jsonp: false,
-    dataType: 'json',
-    method: 'GET',
-    data: {'from': from, 'to': to},
-    error: this.errorFunc.bind(this)
-  });
+  if (this.ready) {
+    return $.ajax(this.endpoint, {
+      jsonp: false,
+      dataType: 'json',
+      method: 'GET',
+      data: {'from': from, 'to': to},
+      error: this.errorFunc.bind(this)
+    });
+  } else {
+    return new fakeAjax();
+  }
 };
 
 Temperature.prototype.getStat = function(type, from, to) {
-  return $.ajax(this.endpoint + type, {
-    jsonp: false,
-    dataType: 'json',
-    method: 'GET',
-    data: {'from': from, 'to': to},
-    error: this.errorFunc.bind(this)
-  });
+  if (this.ready) {
+    return $.ajax(this.endpoint + type, {
+      jsonp: false,
+      dataType: 'json',
+      method: 'GET',
+      data: {'from': from, 'to': to},
+      error: this.errorFunc.bind(this)
+    });
+  } else {
+    return new fakeAjax();
+  }
 };
+
+function removeAlerts(selector) {
+  $(selector).html('');
+}
+
+function showAlert(selector, type, title, msg) {
+  var content = '<strong>' + title + '</strong>';
+      content += ' ' + msg;
+
+  var alert_html = '<div class="alert alert-' + type + ' alert-dismissible" role="alert"> \
+                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">\
+                   <span aria-hidden="true">&times;</span></button>';
+      alert_html += content + '</div>';
+
+  // remove the existing alerts
+  removeAlerts(selector);
+  // show the new one
+  $(selector).append($(alert_html));
+}
 
 // utility function to grab the upper and lower timestamps from the date pickers
 function getLimits() {
@@ -101,8 +140,7 @@ function updateGraph(e) {
   t.getList(limit.from, limit.to).done(function(res, statustext) {
 
     if (res.data.count == 0) {
-      console.log('No data for that range!');
-      // TODO: do something useful for this
+      showAlert('#stats-alert-box', 'warning', 'Cannot display data!', 'no data for that range');
       return;
     }
 
@@ -144,34 +182,30 @@ function updateStats() {
   var limit = getLimits();
 
   t.getStat('max', limit.from, limit.to).done(function(res, statustext) {
-    console.log(res);
-    console.log(statustext);
+    if (res.data.count > 0) {
+      var temp = res.data.max.temperature;
+      var timestamp = res.data.max.timestamp;
 
-    var temp = res.data.max.temperature;
-    var timestamp = res.data.max.timestamp;
-
-    $('.max-temperature').text(temp.toFixed(2));
-    $('.max-temperature-date').text(moment.unix(timestamp).toLocaleString());
-
+      $('.max-temperature').text(temp.toFixed(2));
+      $('.max-temperature-date').text(moment.unix(timestamp).toLocaleString());
+    }
   });
 
   t.getStat('min', limit.from, limit.to).done(function(res, statustext) {
-    console.log(res);
-    console.log(statustext);
+    if (res.data.count > 0) {
+      var temp = res.data.min.temperature;
+      var timestamp = res.data.min.timestamp;
 
-    var temp = res.data.min.temperature;
-    var timestamp = res.data.min.timestamp;
-
-    $('.min-temperature').text(temp.toFixed(2));
-    $('.min-temperature-date').text(moment.unix(timestamp).toLocaleString());
+      $('.min-temperature').text(temp.toFixed(2));
+      $('.min-temperature-date').text(moment.unix(timestamp).toLocaleString());
+    }
   });
 
   t.getStat('ave', limit.from, limit.to).done(function(res, statustext) {
-    console.log(res);
-    console.log(statustext);
-
-    var temp = res.data.ave;
-    $('.ave-temperature').text(temp.toFixed(2));
+    if (res.data.count > 0) {
+      var temp = res.data.ave;
+      $('.ave-temperature').text(temp.toFixed(2));
+    }
   });
 
   updateGraph();

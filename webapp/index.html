@@ -39,6 +39,7 @@
           <h2 class="panel-title">Info</h2>
         </div>
         <div class="panel-body">
+          <div id="alert-box"></div>
           <p class="server-info">Not connected to any server.</p>
           <div>
             <input value="Change Server" type="button" class="btn btn-default" id="change-server" data-toggle="modal" data-target="#server-conf-modal" />
@@ -58,32 +59,31 @@
           <h2 class="panel-title">Date Range</h2>
         </div>
         <div class="panel-body">
+          <div id="stats-alert-box"></div>
           <!-- from https://eonasdan.github.io/bootstrap-datetimepicker/#linked-pickers -->
-          <div class="container">
-            <div class='col-md-5'>
-              <div class="form-group">
-                <div class='input-group date' id='lower-datepicker'>
-                  <input type='text' class="form-control" />
-                  <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-                  </div>
-               </div>
-            </div>
-            <div class='col-md-5'>
-              <div class="form-group">
-                <div class='input-group date' id='upper-datepicker'>
-                   <input type='text' class="form-control" />
-                   <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                   </span>
-                </div>
+          <div class='col-md-5'>
+            <div class="form-group">
+              <div class='input-group date' id='lower-datepicker'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
               </div>
             </div>
-            <div>
-              <!-- TODO: quick buttons for common ranges (last day, week, etc.) -->
-              <input type="button" id="requery-data" class="btn btn-primary" value="Redraw" />
+          </div>
+          <div class='col-md-5'>
+            <div class="form-group">
+              <div class='input-group date' id='upper-datepicker'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
             </div>
+          </div>
+          <div>
+            <!-- TODO: quick buttons for common ranges (last day, week, etc.) -->
+            <input type="button" id="requery-data" class="btn btn-primary" value="Redraw" />
           </div>
         </div>
       </div>
