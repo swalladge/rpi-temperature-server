@@ -70,6 +70,7 @@ Pick an option, depending on your RPi case and how neat you want it to look.
     # Python 2.7.12
     # then you may need to install python 3 to run the setup script.
     # Raspbian also requires installing the `python3-venv` package.
+    sudo apt-get install python3-venv
     ```
 
 4. Give access to the I2C bus (and thus the temperature sensor) to a group and create an ordinary user:
