@@ -122,7 +122,7 @@ Parameters as for getting an array of temperatures.
 
 Response data fields:
 
-- `count`, `lower`, `upper` as above
+- `count`, `lower`, `upper`, `from`, `to` as above
 - `ave`: average temperature as a float number
 - `max`: maximum temperature as a temperature dictionary with `temperature` and `timestamp` fields
 - `min`: as with `max` but for minimum temperature
@@ -134,8 +134,10 @@ Example responses - average:
     "data": {
         "ave": 19.64,
         "count": 1173,
-        "lower": 0,
-        "upper": 1474357267
+        "from": 0,
+        "lower": 1474264875,
+        "upper": 1474357264,
+        "to": 1474357267
     },
     "status": 200,
     "success": true
@@ -148,12 +150,14 @@ And maximum:
 {
     "data": {
         "count": 1180,
-        "lower": 0,
+        "from": 0,
+        "lower": 1474264875,
         "max": {
             "temperature": 40.0,
             "timestamp": 1474354142
         },
-        "upper": 1474357301
+        "upper": 1474357299,
+        "to": 1474357301
     },
     "status": 200,
     "success": true

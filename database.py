@@ -108,17 +108,19 @@ class db():
         return self.commit()
 
     def get_temperature_avg(self, lower, upper):
-        query = self.session.query(func.avg(Temperature.temperature), func.count(Temperature.id))
+        query = self.session.query(func.avg(Temperature.temperature), func.count(Temperature.id), func.min(Temperature.timestamp), func.max(Temperature.timestamp))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
 
         t = filtered.first()
-        # t is a two-tuple: (average, number_of_points)
+        # t is a 4-tuple: (average, number_of_points, smallest timestamp, largest timestamp)
         if t:
             return {'ave': t[0],
                     'count': t[1],
-                    'lower': lower,
-                    'upper': upper
+                    'from': lower,
+                    'to': upper,
+                    'lower': t[2],
+                    'upper': t[3]
             }
 
     def get_temperature_min(self, lower, upper):
@@ -128,10 +130,19 @@ class db():
 
         t = filtered.first()
         if t:
+            # do another query to get the min and max timestamp
+            # adding it to the first query confuses which actual Temperature record is returned
+            tsrange_query = self.session.query(func.min(Temperature.timestamp), func.max(Temperature.timestamp))
+            filtered_tsrange = tsrange_query.filter(Temperature.timestamp >= lower,
+                                                    Temperature.timestamp <= upper)
+            tsrange = filtered_tsrange.first()
+
             return {'min': t[0].dict() if t[0] else None,
                     'count': t[1],
-                    'lower': lower,
-                    'upper': upper
+                    'from': lower,
+                    'to': upper,
+                    'lower': tsrange[0],
+                    'upper': tsrange[1]
             }
 
     def get_temperature_max(self, lower, upper):
@@ -141,10 +152,19 @@ class db():
 
         t = filtered.first()
         if t:
+            # do another query to get the min and max timestamp
+            # adding it to the first query confuses which actual Temperature record is returned
+            tsrange_query = self.session.query(func.min(Temperature.timestamp), func.max(Temperature.timestamp))
+            filtered_tsrange = tsrange_query.filter(Temperature.timestamp >= lower,
+                                                    Temperature.timestamp <= upper)
+            tsrange = filtered_tsrange.first()
+
             return {'max': t[0].dict() if t[0] else None,
                     'count': t[1],
-                    'lower': lower,
-                    'upper': upper
+                    'from': lower,
+                    'to': upper,
+                    'lower': tsrange[0],
+                    'upper': tsrange[1]
             }
 
     def commit(self):
