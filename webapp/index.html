@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="bower_components/metrics-graphics/dist/metricsgraphics.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
-  
+
   <body>
 
     <nav class="navbar navbar-inverse navbar-static-top">
@@ -38,9 +38,18 @@
         </div>
         <div class="panel-body">
           <div id="alert-box"></div>
-          <p class="server-info">Not connected to any server. Click the button below to configure.</p>
-          <div>
-            <input value="Change Server" type="button" class="btn btn-default" id="change-server" data-toggle="modal" data-target="#server-conf-modal" />
+          <div class="container">
+          <div class="row">
+            <div class="col-md-9 text-center">
+              <p class="server-info">Not connected to any server. Click the button below to configure.</p>
+            </div>
+            <div class="col-md-3">
+              <input value="Change Server" type="button" class="btn btn-default" id="change-server" data-toggle="modal" data-target="#server-conf-modal" />
+            </div>
+          </div>
+          <div class="row">
+            <input value="About" type="button" class="btn btn-info" data-toggle="modal" data-target="#about-modal" />
+          </div>
           </div>
         </div>
       </div>
@@ -164,6 +173,43 @@
           <div class="modal-footer">
               <input type="button" class="btn btn-default" data-dismiss="modal" value="Close" />
               <input type="button" id="server-conf-save" class="btn btn-primary" value="Save" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="about-modal" tabindex="-1" role="dialog" aria-labelledby="about-modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="server-conf-modal-label">About</h4>
+          </div>
+          <div class="modal-body">
+            <! -- about info here -->
+            <p>
+              This is a webapp that is part of <b>rpi-temperature-server</b> (available on
+              <a href="https://github.com/swalladge/rpi-temperature-server/">GitHub</a>), a project for PRT452, semester 2, 2016.
+            </p>
+            <p>
+              Copyright &copy; 2016 Samuel Walladge, Phil Davis
+            </p>
+            <h3>Quick Help</h3>
+            <ol>
+              <li>Make sure the correct server is chosen to connect to - it should have a <code>currently connected to...</code> message at the top if it is connected. If not, click the <code>Change Server</code> button and follow the instructions.</li>
+              <li>The current temperature will be periodically retrieved automatically while the webapp is open.</li>
+              <li>To view other data (apart from the default displayed), change the dates in the date picker inputs to select the date range, then click <code>Display</code> to retrieve the data and display it in the panels.</li>
+            </ol>
+
+            <h3>Tricks and Things to Note</h3>
+            <ul>
+              <li>Clear one or both of the date ranges to default to started or ending on the earliest or latest dates available on the server.</li>
+              <li>The server will limit the number of data points it sends per request, so if you wish to see more detail on a certain time period, select a shorter date range and click <code>Display</code> again.</li>
+            </ul>
+
+          </div>
+          <div class="modal-footer">
+              <input type="button" class="btn btn-default" data-dismiss="modal" value="Close" />
           </div>
         </div>
       </div>
