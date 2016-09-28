@@ -186,10 +186,15 @@ function getInitialServerSetup() {
     // show a connected message
     var info = 'Currently connected to ';
     if (res.data.server_name) {
-      info += '<strong>' + res.data.server_name + '</strong>';
+      info += '<strong>' + res.data.server_name + '</strong>.';
     } else {
-      info += '<strong>' + t.url + '</strong>';
+      info += '<strong>' + t.url + '</strong>.';
     }
+
+    if (res.data.location) {
+      info += ' Location: <i>' + res.data.location + '</i>';
+    }
+
     $('.server-info').html(info);
 
 
