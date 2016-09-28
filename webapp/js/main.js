@@ -173,8 +173,6 @@ function updateCurrent() {
     t.getCurrent().done(function(res, statustext) {
       var temp = res.data.temperature.toFixed(1);
       $('.current-temperature').text(temp);
-      console.log(res);
-      console.log(statustext);
     });
 }
 
@@ -215,7 +213,7 @@ function updateStats() {
 // we know the server is running
 function getInitialServerSetup() {
   t.getInfo().done(function(res, statustext) {
-    console.log(res);
+    removeAlerts('#alert-box');
 
     // show a connected message
     var info = 'Currently connected to ';
@@ -236,7 +234,7 @@ function getInitialServerSetup() {
     updateCurrent();
 
     // set up the interval based on the server's logging interval
-    if (currentInterval) {
+    if (currentInterval && currentInterval.clear) {
       currentInterval.clear();
     }
     currentInterval = setInterval(updateCurrent, res.data.log_interval * 1000);
