@@ -105,9 +105,9 @@ Pick an option, depending on your RPi case and how neat you want it to look.
     It is recommended that you run the application software as an ordinary (unpriv) user, like in these instructions. This avoids you accidentally modifying (or breaking) your operating system installation while playing with the application.
 
 
-## The server
+## Using the actual server
 
-See [README.md](server/README.md) in the `server` directory for more information.
+See [SERVER_README.md](SERVER_README.md) for more information.
 
 
 ## License

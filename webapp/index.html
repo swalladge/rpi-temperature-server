@@ -32,12 +32,14 @@
 
     <div class="container">
 
+      <!-- TODO: more how-to-use info in UI -->
+
       <div class="panel panel-default">
         <div class="panel-heading">
           <h2 class="panel-title">Config</h2>
         </div>
         <div class="panel-body">
-          <span class="server-info"></span>
+          <span class="server-info">Not connected to any server.</span>
           <input value="Change Server" type="button" class="btn btn-default" id="change-server" data-toggle="modal" data-target="#server-conf-modal" />
         </div>
       </div>
@@ -77,6 +79,7 @@
               </div>
             </div>
             <div>
+              <!-- TODO: quick buttons for common ranges (last day, week, etc.) -->
               <input type="button" id="requery-data" class="btn btn-primary" value="Redraw" />
             </div>
           </div>
@@ -141,7 +144,10 @@
           </div>
           <div class="modal-body">
             <p>
-              Please enter the url for the temperature server below.
+              Please enter the url for the temperature server below. Leave blank to default to the root of the same server as this webapp is hosted on.
+            </p>
+            <p>
+              The api endpoint paths will be automatically added, so if you can access the current temperature at <code>http://example.com/api/temperature/current</code>, you should enter <code>http://example.com</code>.
             </p>
             <input class="form-control" id="server-name" name="server-name" type="text"/>
           </div>

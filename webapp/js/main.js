@@ -37,6 +37,7 @@ Temperature.prototype.errorFunc = function(res, textstatus, error, title) {
   }
 
   // TODO: use these messages for something useful in the UI
+  // Bootstrap alert thingies will be good
   console.log(title + ':');
   console.log(msg);
 };

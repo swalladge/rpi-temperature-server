@@ -4,12 +4,13 @@
 # main application server
 
 import tornado.ioloop
-from tornado.web import Application, url
+from tornado.web import Application, url, StaticFileHandler
 from tornado.escape import json_decode
 from tornado.ioloop import PeriodicCallback
 import tornado.options
 
 import json
+import os
 
 import database
 import config as cfg
@@ -133,18 +134,32 @@ def main():
     temp = hardware.Temperature(db, cfg.sensor_params)
     temp.save_current()
 
-    # set up the server app
-    server = Application([
+    # settings for the tornado app
+    settings = {
+            'db': db,
+            'debug': cfg.debug_mode
+    }
+
+    # list of handlers for the server
+    handlers = [
         url(r'^/api/temperature/?$', temperature_handler),
         url(r'^/api/temperature/(\d+)/?$', temperature_handler),
         url(r'^/api/temperature/current/?$', current_temp_handler),
         url(r'^/api/temperature/now/?$', current_temp_handler),
         url(r'^/api/temperature/(max|min|ave)/?$', stats_temp_handler),
         url(r'^/api/info/?$', info_handler),
-        ],
-        debug=cfg.debug_mode,
-        db=db
-    )
+    ]
+
+    # add the static file handler if we want to use it
+    if cfg.serve_webapp:
+        handlers.append(url(r'^/(.*)$', StaticFileHandler, {
+                'path': os.path.join(os.path.dirname(__file__), 'webapp'),
+                'default_filename': 'index.html'
+            })
+        )
+
+    # set up the server app
+    server = Application(handlers, **settings)
     server.listen(cfg.listen_port)
 
     # log the temperature at intervals
