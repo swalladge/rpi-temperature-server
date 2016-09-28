@@ -202,7 +202,13 @@ function updateStats() {
   t.getStat('ave', limit.from, limit.to).done(function(res, statustext) {
     if (res.data.count > 0) {
       var temp = res.data.ave;
+      var count = res.data.count;
+      var lower = res.data.lower;
+      var upper = res.data.upper;
       $('.ave-temperature').text(temp.toFixed(2));
+      $('.ave-temperature-count').text(count);
+      $('.ave-temperature-date-lower').text(moment.unix(lower).toLocaleString());
+      $('.ave-temperature-date-upper').text(moment.unix(upper).toLocaleString());
     }
   });
 
