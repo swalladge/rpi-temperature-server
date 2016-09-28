@@ -26,13 +26,13 @@
 
     <nav class="navbar navbar-inverse navbar-static-top">
       <div class="text-center container-fluid">
-        <p class="h1 white-text">Temperature</p>
+        <p class="big white-text">Temperature</p>
       </div>
     </nav>
 
     <div class="container">
 
-      <div class="panel panel-default">
+      <div class="panel panel-info">
         <div class="panel-heading">
           <h2 class="panel-title">Info</h2>
         </div>
@@ -45,14 +45,14 @@
         </div>
       </div>
 
-      <div class="jumbotron">
+      <div class="well well-lg">
         <div class="big text-center"><span class="current-temperature"></span>°C</div>
         <p class="text-center">
         Current temperature
         </p>
       </div>
 
-      <div class="panel panel-default">
+      <div class="panel panel-primary">
         <div class="panel-heading">
           <h2 class="panel-title">Controls</h2>
         </div>
@@ -94,7 +94,7 @@
 
       <div class="row text-center">
         <div class="col-md-4">
-          <div class="panel panel-default">
+          <div class="panel panel-info">
             <div class="panel-heading">
               <h2 class="panel-title">Min</h2>
             </div>
@@ -105,7 +105,7 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="panel panel-default">
+          <div class="panel panel-info">
             <div class="panel-heading">
               <h2 class="panel-title">Average</h2>
             </div>
@@ -118,7 +118,7 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="panel panel-default">
+          <div class="panel panel-info">
             <div class="panel-heading">
               <h2 class="panel-title">Max</h2>
             </div>
@@ -131,11 +131,12 @@
       </div>
 
 
-      <div class="panel panel-default">
+      <div class="panel panel-info">
         <div class="panel-heading">
           <h2 class="panel-title">Graph</h2>
         </div>
         <div class="panel-body">
+          <div id="chart-info" class="text-center"></div>
           <div id="chart"></div>
         </div>
       </div>
