@@ -80,8 +80,10 @@ Parameters:
 Response data fields:
 
 - `count`: number of data points returned
-- `lower`: interpreted lower bound
-- `upper`: interpreted upper bound
+- `lower`: lowest actual timestamp in the data (might be greater than from)
+- `upper`: highest actual timestamp in the data (might be less than to)
+- `from`: the requested start date
+- `to`: the requested end date
 - `full_count`: total number of data points available in range
 
 Example response:
@@ -91,7 +93,8 @@ Example response:
     "data": {
         "count": 2,
         "full_count": 2,
-        "lower": 1474357000,
+        "from": 1474357000,
+        "lower": 1474357004,
         "temperature_array": [
             {
                 "temperature": 5.7,
@@ -102,7 +105,8 @@ Example response:
                 "timestamp": 1474357009
             }
         ],
-        "upper": 1474357010
+        "to": 1474357010
+        "upper": 1474357009
     },
     "status": 200,
     "success": true
