@@ -23,17 +23,32 @@ class Temperature():
         else:
             self.fake = True
             self.sensor = None
+            self.last_temp = random.randint(-100, 400) / 10
+            self.dir = random.choice([-1, 1])
 
     def get_temp(self):
         if self.fake:
-            return random.randint(0, 400) / 10
+
+            # don't let it get out of bounds
+            if 40 - self.last_temp < 2:
+                self.dir = -1
+            if -10 - self.last_temp > 2:
+                self.dir = 1
+
+            # generate the new temperature
+            diff = random.randint(0, 90) / 100
+            self.last_temp = t = self.last_temp + (diff * self.dir)
+
+            # randomly change the trend
+            if random.randint(0, 1000) > 965:
+                self.dir = -self.dir
+
+            return t
+
         return self.sensor.readTempC()
 
     def save_current(self):
-        if self.fake:
-            temp = random.randint(0, 400) / 10
-        else:
-            temp = self.sensor.readTempC()
+        temp = self.get_temp()
         time = utils.now(True)
         gen_log.info('Logging temperature: {:0.5f}°C at timestamp {}'.format(temp, time))
         return self.db.save_temperature(temp, time)

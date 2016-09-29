@@ -43,7 +43,7 @@ Temperature.prototype.errorFunc = function(res, textstatus, error, title) {
   this.ready = false;
 
   // say so in server info
-  $('.server-info').html('Not connected to any server. Click the <code>Change Server</code> button to configure.');
+  $('.server-info').html('<p class="bg-danger">Not connected to any server. Click the <code>Change Server</code> button to configure.</p>');
 };
 
 Temperature.prototype.getInfo = function() {
@@ -246,7 +246,7 @@ function getInitialServerSetup() {
     removeAlerts('#alert-box');
 
     // show a connected message
-    var info = 'Currently connected to ';
+    var info = '<p class="bg-success">Currently connected to ';
     if (res.data.server_name) {
       info += '<strong>' + res.data.server_name + '</strong>.';
     } else {
@@ -256,9 +256,10 @@ function getInitialServerSetup() {
     if (res.data.location) {
       info += ' Location: <i>' + res.data.location + '</i>';
     }
+    info += '</p>';
 
     if (!res.data.live) {
-      info += ' <strong>Server is in test mode generating random temperature data.</strong>';
+      info += ' <p class="bg-warning">Server is in test mode generating random temperature data.</p>';
     }
 
     $('.server-info').html(info);
