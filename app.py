@@ -42,7 +42,8 @@ class temperature_handler(BaseHandler):
             # validate the timestamp
             try:
                 timestamp = int(timestamp)
-                assert timestamp >= 0
+                if timestamp < 0:
+                    raise ValueError
             except:
                 return self.send_error(400, reason='invalid timestamp')
 
@@ -59,7 +60,7 @@ class temperature_handler(BaseHandler):
             if data:
                 return self.send_data(data)
 
-        return self.send_errer(500, reason='database error')
+        return self.send_error(500, reason='database error')
 
 
 class current_temp_handler(BaseHandler):
