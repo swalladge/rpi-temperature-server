@@ -101,8 +101,10 @@ class stats_temp_handler(BaseHandler):
             if stats: return self.send_data(stats)
         elif stats_type == 'ave':
             ave = self.db.get_temperature_avg(from_timestamp, to_timestamp)
-            if ave:
-                return self.send_data(ave)
+            if ave: return self.send_data(ave)
+        elif stats_type == 'stats':
+            stats = self.db.get_temperature_stats(from_timestamp, to_timestamp)
+            if stats: return self.send_data(stats)
 
         return self.send_error(500, reason='error retrieving {}'.format(stats_type))
 
@@ -148,7 +150,7 @@ def main():
         url(r'^/api/temperature/(\d+)/?$', temperature_handler),
         url(r'^/api/temperature/current/?$', current_temp_handler),
         url(r'^/api/temperature/now/?$', current_temp_handler),
-        url(r'^/api/temperature/(max|min|ave)/?$', stats_temp_handler),
+        url(r'^/api/temperature/(max|min|ave|stats)/?$', stats_temp_handler),
         url(r'^/api/info/?$', info_handler),
     ]
 

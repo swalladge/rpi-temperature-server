@@ -155,6 +155,45 @@ class db():
                     'upper': tsrange[1]
             }
 
+    def get_temperature_stats(self, lower, upper):
+
+        # get the actual range
+        tsrange_query = self.session.query(func.count(Temperature.id),
+                                           func.min(Temperature.timestamp),
+                                           func.max(Temperature.timestamp))
+        filtered_tsrange = tsrange_query.filter(Temperature.timestamp >= lower,
+                                                Temperature.timestamp <= upper)
+        count, real_lower, real_upper = filtered_tsrange.first()
+
+        # max
+        query = self.session.query(Temperature, func.max(Temperature.temperature))
+        filtered = query.filter(Temperature.timestamp >= lower,
+                                Temperature.timestamp <= upper)
+        the_max = filtered.first()
+
+        # min
+        query = self.session.query(Temperature, func.min(Temperature.temperature))
+        filtered = query.filter(Temperature.timestamp >= lower,
+                                Temperature.timestamp <= upper)
+        the_min = filtered.first()
+
+        # ave
+        query = self.session.query(func.avg(Temperature.temperature))
+        filtered = query.filter(Temperature.timestamp >= lower,
+                                Temperature.timestamp <= upper)
+
+        the_ave = filtered.first()
+
+        return {'max': the_max[0].dict() if the_max else None,
+                'min': the_min[0].dict() if the_min else None,
+                'ave': the_ave[0] if the_ave else None,
+                'count': count,
+                'from': lower,
+                'to': upper,
+                'lower': real_lower,
+                'upper': real_upper
+        }
+
     def commit(self):
         try:
             self.session.commit()
