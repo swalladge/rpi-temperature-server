@@ -84,7 +84,10 @@ class db():
         #   timestamp of the last record
         results = query.all()
         temps = list(map(lambda t: t.dict(), results))
-        return (temps, n, results[0].timestamp, results[-1].timestamp)
+        return (temps,
+                n,
+                results[0].timestamp if 0 < len(results) else None,
+                results[-1].timestamp if 0 < len(results) else None)
 
     def save_temperature(self, temp, time):
         """ log the temperature in the database """
