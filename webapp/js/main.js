@@ -108,9 +108,9 @@ function showAlert(selector, type, title, msg) {
   var content = '<strong>' + title + '</strong>';
   content += ' ' + msg;
 
-  var alert_html = '<div class="alert alert-' + type + ' alert-dismissible" role="alert"> \
-                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">\
-                   <span aria-hidden="true">&times;</span></button>';
+  var alert_html = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' +
+                   '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                   '<span aria-hidden="true">&times;</span></button>';
   alert_html += content + '</div>';
 
   // remove the existing alerts
@@ -134,15 +134,12 @@ function getLimits() {
   return limits;
 }
 
-function updateGraph(e) {
+function updateGraph(markers, baselines) {
   var limit = getLimits();
+  var markers = markers || [];
+  var baselines = baselines || [];
 
   t.getList(limit.from, limit.to).done(function(res, statustext) {
-
-    if (res.data.count == 0) {
-      showAlert('#stats-alert-box', 'warning', 'Cannot display data!', 'no data for that range');
-      return;
-    }
 
     var data = res.data.temperature_array.map(function(e) {
       return {date: new Date(e.timestamp*1000), value: e.temperature };
@@ -168,7 +165,9 @@ function updateGraph(e) {
         d3.select('#chart svg .mg-active-datapoint')
           .text(d.value.toFixed(1) + '°C at ' + moment(d.date).toLocaleString());
       },
-      baselines: [{value: 0, label: '0°C'}],
+      baselines: baselines,
+      markers: markers,
+      left: 70
     });
   });
 }
@@ -183,36 +182,61 @@ function updateCurrent() {
 function updateStats() {
   var limit = getLimits();
 
-  t.getStat('max', limit.from, limit.to).done(function(res, statustext) {
-    if (res.data.count > 0) {
-      var temp = res.data.max.temperature;
-      var timestamp = res.data.max.timestamp;
+  t.getStat('stats', limit.from, limit.to).done(function(res, statustext) {
+    var data = res.data;
+    if (data.count > 0) {
+      removeAlerts('#stats-alert-box');
 
-      $('.max-temperature').text(temp.toFixed(1));
-      $('.max-temperature-date').text(moment.unix(timestamp).toLocaleString());
+      $('.max-temperature').text(data.max.temperature.toFixed(1));
+      $('.max-temperature-date').text(moment.unix(data.max.timestamp).toLocaleString());
+      $('.min-temperature').text(data.min.temperature.toFixed(1));
+      $('.min-temperature-date').text(moment.unix(data.min.timestamp).toLocaleString());
+
+      $('.ave-temperature').text(data.ave.toFixed(1));
+      $('.ave-temperature-count').text(data.count);
+      $('.ave-temperature-date-lower').text(moment.unix(data.lower).toLocaleString());
+      $('.ave-temperature-date-upper').text(moment.unix(data.upper).toLocaleString());
+
+      var markers = [];
+      var baselines = [];
+      if (data.count > 1) {
+        markers = [
+          {
+            'date': new Date(data.max.timestamp*1000),
+            'label': 'max: ' + data.max.temperature.toFixed(1) + '°C'
+          },
+          {
+            'date': new Date(data.min.timestamp*1000),
+            'label': 'min: ' + data.min.temperature.toFixed(1) + '°C'
+          },
+        ];
+
+        baselines = [
+          {
+            'value': data.ave,
+            'label': 'ave: ' + data.ave.toFixed(1) + '°C'
+          }
+        ];
+
+        if (Math.abs(data.ave) > 3) {
+          baselines.push(
+            {
+              'value': 0,
+              'label': '0°C'
+            }
+          )
+        }
+      }
+
+      updateGraph(markers, baselines);
+
+    } else {
+      showAlert('#stats-alert-box', 'warning', 'Cannot display data!', 'no data for that range');
+      return;
     }
+
   });
 
-  t.getStat('min', limit.from, limit.to).done(function(res, statustext) {
-    if (res.data.count > 0) {
-      var temp = res.data.min.temperature;
-      var timestamp = res.data.min.timestamp;
-
-      $('.min-temperature').text(temp.toFixed(1));
-      $('.min-temperature-date').text(moment.unix(timestamp).toLocaleString());
-    }
-  });
-
-  t.getStat('ave', limit.from, limit.to).done(function(res, statustext) {
-    if (res.data.count > 0) {
-      $('.ave-temperature').text(res.data.ave.toFixed(1));
-      $('.ave-temperature-count').text(res.data.count);
-      $('.ave-temperature-date-lower').text(moment.unix(res.data.lower).toLocaleString());
-      $('.ave-temperature-date-upper').text(moment.unix(res.data.upper).toLocaleString());
-    }
-  });
-
-  updateGraph();
 }
 
 // gets the server info - once this is done, let's set up everything else (since

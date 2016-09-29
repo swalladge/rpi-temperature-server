@@ -172,24 +172,24 @@ class db():
         query = self.session.query(Temperature, func.max(Temperature.temperature))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
-        the_max = filtered.first()
+        the_max = filtered.first()[0]
 
         # min
         query = self.session.query(Temperature, func.min(Temperature.temperature))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
-        the_min = filtered.first()
+        the_min = filtered.first()[0]
 
         # ave
         query = self.session.query(func.avg(Temperature.temperature))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
 
-        the_ave = filtered.first()
+        the_ave = filtered.first()[0]
 
-        return {'max': the_max[0].dict() if the_max else None,
-                'min': the_min[0].dict() if the_min else None,
-                'ave': the_ave[0] if the_ave else None,
+        return {'max': the_max.dict() if the_max else None,
+                'min': the_min.dict() if the_min else None,
+                'ave': the_ave if the_ave else None,
                 'count': count,
                 'from': lower,
                 'to': upper,
