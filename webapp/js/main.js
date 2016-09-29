@@ -2,6 +2,7 @@
 // important global variables we need
 window.currentInterval = null;
 window.t = null;
+window.dateFormat = 'YYYY-MM-DD HH:mm Z';
 
 // fake ajax that doesn't do anything
 var fakeAjax = function() {
@@ -145,8 +146,8 @@ function updateGraph(markers, baselines) {
       return {date: new Date(e.timestamp*1000), value: e.temperature };
     });
 
-    var desc  = '<p>Graph of the temperature between <b>' +  (moment.unix(res.data.lower)).toLocaleString();
-    desc += '</b> and <b>' +  (moment.unix(res.data.upper)).toLocaleString() + '</b></p>';
+    var desc  = '<p>Graph of the temperature between <b>' +  (moment.unix(res.data.lower)).format(dateFormat);
+    desc += '</b> and <b>' +  (moment.unix(res.data.upper)).format(dateFormat) + '</b></p>';
     desc += '<p> Technical: showing ' + res.data.count + ' data points. (' + res.data.full_count + ' logged in date range)</p>';
 
     $('#chart-info').html(desc);
@@ -163,7 +164,7 @@ function updateGraph(markers, baselines) {
       interpolate: d3.curveCatmullRom.alpha(0.5),
       mouseover: function(d, i) {
         d3.select('#chart svg .mg-active-datapoint')
-          .text(d.value.toFixed(1) + '°C at ' + moment(d.date).toLocaleString());
+          .text(d.value.toFixed(1) + '°C at ' + moment(d.date).format(dateFormat));
       },
       baselines: baselines,
       markers: markers,
@@ -188,14 +189,14 @@ function updateStats() {
       removeAlerts('#stats-alert-box');
 
       $('.max-temperature').text(data.max.temperature.toFixed(1));
-      $('.max-temperature-date').text(moment.unix(data.max.timestamp).toLocaleString());
+      $('.max-temperature-date').text(moment.unix(data.max.timestamp).format(dateFormat));
       $('.min-temperature').text(data.min.temperature.toFixed(1));
-      $('.min-temperature-date').text(moment.unix(data.min.timestamp).toLocaleString());
+      $('.min-temperature-date').text(moment.unix(data.min.timestamp).format(dateFormat));
 
       $('.ave-temperature').text(data.ave.toFixed(1));
       $('.ave-temperature-count').text(data.count);
-      $('.ave-temperature-date-lower').text(moment.unix(data.lower).toLocaleString());
-      $('.ave-temperature-date-upper').text(moment.unix(data.upper).toLocaleString());
+      $('.ave-temperature-date-lower').text(moment.unix(data.lower).format(dateFormat));
+      $('.ave-temperature-date-upper').text(moment.unix(data.upper).format(dateFormat));
 
       var markers = [];
       var baselines = [];
@@ -304,19 +305,21 @@ $( function() {
   var yesterday = moment().subtract(1, 'days');
   var now = moment();
   $('#lower-datepicker').datetimepicker({
+    format : dateFormat,
     defaultDate: yesterday,
     focusOnShow: false,
-    stepping: 5,
+    stepping: 1,
     maxDate: now,
     showClear: true,
     showClose: true,
     useCurrent: false
   });
   $('#upper-datepicker').datetimepicker({
+    format : dateFormat,
     defaultDate: now,
     minDate: yesterday,
     focusOnShow: false,
-    stepping: 5,
+    stepping: 1,
     showClear: true,
     showClose: true,
     useCurrent: false //Important! See issue #1075
