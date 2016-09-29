@@ -34,7 +34,7 @@ Temperature.prototype.errorFunc = function(res, textstatus, error, title) {
     title = title || 'Server Request Failed!';
   } else {
     title = 'Server Request Failed!';
-    msg = 'Either your internet connection is down, or the server is unreachable.';
+    msg = 'Either your internet connection is down, or the server is unreachable. Please verify the specified server is correct (click <code>Change Server</code> to edit) or refresh the page to try again.';
   }
 
   // show the alert
@@ -246,7 +246,7 @@ function getInitialServerSetup() {
     removeAlerts('#alert-box');
 
     // show a connected message
-    var info = '<p class="bg-success">Currently connected to ';
+    var info = '<p class="bg-success">Connected to ';
     if (res.data.server_name) {
       info += '<strong>' + res.data.server_name + '</strong>.';
     } else {
