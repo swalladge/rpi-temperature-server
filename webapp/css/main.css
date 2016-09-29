@@ -12,3 +12,8 @@
 .white-text {
   color: #ffffff;
 }
+
+#chart svg .mg-active-datapoint {
+  font-size: 120%;
+  font-weight: bold;
+}

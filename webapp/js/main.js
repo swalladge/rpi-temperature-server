@@ -152,7 +152,6 @@ function updateGraph(e) {
     desc += '</b> and <b>' +  (moment.unix(res.data.upper)).toLocaleString() + '</b></p>';
     desc += '<p> Technical: showing ' + res.data.count + ' data points. (' + res.data.full_count + ' logged in date range)</p>';
 
-    // TODO: display the description above/below the graph as well?
     $('#chart-info').html(desc);
 
     MG.data_graphic({
@@ -163,7 +162,13 @@ function updateGraph(e) {
       x_accessor: 'date',
       y_accessor: 'value',
       x_label: 'Date',
-      y_label: 'Temperature (°C)'
+      y_label: 'Temperature (°C)',
+      interpolate: d3.curveCatmullRom.alpha(0.5),
+      mouseover: function(d, i) {
+        d3.select('#chart svg .mg-active-datapoint')
+          .text(d.value.toFixed(1) + '°C at ' + moment(d.date).toLocaleString());
+      },
+      baselines: [{value: 0, label: '0°C'}],
     });
   });
 }
