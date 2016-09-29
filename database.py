@@ -77,17 +77,17 @@ class db():
             last_id = first_id + n - 1
             query = query.filter(((Temperature.id - first_id) % jump == 0) | (Temperature.id == last_id))
 
-        # return:
-        #   a list of dictionaries,
-        #   number of rows selected in that range
-        #   timestamp of the first record
-        #   timestamp of the last record
         results = query.all()
         temps = list(map(lambda t: t.dict(), results))
-        return (temps,
-                n,
-                results[0].timestamp if 0 < len(results) else None,
-                results[-1].timestamp if 0 < len(results) else None)
+
+        return {'count': len(temps),
+                'temperature_array': temps,
+                'from': lower,
+                'to': upper,
+                'lower': results[0].timestamp if len(results) > 0 else None,
+                'upper': results[-1].timestamp if len(results) > 0 else None,
+                'full_count': n
+        }
 
     def save_temperature(self, temp, time):
         """ log the temperature in the database """

@@ -55,16 +55,11 @@ class temperature_handler(BaseHandler):
 
         # otherwise, use the temperature range
         else:
-            temps, n, first_timestamp, last_timestamp = self.db.get_temperature_list(from_timestamp, to_timestamp, limit)
-            data = {'count': len(temps),
-                    'temperature_array': temps,
-                    'from': from_timestamp,
-                    'to': to_timestamp,
-                    'lower': first_timestamp,
-                    'upper': last_timestamp,
-                    'full_count': n
-            }
-            return self.send_data(data)
+            data = self.db.get_temperature_list(from_timestamp, to_timestamp, limit)
+            if data:
+                return self.send_data(data)
+
+        return self.send_errer(500, reason='database error')
 
 
 class current_temp_handler(BaseHandler):
