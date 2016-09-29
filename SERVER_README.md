@@ -43,15 +43,22 @@ or on error:
 
 ### GET /api/temperature/current
 
-Returns the current temperature (ie. last recorded temperature in database).
+Returns the current temperature (ie. last recorded temperature in database) and its unit of measure.
+
+Parameters:
+
+- `unit` - C, F or K return the result in Celsius, Farenheit or Kelvin (default: C)
 
 Example response:
 
 ```json
 {
     "data": {
-        "temperature": 36.3,
-        "timestamp": 1474264875
+        "unit": "C",
+        "current": {
+            "temperature": 36.3,
+            "timestamp": 1474264875
+        },
     },
     "status": 200,
     "success": true
@@ -61,9 +68,27 @@ Example response:
 
 ### GET /api/temperature/:timestamp
 
-Returns the temperature at `timestamp` if available, otherwise temperature for closest available time.
+Returns the spot temperature at `timestamp` if available, otherwise temperature for closest available time, and its unit of measure.
 
-Response follows the same schema as for the current temperature endpoint.
+Parameters:
+
+- `unit` - C, F or K return the result in Celsius, Farenheit or Kelvin (default: C)
+
+Example response:
+
+```json
+{
+    "data": {
+        "unit": "C",
+        "spot": {
+            "temperature": 36.3,
+            "timestamp": 1474264875
+        },
+    },
+    "status": 200,
+    "success": true
+}
+```
 
 
 ### GET /api/temperature/
@@ -74,12 +99,14 @@ Parameters:
 
 - `from` - [timestamp] start date of temperature range (default: 0)
 - `to` - [timestamp] end date of temperature range (default: current time)
+- `unit` - C, F or K return the result in Celsius, Farenheit or Kelvin (default: C)
 - `limit` - [integer] limit the number of temperature entries returned (default: `temp_max_length` as configured in
   config.py). Note: a limit parameter higher than set in server config will be ignored.
 
 Response data fields:
 
 - `count`: number of data points returned
+- `unit`: the unit of measure C, F or K
 - `lower`: lowest actual timestamp in the data (might be greater than from)
 - `upper`: highest actual timestamp in the data (might be less than to)
 - `from`: the requested start date
@@ -93,6 +120,7 @@ Example response:
     "data": {
         "count": 2,
         "full_count": 2,
+        "unit": "C",
         "from": 1474357000,
         "lower": 1474357004,
         "temperature_array": [
@@ -122,7 +150,7 @@ Parameters as for getting an array of temperatures.
 
 Response data fields:
 
-- `count`, `lower`, `upper`, `from`, `to` as above
+- `count`, `lower`, `upper`, `from`, `to`, `unit` as above
 - `ave`: average temperature as a float number
 - `max`: maximum temperature as a temperature dictionary with `temperature` and `timestamp` fields
 - `min`: as with `max` but for minimum temperature
@@ -134,6 +162,7 @@ Example responses - average:
     "data": {
         "ave": 19.64,
         "count": 1173,
+        "unit": "C",
         "from": 0,
         "lower": 1474264875,
         "upper": 1474357264,
@@ -150,6 +179,7 @@ And maximum:
 {
     "data": {
         "count": 1180,
+        "unit": "C",
         "from": 0,
         "lower": 1474264875,
         "max": {
