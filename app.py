@@ -122,6 +122,9 @@ class info_handler(BaseHandler):
         if cfg.location is not None:
             data['location'] = cfg.location
 
+        if cfg.timezone is not None:
+            data['timezone'] = cfg.timezone
+
         return self.send_data(data)
 
 

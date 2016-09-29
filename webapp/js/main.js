@@ -2,7 +2,7 @@
 // important global variables we need
 window.currentInterval = null;
 window.t = null;
-window.dateFormat = 'YYYY-MM-DD HH:mm Z';
+window.dateFormat = 'YYYY-MM-DD HH:mm';
 
 // fake ajax that doesn't do anything
 var fakeAjax = function() {
@@ -44,7 +44,7 @@ Temperature.prototype.errorFunc = function(res, textstatus, error, title) {
   this.ready = false;
 
   // say so in server info
-  $('.server-info').html('<p class="bg-danger">Not connected to any server. Click the <code>Change Server</code> button to configure.</p>');
+  $('.server-info').html('<p class="bg-danger">Not connected to any server. Click <code>Change Server</code> to configure.</p>');
 };
 
 Temperature.prototype.getInfo = function() {
@@ -254,9 +254,20 @@ function getInitialServerSetup() {
       info += '<strong>' + t.url + '</strong>.';
     }
 
+    // pick up server information
+    var stats = [];
     if (res.data.location) {
-      info += ' Location: <i>' + res.data.location + '</i>';
+      stats.push('Location: <i>' + res.data.location + '</i>');
     }
+    if (res.data.timezone) {
+      stats.push('Timezone: <i>UTC' + moment().utcOffset(res.data.timezone).format('Z') + '</i>');
+    }
+
+    if (stats.length > 0) {
+      stats = stats.join(' | ');
+      info += '</p><p class="bg-info">Server Info: ' + stats;
+    }
+
     info += '</p>';
 
     if (!res.data.live) {
@@ -285,6 +296,9 @@ function getInitialServerSetup() {
 $( function() {
   var serverName = localStorage.tempServerName;
   window.t = new Temperature();
+
+  var tz = 'UTC' + moment().format('Z');
+  $('#tz-info').html('All dates displayed in your browser configured timezone: ' + tz);
 
   // initially fill in server name if available
   if (serverName) {
