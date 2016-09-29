@@ -37,22 +37,31 @@
           <h2 class="panel-title">Info</h2>
         </div>
         <div class="panel-body">
-          <div id="alert-box"></div>
-          <div class="container">
-          <div class="row">
-            <div class="col-md-8 text-center">
-              <p class="server-info">Not connected to any server. Click the button below to configure.</p>
+          <div class="container-fluid">
+            <div id="alert-box">
+              <noscript>
+                <div class="alert alert-danger" role="alert">
+                  <strong>Javascript Disabled!</strong>
+                  This app requires javascript to work. Please enable javascript in your browser and refresh the page.
+                </div>
+              </noscript>
             </div>
-            <div class="col-md-4 text-center">
-              <input value="Change Server" type="button" class="btn btn-default" id="change-server" data-toggle="modal" data-target="#server-conf-modal" />
-              <input value="About" type="button" class="btn btn-info" data-toggle="modal" data-target="#about-modal" />
+            <div class="row">
+              <div class="col-md-8 text-center child-paragraphs-padding">
+                <div class="server-info">
+                </div>
+                <p class="bg-info" id="tz-info" ></p>
+              </div>
+              <div class="col-md-4 text-center">
+                <input value="Change Server" type="button" class="btn btn-warning" id="change-server" data-toggle="modal" data-target="#server-conf-modal" />
+                <input value="About" type="button" class="btn btn-info" data-toggle="modal" data-target="#about-modal" />
+              </div>
             </div>
-          </div>
           </div>
         </div>
       </div>
 
-      <div class="well well-lg">
+      <div class="well">
         <div class="big text-center"><span class="current-temperature"></span></div>
         <p class="text-center">
         Current temperature
@@ -64,49 +73,51 @@
           <h2 class="panel-title">Controls</h2>
         </div>
         <div class="panel-body">
-          <div id="stats-alert-box"></div>
+          <div class="child-paragraphs-padding container-fluid">
+            <div id="stats-alert-box"></div>
 
-          <p>
-            Select an upper and lower date/time range to retrieve stats for, and click the <code>Display</code> button
-          </p>
+            <p class="bg-info">
+              Select an upper and lower date-time range to retrieve data for, and click <code>Display</code>.
+            </p>
 
-          <div class='col-md-2'>
-            <div class="form-group">
-              <div class='input-group' id='units-div'>
-                <span class="input-group-addon">Unit</span>
-                <select id="units-selector" class="form-control" name="units-selector">
-                  <option value="C" selected="">Celsius</option>
-                  <option value="F">Farenheit</option>
-                  <option value="K">Kelvin</option>
-                </select>
+            <div class='col-md-2'>
+              <div class="form-group">
+                <div class='input-group' id='units-div'>
+                  <span class="input-group-addon">Unit</span>
+                  <select id="units-selector" class="form-control" name="units-selector">
+                    <option value="C" selected="">Celsius</option>
+                    <option value="F">Farenheit</option>
+                    <option value="K">Kelvin</option>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
-          <!-- from https://eonasdan.github.io/bootstrap-datetimepicker/#linked-pickers -->
-          <div class='col-md-4'>
-            <div class="form-group">
-              <div class='input-group date' id='lower-datepicker'>
-                <span class="input-group-addon">From</span>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+            <!-- from https://eonasdan.github.io/bootstrap-datetimepicker/#linked-pickers -->
+            <div class='col-md-4'>
+              <div class="form-group">
+                <div class='input-group date' id='lower-datepicker'>
+                  <span class="input-group-addon">From</span>
+                  <input type='text' class="form-control" />
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class='col-md-4'>
-            <div class="form-group">
-              <div class='input-group date' id='upper-datepicker'>
-                <span class="input-group-addon">To</span>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+            <div class='col-md-4'>
+              <div class="form-group">
+                <div class='input-group date' id='upper-datepicker'>
+                  <span class="input-group-addon">To</span>
+                  <input type='text' class="form-control" />
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class='col-md-2'>
-            <input type="button" id="requery-data" class="btn btn-primary" value="Display" />
+            <div class='col-md-2'>
+              <input type="button" id="requery-data" class="btn btn-primary" value="Display" />
+            </div>
           </div>
         </div>
       </div>
@@ -181,7 +192,7 @@
             <input class="form-control" id="server-name" name="server-name" type="text"/>
           </div>
           <div class="modal-footer">
-              <input type="button" class="btn btn-default" data-dismiss="modal" value="Close" />
+              <input type="button" class="btn btn-warning" data-dismiss="modal" value="Close" />
               <input type="button" id="server-conf-save" class="btn btn-primary" value="Save" />
           </div>
         </div>
@@ -219,7 +230,7 @@
 
           </div>
           <div class="modal-footer">
-              <input type="button" class="btn btn-default" data-dismiss="modal" value="Close" />
+              <input type="button" class="btn btn-primary" data-dismiss="modal" value="Close" />
           </div>
         </div>
       </div>

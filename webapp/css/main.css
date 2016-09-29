@@ -17,3 +17,8 @@
   font-size: 120%;
   font-weight: bold;
 }
+
+.child-paragraphs-padding p {
+  padding: 10px;
+  border-radius: 4px;
+}

@@ -50,3 +50,6 @@ server_name = "the temperature server"
 
 ## should also be a string
 location = None
+
+## timezone as minutes offset from utc
+timezone = 570 # utc+09:30

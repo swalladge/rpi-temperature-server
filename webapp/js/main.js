@@ -2,6 +2,7 @@
 // important global variables we need
 window.currentInterval = null;
 window.t = null;
+window.dateFormat = 'YYYY-MM-DD HH:mm';
 
 // fake ajax that doesn't do anything
 var fakeAjax = function() {
@@ -34,7 +35,7 @@ Temperature.prototype.errorFunc = function(res, textstatus, error, title) {
     title = title || 'Server Request Failed!';
   } else {
     title = 'Server Request Failed!';
-    msg = 'Either your internet connection is down, or the server is unreachable.';
+    msg = 'Either your internet connection is down, or the server is unreachable. Please verify the specified server is correct (click <code>Change Server</code> to edit) or refresh the page to try again.';
   }
 
   // show the alert
@@ -43,7 +44,7 @@ Temperature.prototype.errorFunc = function(res, textstatus, error, title) {
   this.ready = false;
 
   // say so in server info
-  $('.server-info').html('Not connected to any server. Click the <code>Change Server</code> button to configure.');
+  $('.server-info').html('<p class="bg-danger">Not connected to any server. Click <code>Change Server</code> to configure.</p>');
 };
 
 Temperature.prototype.getInfo = function() {
@@ -152,8 +153,8 @@ function updateGraph(markers, baselines) {
       return {date: new Date(e.timestamp*1000), value: e.temperature };
     });
 
-    var desc  = '<p>Graph of the temperature between <b>' +  (moment.unix(res.data.lower)).toLocaleString();
-    desc += '</b> and <b>' +  (moment.unix(res.data.upper)).toLocaleString() + '</b></p>';
+    var desc  = '<p>Graph of the temperature between <b>' +  (moment.unix(res.data.lower)).format(dateFormat);
+    desc += '</b> and <b>' +  (moment.unix(res.data.upper)).format(dateFormat) + '</b></p>';
     desc += '<p> Technical: showing ' + res.data.count + ' data points. (' + res.data.full_count + ' logged in date range)</p>';
 
     $('#chart-info').html(desc);
@@ -170,7 +171,7 @@ function updateGraph(markers, baselines) {
       interpolate: d3.curveCatmullRom.alpha(0.5),
       mouseover: function(d, i) {
         d3.select('#chart svg .mg-active-datapoint')
-          .text(d.value.toFixed(1) + '°' + getUnit() + ' at ' + moment(d.date).toLocaleString());
+          .text(d.value.toFixed(1) + '°' + getUnit() + ' at ' + moment(d.date).format(dateFormat));
       },
       baselines: baselines,
       markers: markers,
@@ -195,14 +196,14 @@ function updateStats() {
       removeAlerts('#stats-alert-box');
 
       $('.max-temperature').text(data.max.temperature.toFixed(1) + '°' + data.unit);
-      $('.max-temperature-date').text(moment.unix(data.max.timestamp).toLocaleString());
+      $('.max-temperature-date').text(moment.unix(data.max.timestamp).format(dateFormat));
       $('.min-temperature').text(data.min.temperature.toFixed(1) + '°' + data.unit);
-      $('.min-temperature-date').text(moment.unix(data.min.timestamp).toLocaleString());
+      $('.min-temperature-date').text(moment.unix(data.min.timestamp).format(dateFormat));
 
       $('.ave-temperature').text(data.ave.toFixed(1) + '°' + data.unit);
       $('.ave-temperature-count').text(data.count);
-      $('.ave-temperature-date-lower').text(moment.unix(data.lower).toLocaleString());
-      $('.ave-temperature-date-upper').text(moment.unix(data.upper).toLocaleString());
+      $('.ave-temperature-date-lower').text(moment.unix(data.lower).format(dateFormat));
+      $('.ave-temperature-date-upper').text(moment.unix(data.upper).format(dateFormat));
 
       var markers = [];
       var baselines = [];
@@ -253,19 +254,31 @@ function getInitialServerSetup() {
     removeAlerts('#alert-box');
 
     // show a connected message
-    var info = 'Currently connected to ';
+    var info = '<p class="bg-success">Connected to ';
     if (res.data.server_name) {
       info += '<strong>' + res.data.server_name + '</strong>.';
     } else {
       info += '<strong>' + t.url + '</strong>.';
     }
 
+    // pick up server information
+    var stats = [];
     if (res.data.location) {
-      info += ' Location: <i>' + res.data.location + '</i>';
+      stats.push('Location: <i>' + res.data.location + '</i>');
+    }
+    if (res.data.timezone) {
+      stats.push('Timezone: <i>UTC' + moment().utcOffset(res.data.timezone).format('Z') + '</i>');
     }
 
+    if (stats.length > 0) {
+      stats = stats.join(' | ');
+      info += '</p><p class="bg-info">Server Info: ' + stats;
+    }
+
+    info += '</p>';
+
     if (!res.data.live) {
-      info += ' <strong>Server is in test mode generating random temperature data.</strong>';
+      info += ' <p class="bg-warning">Server is in test mode generating random temperature data.</p>';
     }
 
     $('.server-info').html(info);
@@ -291,6 +304,9 @@ $( function() {
   var serverName = localStorage.tempServerName;
   window.t = new Temperature();
 
+  var tz = 'UTC' + moment().format('Z');
+  $('#tz-info').html('All dates displayed in your browser configured timezone: ' + tz);
+
   // initially fill in server name if available
   if (serverName) {
     $('#server-name').val(serverName);
@@ -310,19 +326,21 @@ $( function() {
   var yesterday = moment().subtract(1, 'days');
   var now = moment();
   $('#lower-datepicker').datetimepicker({
+    format : dateFormat,
     defaultDate: yesterday,
     focusOnShow: false,
-    stepping: 5,
+    stepping: 1,
     maxDate: now,
     showClear: true,
     showClose: true,
     useCurrent: false
   });
   $('#upper-datepicker').datetimepicker({
+    format : dateFormat,
     defaultDate: now,
     minDate: yesterday,
     focusOnShow: false,
-    stepping: 5,
+    stepping: 1,
     showClear: true,
     showClose: true,
     useCurrent: false //Important! See issue #1075

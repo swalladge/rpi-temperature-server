@@ -43,7 +43,8 @@ class temperature_handler(BaseHandler):
             # validate the timestamp
             try:
                 timestamp = int(timestamp)
-                assert timestamp >= 0
+                if timestamp < 0:
+                    raise ValueError
             except:
                 return self.send_error(400, reason='invalid timestamp')
 
@@ -56,17 +57,11 @@ class temperature_handler(BaseHandler):
 
         # otherwise, use the temperature range
         else:
-            temps, n, first_timestamp, last_timestamp = self.db.get_temperature_list(from_timestamp, to_timestamp, unit, limit)
-            data = {'count': len(temps),
-                    'temperature_array': temps,
-                    'unit': unit,
-                    'from': from_timestamp,
-                    'to': to_timestamp,
-                    'lower': first_timestamp,
-                    'upper': last_timestamp,
-                    'full_count': n
-            }
-            return self.send_data(data)
+            data = self.db.get_temperature_list(from_timestamp, to_timestamp, unit, limit)
+            if data:
+                return self.send_data(data)
+
+        return self.send_error(500, reason='database error')
 
 
 class current_temp_handler(BaseHandler):
@@ -125,6 +120,9 @@ class info_handler(BaseHandler):
 
         if cfg.location is not None:
             data['location'] = cfg.location
+
+        if cfg.timezone is not None:
+            data['timezone'] = cfg.timezone
 
         return self.send_data(data)
 
