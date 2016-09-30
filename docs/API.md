@@ -101,7 +101,7 @@ Example response:
                 "timestamp": 1474357009
             }
         ],
-        "to": 1474357010
+        "to": 1474357010,
         "upper": 1474357009
     },
     "status": 200,
