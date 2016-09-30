@@ -2,15 +2,7 @@
 # sqlalchemy parts we want to use
 from sqlalchemy import (create_engine, Column, Integer, Float, Sequence, func)
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import sessionmaker
-
-# for logging in the future
-from tornado.log import gen_log
-
-# other local modules
-import config
-import utils
 
 Base = declarative_base()
 

@@ -2,7 +2,6 @@
 
 import time
 import math
-import utils
 
 
 def now(integer=False):
@@ -15,7 +14,7 @@ def now(integer=False):
 def validate_bounds(lower, upper):
 
     if upper is None:
-        upper = utils.now(True)
+        upper = now(True)
 
     if lower is None:
         lower = 0
@@ -25,7 +24,7 @@ def validate_bounds(lower, upper):
     upper = int(float(upper))
 
     # sensible values
-    assert lower >= 0
-    assert upper >= 0
+    if lower < 0 or upper < 0:
+        raise ValueError('values must not be negative')
 
     return (lower, upper)

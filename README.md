@@ -1,6 +1,8 @@
 
 # rpi-temperature-server
 
+[![Build Status](https://travis-ci.org/swalladge/rpi-temperature-server.svg?branch=master)](https://travis-ci.org/swalladge/rpi-temperature-server)
+
 The project for PRT452, 2016.
 
 A server and web app for displaying the temperature and various stats from a Raspberry Pi with a MCP9808
@@ -108,7 +110,7 @@ Pick an option, depending on your RPi case and how neat you want it to look.
 
 ## Using the actual server
 
-See [SERVER_README.md](SERVER_README.md) for more information.
+See [docs/SERVER_README.md](docs/SERVER_README.md) for more information.
 
 
 ## License

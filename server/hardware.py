@@ -1,12 +1,12 @@
 
 
-from tornado.log import gen_log
-import config as cfg
-import utils
-import database
 import random
+from tornado.log import gen_log
 
 import Adafruit_MCP9808.MCP9808 as MCP9808
+from server import utils
+import config as cfg
+
 
 class Temperature():
     def __init__(self, db, sensor_params=None):
@@ -50,6 +50,6 @@ class Temperature():
     def save_current(self):
         temp = self.get_temp()
         time = utils.now(True)
-        gen_log.info('Logging temperature: {:0.5f}°C at timestamp {}'.format(temp, time))
+        gen_log.info('Logging temperature: {:0.5f}°C at timestamp {}'
+                     .format(temp, time))
         return self.db.save_temperature(temp, time)
-

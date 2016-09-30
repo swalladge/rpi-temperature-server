@@ -3,20 +3,16 @@
 
 # main application server
 
-import tornado.ioloop
-from tornado.web import Application, url, StaticFileHandler
-from tornado.escape import json_decode
-from tornado.ioloop import PeriodicCallback
-import tornado.options
-
-import json
 import os
 
-import database
+import tornado.ioloop
+import tornado.options
+from tornado.web import Application, url, StaticFileHandler
+from tornado.ioloop import PeriodicCallback
+
+from server import database, utils, hardware
+from server.basehandlers import BaseHandler
 import config as cfg
-import utils
-from basehanders import BaseHandler
-import hardware
 
 
 class temperature_handler(BaseHandler):
@@ -134,7 +130,7 @@ class info_handler(BaseHandler):
         return self.send_data(data)
 
 
-def main():
+def run():
 
     # let tornado grab command line args (ie. for setting log files)
     tornado.options.parse_command_line()
@@ -166,7 +162,7 @@ def main():
     # add the static file handler if we want to use it
     if cfg.serve_webapp:
         handlers.append(url(r'^/(.*)$', StaticFileHandler, {
-                'path': os.path.join(os.path.dirname(__file__), 'webapp'),
+                'path': 'webapp',
                 'default_filename': 'index.html'
             })
         )
@@ -181,4 +177,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    run()

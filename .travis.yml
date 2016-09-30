@@ -6,14 +6,15 @@ python:
   - 3.4
 
 install:
-  - npm install -g jasmine-node
-  - npm install --save-dev frisby
+  - npm install -g jasmine-node frisby
   - ./server_setup.sh
-  - cp config.test.py config.py
+  - cp tests/config.test.py config.py
+
+before_script:
   - ./run_server.sh &
   # The server needs a little time to ensure it has generated some data
   # before we start testing the API.
-  - sleep 1
+  - sleep 5
 
 script:
-  - jasmine-node api_tests_spec.js
+  - jasmine-node tests/

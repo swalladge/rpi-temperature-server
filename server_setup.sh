@@ -16,7 +16,10 @@ pip install -r requirements.txt
 
 # install adafruit library manually
 # (didn't work with pip :shrug:)
-git clone https://github.com/adafruit/Adafruit_Python_MCP9808.git
+if ! [ -d "Adafruit_Python_MCP9808" ]; then
+  git clone https://github.com/adafruit/Adafruit_Python_MCP9808.git
+fi
+
 cd Adafruit_Python_MCP9808
 python setup.py install
 cd ..

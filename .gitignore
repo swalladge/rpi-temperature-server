@@ -20,3 +20,6 @@ Adafruit_Python_MCP9808/
 # temporary/backup stuff
 *.temp
 *~
+
+# node.js stuff
+node_modules/
