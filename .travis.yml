@@ -6,7 +6,8 @@ python:
   - 3.4
 
 install:
-  - npm install -g jasmine-node frisby
+  - npm install -g jasmine-node
+  - npm install frisby
   - ./server_setup.sh
   - cp tests/config.test.py config.py
 
