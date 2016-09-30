@@ -14,6 +14,19 @@ import utils
 
 Base = declarative_base()
 
+class TemperatureValue(object):
+    def __init__(self, temperature):
+        self.temperature = temperature
+    def convert_temperature(self, unit):
+        if unit == 'K':
+          return self.temperature + 273.15
+        elif unit == 'F':
+          return (self.temperature * 1.8) + 32
+        elif unit == 'R':
+          return (self.temperature + 273.15) * 1.8
+        else:
+          return self.temperature
+
 class Temperature(Base):
     __tablename__ = 'temps'
     id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
@@ -25,9 +38,9 @@ class Temperature(Base):
         return "Temperature {}°C at {}".\
                format(self.temperature, self.timestamp)
 
-    def dict(self):
+    def dict(self, unit):
         return {
-                'temperature': self.temperature,
+                'temperature': TemperatureValue(self.temperature).convert_temperature(unit),
                 'timestamp': self.timestamp
                 }
 
@@ -43,19 +56,23 @@ class db():
         """ create all the tables and such """
         self.metadata.create_all(self.engine)
 
-    def get_current_temperature(self):
+    def get_current_temperature(self, unit):
         query = self.session.query(Temperature, func.max(Temperature.timestamp))
         t = query.one()
         # note: it's a two tuple - (temperature_object, timestamp)
-        return t[0].dict()
+        return {'current': t[0].dict(unit),
+                'unit': unit
+        }
 
-    def get_temperature_at(self, timestamp):
+    def get_temperature_at(self, timestamp, unit):
         query = self.session.query(Temperature)
         query = query.order_by(func.abs(Temperature.timestamp - timestamp))
-        temp = query.first()
-        return temp.dict()
+        t = query.first()
+        return {'spot': t.dict(unit),
+                'unit': unit
+        }
 
-    def get_temperature_list(self, lower, upper, limit):
+    def get_temperature_list(self, lower, upper, unit, limit):
         """ returns a list of temperatures within (and including) the lower and
         upper timestamp bounds """
 
@@ -78,10 +95,11 @@ class db():
             query = query.filter(((Temperature.id - first_id) % jump == 0) | (Temperature.id == last_id))
 
         results = query.all()
-        temps = list(map(lambda t: t.dict(), results))
+        temps = list(map(lambda t: t.dict(unit), results))
 
         return {'count': len(temps),
                 'temperature_array': temps,
+                'unit': unit,
                 'from': lower,
                 'to': upper,
                 'lower': results[0].timestamp if len(results) > 0 else None,
@@ -98,7 +116,7 @@ class db():
         self.session.add(t)
         return self.commit()
 
-    def get_temperature_avg(self, lower, upper):
+    def get_temperature_avg(self, lower, upper, unit):
         query = self.session.query(func.avg(Temperature.temperature), func.count(Temperature.id), func.min(Temperature.timestamp), func.max(Temperature.timestamp))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
@@ -106,15 +124,16 @@ class db():
         t = filtered.first()
         # t is a 4-tuple: (average, number_of_points, smallest timestamp, largest timestamp)
         if t:
-            return {'ave': t[0],
+            return {'ave': TemperatureValue(t[0]).convert_temperature(unit) if t[0] else None,
                     'count': t[1],
+                    'unit': unit,
                     'from': lower,
                     'to': upper,
                     'lower': t[2],
                     'upper': t[3]
             }
 
-    def get_temperature_min(self, lower, upper):
+    def get_temperature_min(self, lower, upper, unit):
         query = self.session.query(Temperature, func.count(Temperature.id), func.min(Temperature.temperature))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
@@ -128,15 +147,16 @@ class db():
                                                     Temperature.timestamp <= upper)
             tsrange = filtered_tsrange.first()
 
-            return {'min': t[0].dict() if t[0] else None,
+            return {'min': t[0].dict(unit) if t[0] else None,
                     'count': t[1],
+                    'unit': unit,
                     'from': lower,
                     'to': upper,
                     'lower': tsrange[0],
                     'upper': tsrange[1]
             }
 
-    def get_temperature_max(self, lower, upper):
+    def get_temperature_max(self, lower, upper, unit):
         query = self.session.query(Temperature, func.count(Temperature.id), func.max(Temperature.temperature))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
@@ -150,15 +170,16 @@ class db():
                                                     Temperature.timestamp <= upper)
             tsrange = filtered_tsrange.first()
 
-            return {'max': t[0].dict() if t[0] else None,
+            return {'max': t[0].dict(unit) if t[0] else None,
                     'count': t[1],
+                    'unit': unit,
                     'from': lower,
                     'to': upper,
                     'lower': tsrange[0],
                     'upper': tsrange[1]
             }
 
-    def get_temperature_stats(self, lower, upper):
+    def get_temperature_stats(self, lower, upper, unit):
 
         # get the actual range
         tsrange_query = self.session.query(func.count(Temperature.id),
@@ -187,10 +208,11 @@ class db():
 
         the_ave = filtered.first()[0]
 
-        return {'max': the_max.dict() if the_max else None,
-                'min': the_min.dict() if the_min else None,
-                'ave': the_ave if the_ave else None,
+        return {'max': the_max.dict(unit) if the_max else None,
+                'min': the_min.dict(unit) if the_min else None,
+                'ave': TemperatureValue(the_ave).convert_temperature(unit) if the_ave else None,
                 'count': count,
+                'unit': unit,
                 'from': lower,
                 'to': upper,
                 'lower': real_lower,
