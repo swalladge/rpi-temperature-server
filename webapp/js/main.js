@@ -317,6 +317,17 @@ $( function() {
     serverName = '';
   }
 
+  // initially set units selected
+  if (!localStorage.selectedUnits) {
+    localStorage.selectedUnits = 'C';
+  } else {
+    $('#units-selector').val(localStorage.selectedUnits);
+  }
+
+  $('#units-selector').on('change', function(e) {
+    localStorage.selectedUnits = $('#units-selector').val();
+  });
+
   // get info from the server
   // also initiates other server requests
   getInitialServerSetup();

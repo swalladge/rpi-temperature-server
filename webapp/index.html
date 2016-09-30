@@ -76,48 +76,56 @@
           <div class="child-paragraphs-padding container-fluid">
             <div id="stats-alert-box"></div>
 
-            <p class="bg-info">
-              Select an upper and lower date-time range to retrieve data for, and click <code>Display</code>.
-            </p>
+            <div class="row">
+              <div class="col-md-12">
+                <p class="bg-info">
+                Select an upper and lower date-time range to retrieve data for, optionally select your preferred units, and click <code>Display</code>.
+                </p>
+              </div>
+            </div>
 
-            <div class='col-md-2'>
-              <div class="form-group">
-                <div class='input-group' id='units-div'>
-                  <span class="input-group-addon">Unit</span>
-                  <select id="units-selector" class="form-control" name="units-selector">
-                    <option value="C" selected="">Celsius</option>
-                    <option value="F">Farenheit</option>
-                    <option value="K">Kelvin</option>
-                    <option value="R">Rankine</option>
-                  </select>
+            <div class="row">
+              <div class="col-md-3 col-sm-12">
+                <div class="form-group">
+                  <div class="input-group" id="units-div">
+                    <span class="input-group-addon">Units</span>
+                    <select id="units-selector" class="form-control" name="units-selector">
+                      <option value="C" selected>Celsius</option>
+                      <option value="F">Fahrenheit</option>
+                      <option value="K">Kelvin</option>
+                      <option value="R">Rankine</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- from https://eonasdan.github.io/bootstrap-datetimepicker/#linked-pickers -->
+              <div class="col-md-4 col-md-offset-1 col-sm-6">
+                <div class="form-group">
+                  <div class="input-group date" id="lower-datepicker">
+                    <span class="input-group-addon">From</span>
+                    <input type="text" class="form-control" />
+                    <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <div class="form-group">
+                  <div class="input-group date" id="upper-datepicker">
+                    <span class="input-group-addon">To</span>
+                    <input type="text" class="form-control" />
+                    <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-            <!-- from https://eonasdan.github.io/bootstrap-datetimepicker/#linked-pickers -->
-            <div class='col-md-4'>
-              <div class="form-group">
-                <div class='input-group date' id='lower-datepicker'>
-                  <span class="input-group-addon">From</span>
-                  <input type='text' class="form-control" />
-                  <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-                </div>
+            <div class="row text-right">
+              <div class="col-md-12">
+                <input type="button" id="requery-data" class="btn btn-primary" value="Display" />
               </div>
-            </div>
-            <div class='col-md-4'>
-              <div class="form-group">
-                <div class='input-group date' id='upper-datepicker'>
-                  <span class="input-group-addon">To</span>
-                  <input type='text' class="form-control" />
-                  <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class='col-md-2'>
-              <input type="button" id="requery-data" class="btn btn-primary" value="Display" />
             </div>
           </div>
         </div>
