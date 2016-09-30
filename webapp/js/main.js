@@ -60,12 +60,13 @@ Temperature.prototype.getInfo = function() {
   }
 };
 
-Temperature.prototype.getCurrent = function() {
+Temperature.prototype.getCurrent = function(unit) {
   if (this.ready) {
     return $.ajax(this.endpoint + 'current', {
       jsonp: false,
       dataType: 'json',
       method: 'GET',
+      data: {'unit': unit},
       error: this.errorFunc.bind(this)
     });
   } else {
@@ -73,13 +74,13 @@ Temperature.prototype.getCurrent = function() {
   }
 };
 
-Temperature.prototype.getList = function(from, to) {
+Temperature.prototype.getList = function(from, to, unit) {
   if (this.ready) {
     return $.ajax(this.endpoint, {
       jsonp: false,
       dataType: 'json',
       method: 'GET',
-      data: {'from': from, 'to': to},
+      data: {'from': from, 'to': to, 'unit': unit},
       error: this.errorFunc.bind(this)
     });
   } else {
@@ -87,13 +88,13 @@ Temperature.prototype.getList = function(from, to) {
   }
 };
 
-Temperature.prototype.getStat = function(type, from, to) {
+Temperature.prototype.getStat = function(type, from, to, unit) {
   if (this.ready) {
     return $.ajax(this.endpoint + type, {
       jsonp: false,
       dataType: 'json',
       method: 'GET',
-      data: {'from': from, 'to': to},
+      data: {'from': from, 'to': to, 'unit': unit},
       error: this.errorFunc.bind(this)
     });
   } else {
@@ -120,6 +121,12 @@ function showAlert(selector, type, title, msg) {
   $(selector).append($(alert_html));
 }
 
+// utility function to get the selected unit of measure
+function getUnit() {
+  var e = document.getElementById("units-selector");
+  return e.value;
+}
+
 // utility function to grab the upper and lower timestamps from the date pickers
 function getLimits() {
   var limits = {};
@@ -140,7 +147,7 @@ function updateGraph(markers, baselines) {
   var markers = markers || [];
   var baselines = baselines || [];
 
-  t.getList(limit.from, limit.to).done(function(res, statustext) {
+  t.getList(limit.from, limit.to, getUnit()).done(function(res, statustext) {
 
     var data = res.data.temperature_array.map(function(e) {
       return {date: new Date(e.timestamp*1000), value: e.temperature };
@@ -160,11 +167,11 @@ function updateGraph(markers, baselines) {
       x_accessor: 'date',
       y_accessor: 'value',
       x_label: 'Date',
-      y_label: 'Temperature (°C)',
+      y_label: 'Temperature (°' + res.data.unit + ')',
       interpolate: d3.curveCatmullRom.alpha(0.5),
       mouseover: function(d, i) {
         d3.select('#chart svg .mg-active-datapoint')
-          .text(d.value.toFixed(1) + '°C at ' + moment(d.date).format(dateFormat));
+          .text(d.value.toFixed(1) + '°' + res.data.unit + ' at ' + moment(d.date).format(dateFormat));
       },
       baselines: baselines,
       markers: markers,
@@ -174,8 +181,8 @@ function updateGraph(markers, baselines) {
 }
 
 function updateCurrent() {
-  t.getCurrent().done(function(res, statustext) {
-    var temp = res.data.temperature.toFixed(1);
+  t.getCurrent(getUnit()).done(function(res, statustext) {
+    var temp = res.data.temperature.toFixed(1) + '°' + res.data.unit;
       $('.current-temperature').text(temp);
     });
 }
@@ -183,17 +190,17 @@ function updateCurrent() {
 function updateStats() {
   var limit = getLimits();
 
-  t.getStat('stats', limit.from, limit.to).done(function(res, statustext) {
+  t.getStat('stats', limit.from, limit.to, getUnit()).done(function(res, statustext) {
     var data = res.data;
     if (data.count > 0) {
       removeAlerts('#stats-alert-box');
 
-      $('.max-temperature').text(data.max.temperature.toFixed(1));
+      $('.max-temperature').text(data.max.temperature.toFixed(1) + '°' + data.unit);
       $('.max-temperature-date').text(moment.unix(data.max.timestamp).format(dateFormat));
-      $('.min-temperature').text(data.min.temperature.toFixed(1));
+      $('.min-temperature').text(data.min.temperature.toFixed(1) + '°' + data.unit);
       $('.min-temperature-date').text(moment.unix(data.min.timestamp).format(dateFormat));
 
-      $('.ave-temperature').text(data.ave.toFixed(1));
+      $('.ave-temperature').text(data.ave.toFixed(1) + '°' + data.unit);
       $('.ave-temperature-count').text(data.count);
       $('.ave-temperature-date-lower').text(moment.unix(data.lower).format(dateFormat));
       $('.ave-temperature-date-upper').text(moment.unix(data.upper).format(dateFormat));
@@ -204,18 +211,18 @@ function updateStats() {
         markers = [
           {
             'date': new Date(data.max.timestamp*1000),
-            'label': 'max: ' + data.max.temperature.toFixed(1) + '°C'
+            'label': 'max: ' + data.max.temperature.toFixed(1) + '°' + data.unit
           },
           {
             'date': new Date(data.min.timestamp*1000),
-            'label': 'min: ' + data.min.temperature.toFixed(1) + '°C'
+            'label': 'min: ' + data.min.temperature.toFixed(1) + '°' + data.unit
           },
         ];
 
         baselines = [
           {
             'value': data.ave,
-            'label': 'ave: ' + data.ave.toFixed(1) + '°C'
+            'label': 'ave: ' + data.ave.toFixed(1) + '°' + data.unit
           }
         ];
 
@@ -223,7 +230,7 @@ function updateStats() {
           baselines.push(
             {
               'value': 0,
-              'label': '0°C'
+              'label': '0°' + data.unit
             }
           )
         }
