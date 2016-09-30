@@ -11,6 +11,9 @@ install:
   - ./server_setup.sh
   - cp config.test.py config.py
   - ./run_server.sh &
+  # The server needs a little time to ensure it has generated some data
+  # before we start testing the API.
+  - sleep 1
 
 script:
   - jasmine-node api_tests_spec.js
