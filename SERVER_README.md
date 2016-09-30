@@ -41,15 +41,29 @@ or on error:
 }
 ```
 
+### Notes
+
+- Most endpoints accept a `unit` parameter and return a `unit` field in the `data` object. For both parameters and
+  responses, the value should be one of "C", "K", "F", "R", which correspond to Celsius, Kelvin, Fahrenheit, and
+  Rankine respectively.
+
+
 ### GET /api/temperature/current
 
 Returns the current temperature (ie. last recorded temperature in database).
+
+Response data fields:
+
+- `unit`: single letter representation of the temperature units used
+- `temperature`: decimal value of the temperature in the units requested
+- `timestamp`: unix timestamp of when the temperature was recorded
 
 Example response:
 
 ```json
 {
     "data": {
+        "unit": "C",
         "temperature": 36.3,
         "timestamp": 1474264875
     },
@@ -85,6 +99,7 @@ Response data fields:
 - `from`: the requested start date
 - `to`: the requested end date
 - `full_count`: total number of data points available in range
+- `unit`: single letter representation of the temperature units used
 
 Example response:
 
@@ -95,6 +110,7 @@ Example response:
         "full_count": 2,
         "from": 1474357000,
         "lower": 1474357004,
+        "unit": "C",
         "temperature_array": [
             {
                 "temperature": 5.7,
@@ -126,6 +142,7 @@ Response data fields:
 - `ave`: average temperature as a float number
 - `max`: maximum temperature as a temperature dictionary with `temperature` and `timestamp` fields
 - `min`: as with `max` but for minimum temperature
+- `unit`: single letter representation of the temperature units used
 
 Example responses - average:
 
@@ -134,6 +151,7 @@ Example responses - average:
     "data": {
         "ave": 19.64,
         "count": 1173,
+        "unit": "C",
         "from": 0,
         "lower": 1474264875,
         "upper": 1474357264,
@@ -150,6 +168,7 @@ And maximum:
 {
     "data": {
         "count": 1180,
+        "unit": "C",
         "from": 0,
         "lower": 1474264875,
         "max": {
