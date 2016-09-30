@@ -79,7 +79,7 @@
             <div class="row">
               <div class="col-md-12">
                 <p class="bg-info">
-                Select an upper and lower date-time range to retrieve data for, optionally select your preferred units, and click <code>Display</code>.
+                Select an upper and lower date/time range (or click one of the presets), optionally select your preferred units, and click <code>Display</code>.
                 </p>
               </div>
             </div>
@@ -122,9 +122,21 @@
                 </div>
               </div>
             </div>
-            <div class="row text-right">
-              <div class="col-md-12">
-                <input type="button" id="requery-data" class="btn btn-primary" value="Display" />
+            <div class="row text-left">
+              <div class="col-md-8 col-sm-8">
+                <div class="form-group">
+                  <label for="preset-group" class="control-label">Range presets: </label>
+                  <div class="btn-group" role="group" id="preset-group" aria-label="Basic example">
+                    <input type="button" id="set-date-24h" class="btn btn-default" value="24 hours" />
+                    <input type="button" id="set-date-1w" class="btn btn-default" value="1 week" />
+                    <input type="button" id="set-date-1y" class="btn btn-default" value="1 year" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-4 text-right">
+                <div class="form-group">
+                  <input type="button" id="requery-data" class="btn btn-primary" value="Display" />
+                </div>
               </div>
             </div>
           </div>

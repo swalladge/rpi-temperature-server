@@ -390,6 +390,21 @@ $( function() {
     updateStats();
   });
 
+  $('#set-date-24h').on('click', function(e) {
+    $('#lower-datepicker').data('DateTimePicker').date(moment().subtract(1, 'day'));
+    $('#upper-datepicker').data('DateTimePicker').date(moment());
+  });
+
+  $('#set-date-1w').on('click', function(e) {
+    $('#lower-datepicker').data('DateTimePicker').date(moment().subtract(7, 'days'));
+    $('#upper-datepicker').data('DateTimePicker').date(moment());
+  });
+
+  $('#set-date-1y').on('click', function(e) {
+    $('#lower-datepicker').data('DateTimePicker').date(moment().subtract(1, 'year'));
+    $('#upper-datepicker').data('DateTimePicker').date(moment());
+  });
+
   $('#server-conf-save').on('click', function(e) {
     tempServerName = $('#server-name').val();
 
