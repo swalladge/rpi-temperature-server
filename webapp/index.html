@@ -62,7 +62,7 @@
       </div>
 
       <div class="well">
-        <div class="big text-center"><span class="current-temperature"></span>°C</div>
+        <div class="big text-center"><span class="current-temperature"></span></div>
         <p class="text-center">
         Current temperature
         </p>
@@ -80,8 +80,21 @@
               Select an upper and lower date-time range to retrieve data for, and click <code>Display</code>.
             </p>
 
+            <div class='col-md-2'>
+              <div class="form-group">
+                <div class='input-group' id='units-div'>
+                  <span class="input-group-addon">Unit</span>
+                  <select id="units-selector" class="form-control" name="units-selector">
+                    <option value="C" selected="">Celsius</option>
+                    <option value="F">Farenheit</option>
+                    <option value="K">Kelvin</option>
+                    <option value="R">Rankine</option>
+                  </select>
+                </div>
+              </div>
+            </div>
             <!-- from https://eonasdan.github.io/bootstrap-datetimepicker/#linked-pickers -->
-            <div class='col-md-5'>
+            <div class='col-md-4'>
               <div class="form-group">
                 <div class='input-group date' id='lower-datepicker'>
                   <span class="input-group-addon">From</span>
@@ -92,7 +105,7 @@
                 </div>
               </div>
             </div>
-            <div class='col-md-5'>
+            <div class='col-md-4'>
               <div class="form-group">
                 <div class='input-group date' id='upper-datepicker'>
                   <span class="input-group-addon">To</span>
@@ -117,7 +130,7 @@
               <h2 class="panel-title">Min</h2>
             </div>
             <div class="panel-body">
-              <p><b><span class="min-temperature"></span>°C</b></p>
+              <p><b><span class="min-temperature"></span></b></p>
               <span class="min-temperature-date"></span>
             </div>
           </div>
@@ -128,7 +141,7 @@
               <h2 class="panel-title">Average</h2>
             </div>
             <div class="panel-body">
-              <p><b><span class="ave-temperature"></span></b>°C</p>
+              <p><b><span class="ave-temperature"></span></b></p>
               over <span class="ave-temperature-count"></span> samples<br />
               from <span class="ave-temperature-date-lower"></span><br />
               to <span class="ave-temperature-date-upper"></span>
@@ -141,7 +154,7 @@
               <h2 class="panel-title">Max</h2>
             </div>
             <div class="panel-body">
-              <p><b><span class="max-temperature"></span></b>°C</p>
+              <p><b><span class="max-temperature"></span></b></p>
               <span class="max-temperature-date"></span>
             </div>
           </div>
