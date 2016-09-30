@@ -334,22 +334,41 @@ $( function() {
 
 
   // set up the date pickers
-  var yesterday = moment().subtract(1, 'days');
-  var now = moment();
+  var lower;
+  var upper;
+  if (localStorage.lowerDateRange !== undefined) {
+    if (localStorage.lowerDateRange === '') {
+      lower = false;
+    } else {
+      lower = moment.unix(parseInt(localStorage.lowerDateRange));
+    }
+  } else {
+    lower = moment().subtract(1, 'days'); // 24 hours ago
+  }
+  if (localStorage.upperDateRange !== undefined) {
+    if (localStorage.upperDateRange === '') {
+      upper = false;
+    } else {
+      upper = moment.unix(parseInt(localStorage.upperDateRange));
+    }
+  } else {
+    upper = moment(); // now
+  }
+
   $('#lower-datepicker').datetimepicker({
     format : dateFormat,
-    defaultDate: yesterday,
+    defaultDate: lower,
     focusOnShow: false,
     stepping: 1,
-    maxDate: now,
+    maxDate: upper,
     showClear: true,
     showClose: true,
     useCurrent: false
   });
   $('#upper-datepicker').datetimepicker({
     format : dateFormat,
-    defaultDate: now,
-    minDate: yesterday,
+    defaultDate: upper,
+    minDate: lower,
     focusOnShow: false,
     stepping: 1,
     showClear: true,
@@ -360,9 +379,11 @@ $( function() {
   // link the two
   $('#lower-datepicker').on('dp.change', function (e) {
       $('#upper-datepicker').data('DateTimePicker').minDate(e.date);
+      localStorage.lowerDateRange = e.date === false ? '' : e.date.unix();
   });
   $('#upper-datepicker').on('dp.change', function (e) {
       $('#lower-datepicker').data('DateTimePicker').maxDate(e.date);
+      localStorage.upperDateRange = e.date === false ? '' : e.date.unix();
   });
 
   $('#requery-data').on('click', function(e) {
