@@ -13,6 +13,13 @@
 ./run_server.sh
 ```
 
+If you want it to log events to a file instead of stdout, pass the `--log-file-prefix` argument (an option supplied by
+the tornado module):
+
+```
+./run_server.sh --log-file-prefix=server.log
+```
+
 Note: this script will create the `config.py` if you forgot step 2, but you will probably still want to edit the config
 sooner or later.
 
