@@ -1,0 +1,16 @@
+sudo: false
+
+language: python
+
+python:
+  - 3.4
+
+install:
+  - npm install -g jasmine-node
+  - npm install --save-dev frisby
+  - ./server_setup.sh
+  - cp config.test.py config.py
+  - ./run_server.sh &
+
+script:
+  - jasmine-node api_tests_spec.js
