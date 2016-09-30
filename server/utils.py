@@ -27,4 +27,12 @@ def validate_bounds(lower, upper):
     if lower < 0 or upper < 0:
         raise ValueError('values must not be negative')
 
+    # if values are higher than the current time, reduce them to now (silently)
+    # this server can't see the future, but won't punish you for trying
+    bound = now(True)
+    if lower > bound:
+        lower = bound
+    if upper > bound:
+        upper = bound
+
     return (lower, upper)

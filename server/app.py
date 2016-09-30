@@ -43,6 +43,9 @@ class temperature_handler(BaseHandler):
                 timestamp = int(timestamp)
                 if timestamp < 0:
                     raise ValueError
+                bound = utils.now(True)
+                if timestamp > bound: # nice try, but this doesn't tell the future
+                    timestamp = bound
             except:
                 return self.send_error(400, reason='invalid timestamp')
 
