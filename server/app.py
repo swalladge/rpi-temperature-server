@@ -3,8 +3,6 @@
 
 # main application server
 
-import os
-
 import tornado.ioloop
 import tornado.options
 from tornado.web import Application, url, StaticFileHandler
@@ -31,8 +29,10 @@ class temperature_handler(BaseHandler):
         try:
             from_timestamp, to_timestamp = utils.validate_bounds(from_timestamp, to_timestamp)
             limit = min(int(limit), cfg.temp_max_length)
+            if limit < 1:
+                raise ValueError('limit must be at least 1')
         except:
-            return self.send_error(400, reason='invalid from and/or to parameters')
+            return self.send_error(400, reason="invalid parameters ('from', 'to', or 'limit' was invalid)")
 
         # check if a particular time was requested
         # return the closest time in database to timestamp
