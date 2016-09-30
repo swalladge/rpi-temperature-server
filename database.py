@@ -25,13 +25,28 @@ class Temperature(Base):
         return "Temperature {}°C at {}".\
                format(self.temperature, self.timestamp)
 
-    def dict(self):
+    @staticmethod
+    def convert(t, unit='C'):
+        if unit == 'K':
+          return t + 273.15
+        elif unit == 'F':
+          return (t * 1.8) + 32
+        elif unit == 'R':
+          return (t + 273.15) * 1.8
+        else:
+          return t
+
+    def get_data(self, unit='C'):
         return {
-                'temperature': self.temperature,
+                'temperature': self.convert(self.temperature, unit),
                 'timestamp': self.timestamp
                 }
 
 class db():
+
+    # set of allowed/enabled units
+    allowed_units = {'C', 'K', 'F', 'R'}
+
     def __init__(self, url):
         """ inits the database """
         self.engine = create_engine(url, echo=False)
@@ -43,19 +58,23 @@ class db():
         """ create all the tables and such """
         self.metadata.create_all(self.engine)
 
-    def get_current_temperature(self):
+    def get_current_temperature(self, unit='C'):
         query = self.session.query(Temperature, func.max(Temperature.timestamp))
         t = query.one()
-        # note: it's a two tuple - (temperature_object, timestamp)
-        return t[0].dict()
 
-    def get_temperature_at(self, timestamp):
+        data = t[0].get_data(unit)
+        data['unit'] = unit
+        return data
+
+    def get_temperature_at(self, timestamp, unit='C'):
         query = self.session.query(Temperature)
         query = query.order_by(func.abs(Temperature.timestamp - timestamp))
-        temp = query.first()
-        return temp.dict()
 
-    def get_temperature_list(self, lower, upper, limit):
+        data = query.first().get_data(unit)
+        data['unit'] = unit
+        return data
+
+    def get_temperature_list(self, lower, upper, limit, unit='C'):
         """ returns a list of temperatures within (and including) the lower and
         upper timestamp bounds """
 
@@ -78,11 +97,12 @@ class db():
             query = query.filter(((Temperature.id - first_id) % jump == 0) | (Temperature.id == last_id))
 
         results = query.all()
-        temps = list(map(lambda t: t.dict(), results))
+        temps = list(map(lambda t: t.get_data(unit), results))
 
         return {'count': len(temps),
                 'temperature_array': temps,
                 'from': lower,
+                'unit': unit,
                 'to': upper,
                 'lower': results[0].timestamp if len(results) > 0 else None,
                 'upper': results[-1].timestamp if len(results) > 0 else None,
@@ -98,7 +118,7 @@ class db():
         self.session.add(t)
         return self.commit()
 
-    def get_temperature_avg(self, lower, upper):
+    def get_temperature_avg(self, lower, upper, unit='C'):
         query = self.session.query(func.avg(Temperature.temperature), func.count(Temperature.id), func.min(Temperature.timestamp), func.max(Temperature.timestamp))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
@@ -106,15 +126,16 @@ class db():
         t = filtered.first()
         # t is a 4-tuple: (average, number_of_points, smallest timestamp, largest timestamp)
         if t:
-            return {'ave': t[0],
+            return {'ave': Temperature.convert(t[0], unit),
                     'count': t[1],
                     'from': lower,
                     'to': upper,
+                    'unit': unit,
                     'lower': t[2],
                     'upper': t[3]
             }
 
-    def get_temperature_min(self, lower, upper):
+    def get_temperature_min(self, lower, upper, unit='C'):
         query = self.session.query(Temperature, func.count(Temperature.id), func.min(Temperature.temperature))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
@@ -128,15 +149,16 @@ class db():
                                                     Temperature.timestamp <= upper)
             tsrange = filtered_tsrange.first()
 
-            return {'min': t[0].dict() if t[0] else None,
+            return {'min': t[0].get_data(unit) if t[0] else None,
                     'count': t[1],
                     'from': lower,
                     'to': upper,
+                    'unit': unit,
                     'lower': tsrange[0],
                     'upper': tsrange[1]
             }
 
-    def get_temperature_max(self, lower, upper):
+    def get_temperature_max(self, lower, upper, unit='C'):
         query = self.session.query(Temperature, func.count(Temperature.id), func.max(Temperature.temperature))
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
@@ -150,15 +172,16 @@ class db():
                                                     Temperature.timestamp <= upper)
             tsrange = filtered_tsrange.first()
 
-            return {'max': t[0].dict() if t[0] else None,
+            return {'max': t[0].get_data(unit) if t[0] else None,
                     'count': t[1],
                     'from': lower,
                     'to': upper,
+                    'unit': unit,
                     'lower': tsrange[0],
                     'upper': tsrange[1]
             }
 
-    def get_temperature_stats(self, lower, upper):
+    def get_temperature_stats(self, lower, upper, unit='C'):
 
         # get the actual range
         tsrange_query = self.session.query(func.count(Temperature.id),
@@ -187,11 +210,12 @@ class db():
 
         the_ave = filtered.first()[0]
 
-        return {'max': the_max.dict() if the_max else None,
-                'min': the_min.dict() if the_min else None,
-                'ave': the_ave if the_ave else None,
+        return {'max': the_max.get_data(unit) if the_max else None,
+                'min': the_min.get_data(unit) if the_min else None,
+                'ave': Temperature.convert(the_ave, unit) if the_ave is not None else None,
                 'count': count,
                 'from': lower,
+                'unit': unit,
                 'to': upper,
                 'lower': real_lower,
                 'upper': real_upper
