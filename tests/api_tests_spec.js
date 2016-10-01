@@ -671,3 +671,146 @@ frisby.create('Temperature max invalid unit test')
   })
 .toss();
 
+// Test that the min temperature endpoint exists
+// and returns reasonable data.
+
+frisby.create('Temperature min test')
+  .get('http://localhost:8888/api/temperature/min')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      min: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+frisby.create('Temperature min C test')
+  .get('http://localhost:8888/api/temperature/min?unit=C')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      min: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+frisby.create('Temperature min F test')
+  .get('http://localhost:8888/api/temperature/min?unit=F')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "F"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      min: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+frisby.create('Temperature min K test')
+  .get('http://localhost:8888/api/temperature/min?unit=K')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "K"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      min: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+frisby.create('Temperature min R test')
+  .get('http://localhost:8888/api/temperature/min?unit=R')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "R"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      min: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+frisby.create('Temperature min invalid unit test')
+  .get('http://localhost:8888/api/temperature/min?unit=X')
+  .expectStatus(400)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    reason: "invalid unit parameter",
+    success: false
+  })
+.toss();
+
