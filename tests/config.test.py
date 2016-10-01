@@ -27,6 +27,10 @@ serve_webapp = True
 # set to True when getting actual temperature on the RPi
 on_rpi = False
 
+# Test data - set to a file path/name to load test data from that file
+# rather than logging real or pseudo-random temperatures.
+test_data = 'tests/api_test_data.txt'
+
 # params to pass to the sensor init function
 # use to override defaults
 sensor_params=None
