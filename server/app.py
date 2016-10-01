@@ -7,6 +7,7 @@ import tornado.ioloop
 import tornado.options
 from tornado.web import Application, url, StaticFileHandler
 from tornado.ioloop import PeriodicCallback
+from tornado.log import gen_log
 
 from server import database, utils, hardware
 from server.basehandlers import BaseHandler
@@ -142,9 +143,24 @@ def run():
     db = database.db(cfg.database_url)
     db.create_all()
 
-    # init the temperature sensor
-    temp = hardware.Temperature(db, cfg.sensor_params)
-    temp.save_current()
+    if cfg.test_data:
+      gen_log.info('Deleting any existing temperature data from database')
+      db.delete_temperature_data()
+      gen_log.info('Loading test data to database')
+      lines = open('tests/api_test_data.txt').read().splitlines()
+      with open(cfg.test_data,'r') as f:
+        for line in f:
+          line = line.strip()
+          if not line: continue
+          # 1st number is the timestamp, 2nd the temperature
+          data = line.split()
+          if data[0] == '#': continue
+          db.save_temperature(data[1], data[0])
+      gen_log.info('Test data written to database. Starting server.')
+    else:
+      # init the temperature sensor
+      temp = hardware.Temperature(db, cfg.sensor_params)
+      temp.save_current()
 
     # settings for the tornado app
     settings = {
@@ -174,8 +190,11 @@ def run():
     server = Application(handlers, **settings)
     server.listen(cfg.listen_port)
 
-    # log the temperature at intervals
-    PeriodicCallback(temp.save_current, int(cfg.temp_interval) * 1000).start()
+    if not cfg.test_data:
+      # log the temperature at intervals
+      PeriodicCallback(temp.save_current, int(cfg.temp_interval) * 1000).start()
+
+    # Let the server loop servicing requests
     tornado.ioloop.IOLoop.current().start()
 
 

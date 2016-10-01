@@ -50,6 +50,11 @@ class db():
         """ create all the tables and such """
         self.metadata.create_all(self.engine)
 
+    def delete_temperature_data(self):
+        """ delete all the data in the db """
+        self.session.query(Temperature).delete()
+        return self.commit()
+
     def get_current_temperature(self, unit='C'):
         query = self.session.query(Temperature, func.max(Temperature.timestamp))
         t = query.one()
