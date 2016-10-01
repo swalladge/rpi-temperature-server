@@ -546,7 +546,7 @@ frisby.create('Temperature max test')
       max: {
         temperature: Number,
         timestamp: Number
-	  }
+	  },
       count: Number,
       from: Number,
       to: Number,
@@ -572,7 +572,7 @@ frisby.create('Temperature max C test')
       max: {
         temperature: Number,
         timestamp: Number
-	  }
+	  },
       count: Number,
       from: Number,
       to: Number,
@@ -598,7 +598,7 @@ frisby.create('Temperature max F test')
       max: {
         temperature: Number,
         timestamp: Number
-	  }
+	  },
       count: Number,
       from: Number,
       to: Number,
@@ -624,7 +624,7 @@ frisby.create('Temperature max K test')
       max: {
         temperature: Number,
         timestamp: Number
-	  }
+	  },
       count: Number,
       from: Number,
       to: Number,
@@ -650,7 +650,7 @@ frisby.create('Temperature max R test')
       max: {
         temperature: Number,
         timestamp: Number
-	  }
+	  },
       count: Number,
       from: Number,
       to: Number,
