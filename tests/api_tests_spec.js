@@ -615,6 +615,10 @@ frisby.create('Temperature max test')
   .expectJSON({
     success: true,
     data: {
+      max: {
+        temperature: 39.9,
+        timestamp: 1451611400
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -645,6 +649,10 @@ frisby.create('Temperature max C test')
   .expectJSON({
     success: true,
     data: {
+      max: {
+        temperature: 39.9,
+        timestamp: 1451611400
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -675,6 +683,10 @@ frisby.create('Temperature max F test')
   .expectJSON({
     success: true,
     data: {
+      max: {
+        temperature: 103.82,
+        timestamp: 1451611400
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -705,6 +717,10 @@ frisby.create('Temperature max K test')
   .expectJSON({
     success: true,
     data: {
+      max: {
+        temperature: 313.05,
+        timestamp: 1451611400
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -735,6 +751,10 @@ frisby.create('Temperature max R test')
   .expectJSON({
     success: true,
     data: {
+      max: {
+        temperature: 563.49,
+        timestamp: 1451611400
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -778,6 +798,10 @@ frisby.create('Temperature min test')
   .expectJSON({
     success: true,
     data: {
+      min: {
+        temperature: -20.0,
+        timestamp: 1451613800
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -808,6 +832,10 @@ frisby.create('Temperature min C test')
   .expectJSON({
     success: true,
     data: {
+      min: {
+        temperature: -20.0,
+        timestamp: 1451613800
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -838,6 +866,10 @@ frisby.create('Temperature min F test')
   .expectJSON({
     success: true,
     data: {
+      min: {
+        temperature: -4.0,
+        timestamp: 1451613800
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -868,6 +900,10 @@ frisby.create('Temperature min K test')
   .expectJSON({
     success: true,
     data: {
+      min: {
+        temperature: 253.15,
+        timestamp: 1451613800
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -898,6 +934,10 @@ frisby.create('Temperature min R test')
   .expectJSON({
     success: true,
     data: {
+      min: {
+        temperature: 455.67,
+        timestamp: 1451613800
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -942,6 +982,14 @@ frisby.create('Temperature stats test')
     success: true,
     data: {
       ave: 10.6456,
+      min: {
+        temperature: -20.0,
+        timestamp: 1451613800
+	  },
+      max: {
+        temperature: 39.9,
+        timestamp: 1451611400
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -978,6 +1026,14 @@ frisby.create('Temperature stats C test')
     success: true,
     data: {
       ave: 10.6456,
+      min: {
+        temperature: -20.0,
+        timestamp: 1451613800
+	  },
+      max: {
+        temperature: 39.9,
+        timestamp: 1451611400
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -1014,6 +1070,14 @@ frisby.create('Temperature stats F test')
     success: true,
     data: {
       ave: 51.16208,
+      min: {
+        temperature: -4.0,
+        timestamp: 1451613800
+	  },
+      max: {
+        temperature: 103.82,
+        timestamp: 1451611400
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -1050,6 +1114,14 @@ frisby.create('Temperature stats K test')
     success: true,
     data: {
       ave: 283.7956,
+      min: {
+        temperature: 253.15,
+        timestamp: 1451613800
+	  },
+      max: {
+        temperature: 313.05,
+        timestamp: 1451611400
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -1086,6 +1158,14 @@ frisby.create('Temperature stats R test')
     success: true,
     data: {
       ave: 510.83208,
+      min: {
+        temperature: 455.67,
+        timestamp: 1451613800
+	  },
+      max: {
+        temperature: 563.49,
+        timestamp: 1451611400
+	  },
       count: 50,
       from: 0,
       lower: 1451610000,
