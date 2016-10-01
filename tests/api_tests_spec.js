@@ -266,3 +266,31 @@ frisby.create('Temperature at future timestamp test')
     }
   })
 .toss();
+
+// Test that the temperature array endpoint exists
+// and returns reasonable data.
+
+frisby.create('Temperature array test')
+  .get('http://localhost:8888/api/temperature')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      full_count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+      temperature_array: Array
+    }
+  })
+.toss();
+
