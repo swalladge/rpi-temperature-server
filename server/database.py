@@ -1,6 +1,6 @@
 
 # sqlalchemy parts we want to use
-from sqlalchemy import (create_engine, Column, Integer, Float, Sequence, func)
+from sqlalchemy import (create_engine, Column, Integer, Float, Sequence, func, desc)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -134,49 +134,49 @@ class db():
             }
 
     def get_temperature_min(self, lower, upper, unit='C'):
-        query = self.session.query(Temperature, func.count(Temperature.id), func.min(Temperature.temperature))
+        query = self.session.query(Temperature)
         filtered = query.filter(Temperature.timestamp >= lower,
-                                Temperature.timestamp <= upper)
+                                Temperature.timestamp <= upper).order_by(Temperature.temperature)
 
         t = filtered.first()
         if t:
-            # do another query to get the min and max timestamp
+            # do another query to get the count and min and max timestamp
             # adding it to the first query confuses which actual Temperature record is returned
-            tsrange_query = self.session.query(func.min(Temperature.timestamp), func.max(Temperature.timestamp))
+            tsrange_query = self.session.query(func.count(Temperature.id), func.min(Temperature.timestamp), func.max(Temperature.timestamp))
             filtered_tsrange = tsrange_query.filter(Temperature.timestamp >= lower,
                                                     Temperature.timestamp <= upper)
             tsrange = filtered_tsrange.first()
 
-            return {'min': t[0].get_data(unit) if t[0] else None,
-                    'count': t[1],
+            return {'min': t.get_data(unit) if t else None,
+                    'count': tsrange[0],
                     'from': lower,
                     'to': upper,
                     'unit': unit,
-                    'lower': tsrange[0],
-                    'upper': tsrange[1]
+                    'lower': tsrange[1],
+                    'upper': tsrange[2]
             }
 
     def get_temperature_max(self, lower, upper, unit='C'):
-        query = self.session.query(Temperature, func.count(Temperature.id), func.max(Temperature.temperature))
+        query = self.session.query(Temperature)
         filtered = query.filter(Temperature.timestamp >= lower,
-                                Temperature.timestamp <= upper)
+                                Temperature.timestamp <= upper).order_by(desc(Temperature.temperature))
 
         t = filtered.first()
         if t:
-            # do another query to get the min and max timestamp
+            # do another query to get the count and min and max timestamp
             # adding it to the first query confuses which actual Temperature record is returned
-            tsrange_query = self.session.query(func.min(Temperature.timestamp), func.max(Temperature.timestamp))
+            tsrange_query = self.session.query(func.count(Temperature.id), func.min(Temperature.timestamp), func.max(Temperature.timestamp))
             filtered_tsrange = tsrange_query.filter(Temperature.timestamp >= lower,
                                                     Temperature.timestamp <= upper)
             tsrange = filtered_tsrange.first()
 
-            return {'max': t[0].get_data(unit) if t[0] else None,
-                    'count': t[1],
+            return {'max': t.get_data(unit) if t else None,
+                    'count': tsrange[0],
                     'from': lower,
                     'to': upper,
                     'unit': unit,
-                    'lower': tsrange[0],
-                    'upper': tsrange[1]
+                    'lower': tsrange[1],
+                    'upper': tsrange[2]
             }
 
     def get_temperature_stats(self, lower, upper, unit='C'):
@@ -190,16 +190,16 @@ class db():
         count, real_lower, real_upper = filtered_tsrange.first()
 
         # max
-        query = self.session.query(Temperature, func.max(Temperature.temperature))
+        query = self.session.query(Temperature)
         filtered = query.filter(Temperature.timestamp >= lower,
-                                Temperature.timestamp <= upper)
-        the_max = filtered.first()[0]
+                                Temperature.timestamp <= upper).order_by(desc(Temperature.temperature))
+        the_max = filtered.first()
 
         # min
-        query = self.session.query(Temperature, func.min(Temperature.temperature))
+        query = self.session.query(Temperature)
         filtered = query.filter(Temperature.timestamp >= lower,
-                                Temperature.timestamp <= upper)
-        the_min = filtered.first()[0]
+                                Temperature.timestamp <= upper).order_by(Temperature.temperature)
+        the_min = filtered.first()
 
         # ave
         query = self.session.query(func.avg(Temperature.temperature))
