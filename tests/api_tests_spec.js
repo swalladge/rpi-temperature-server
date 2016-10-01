@@ -400,3 +400,131 @@ frisby.create('Temperature array invalid unit test')
   })
 .toss();
 
+// Test that the average temperature endpoint exists
+// and returns reasonable data.
+
+frisby.create('Temperature average test')
+  .get('http://localhost:8888/api/temperature/ave')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+frisby.create('Temperature average C test')
+  .get('http://localhost:8888/api/temperature/ave?unit=C')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+frisby.create('Temperature average F test')
+  .get('http://localhost:8888/api/temperature/ave?unit=F')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "F"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+frisby.create('Temperature average K test')
+  .get('http://localhost:8888/api/temperature/ave?unit=K')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "K"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+frisby.create('Temperature average R test')
+  .get('http://localhost:8888/api/temperature/ave?unit=R')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "R"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+frisby.create('Temperature average invalid unit test')
+  .get('http://localhost:8888/api/temperature/ave?unit=X')
+  .expectStatus(400)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    reason: "invalid unit parameter",
+    success: false
+  })
+.toss();
+
