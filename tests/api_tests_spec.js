@@ -245,3 +245,24 @@ frisby.create('Temperature at timestamp invalid unit test')
   })
 .toss();
 
+// 20 9's is a number bigger than the max unsigned 64-bit value.
+// This should be read OK by the Python and reduced down to
+// the current time by validation in the app.
+frisby.create('Temperature at future timestamp test')
+  .get('http://localhost:8888/api/temperature/99999999999999999999')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      unit: String,
+      temperature: Number,
+      timestamp: Number
+    }
+  })
+.toss();
