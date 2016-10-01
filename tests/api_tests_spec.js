@@ -163,7 +163,7 @@ frisby.create('Temperature at timestamp test')
     success: true,
     data: {
       unit: "C",
-      temperature: 27.35,
+      temperature: 24.1,
       timestamp: 1451610700
     }
   })
@@ -184,7 +184,7 @@ frisby.create('Temperature at timestamp C test')
     success: true,
     data: {
       unit: "C",
-      temperature: 27.35,
+      temperature: 24.1,
       timestamp: 1451610700
     }
   })
@@ -205,7 +205,7 @@ frisby.create('Temperature at timestamp F test')
     success: true,
     data: {
       unit: "F",
-      temperature: 81.23,
+      temperature: 75.38,
       timestamp: 1451610700
     }
   })
@@ -226,7 +226,7 @@ frisby.create('Temperature at timestamp K test')
     success: true,
     data: {
       unit: "K",
-      temperature: 300.5,
+      temperature: 297.25,
       timestamp: 1451610700
     }
   })
@@ -247,7 +247,7 @@ frisby.create('Temperature at timestamp R test')
     success: true,
     data: {
       unit: "R",
-      temperature: 540.9,
+      temperature: 535.05,
       timestamp: 1451610700
     }
   })
@@ -462,7 +462,7 @@ frisby.create('Temperature average test')
   .expectJSON({
     success: true,
     data: {
-      ave: 10.6456,
+      ave: 11.5786,
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -490,7 +490,7 @@ frisby.create('Temperature average C test')
   .expectJSON({
     success: true,
     data: {
-      ave: 10.6456,
+      ave: 11.5786,
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -518,7 +518,7 @@ frisby.create('Temperature average F test')
   .expectJSON({
     success: true,
     data: {
-      ave: 51.16208,
+      ave: 52.84148,
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -546,7 +546,7 @@ frisby.create('Temperature average K test')
   .expectJSON({
     success: true,
     data: {
-      ave: 283.7956,
+      ave: 284.7286,
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -574,7 +574,7 @@ frisby.create('Temperature average R test')
   .expectJSON({
     success: true,
     data: {
-      ave: 510.83208,
+      ave: 512.51148,
       count: 50,
       from: 0,
       lower: 1451610000,
@@ -981,7 +981,7 @@ frisby.create('Temperature stats test')
   .expectJSON({
     success: true,
     data: {
-      ave: 10.6456,
+      ave: 11.5786,
       min: {
         temperature: -20.0,
         timestamp: 1451613800
@@ -1025,7 +1025,7 @@ frisby.create('Temperature stats C test')
   .expectJSON({
     success: true,
     data: {
-      ave: 10.6456,
+      ave: 11.5786,
       min: {
         temperature: -20.0,
         timestamp: 1451613800
@@ -1069,7 +1069,7 @@ frisby.create('Temperature stats F test')
   .expectJSON({
     success: true,
     data: {
-      ave: 51.16208,
+      ave: 52.84148,
       min: {
         temperature: -4.0,
         timestamp: 1451613800
@@ -1113,7 +1113,7 @@ frisby.create('Temperature stats K test')
   .expectJSON({
     success: true,
     data: {
-      ave: 283.7956,
+      ave: 284.7286,
       min: {
         temperature: 253.15,
         timestamp: 1451613800
@@ -1157,7 +1157,7 @@ frisby.create('Temperature stats R test')
   .expectJSON({
     success: true,
     data: {
-      ave: 510.83208,
+      ave: 512.51148,
       min: {
         temperature: 455.67,
         timestamp: 1451613800
