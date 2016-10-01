@@ -20,13 +20,14 @@ class Temperature(Base):
     @staticmethod
     def convert(t, unit='C'):
         if unit == 'K':
-          return t + 273.15
+          result = t + 273.15
         elif unit == 'F':
-          return (t * 1.8) + 32
+          result = (t * 1.8) + 32
         elif unit == 'R':
-          return (t + 273.15) * 1.8
+          result = (t + 273.15) * 1.8
         else:
-          return t
+          result = t
+        return round(result, 6)
 
     def get_data(self, unit='C'):
         return {
