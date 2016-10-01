@@ -110,9 +110,10 @@ Example response:
 ```
 
 
-### GET /api/temperature/(max|min|ave)
+### GET /api/temperature/(max|min|ave|stats)
 
 Get the maximum, minimum, or average temperatures for a given range.
+The stats endpoint provides maximum, minimum and average in a single request.
 
 Parameters as for getting an array of temperatures.
 
@@ -142,7 +143,7 @@ Example responses - average:
 }
 ```
 
-And maximum:
+maximum:
 
 ```json
 {
@@ -151,6 +152,32 @@ And maximum:
         "unit": "C",
         "from": 0,
         "lower": 1474264875,
+        "max": {
+            "temperature": 40.0,
+            "timestamp": 1474354142
+        },
+        "upper": 1474357299,
+        "to": 1474357301
+    },
+    "status": 200,
+    "success": true
+}
+```
+
+stats:
+
+```json
+{
+    "data": {
+        "count": 1180,
+        "unit": "C",
+        "from": 0,
+        "lower": 1474264875,
+        "ave": 19.64,
+        "min": {
+            "temperature": 10.0,
+            "timestamp": 1474356245
+        },
         "max": {
             "temperature": 40.0,
             "timestamp": 1474354142
