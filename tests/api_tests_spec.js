@@ -13,11 +13,16 @@ frisby.create('Temperature sensor info test')
       live: false,
       log_interval: 5,
       server_name: "Test Temperature Server",
-      location: "Inside a Travis container"
+      location: "Inside a Travis container",
+      timezone: 570
     }
   })
   .expectJSONTypes({
     data: {
+      live: Boolean,
+      log_interval: Number,
+      server_name: String,
+      location: String,
       timezone: Number
     }
   })
@@ -33,7 +38,9 @@ frisby.create('Current temperature test')
   .expectJSON({
     success: true,
     data: {
-      unit: "C"
+      unit: "C",
+      temperature: 8.4,
+      timestamp: 1451614900
     }
   })
   .expectJSONTypes({
@@ -52,7 +59,9 @@ frisby.create('Current temperature C test')
   .expectJSON({
     success: true,
     data: {
-      unit: "C"
+      unit: "C",
+      temperature: 8.4,
+      timestamp: 1451614900
     }
   })
   .expectJSONTypes({
@@ -71,7 +80,9 @@ frisby.create('Current temperature F test')
   .expectJSON({
     success: true,
     data: {
-      unit: "F"
+      unit: "F",
+      temperature: 47.12,
+      timestamp: 1451614900
     }
   })
   .expectJSONTypes({
@@ -90,7 +101,9 @@ frisby.create('Current temperature K test')
   .expectJSON({
     success: true,
     data: {
-      unit: "K"
+      unit: "K",
+      temperature: 281.55,
+      timestamp: 1451614900
     }
   })
   .expectJSONTypes({
@@ -109,7 +122,9 @@ frisby.create('Current temperature R test')
   .expectJSON({
     success: true,
     data: {
-      unit: "R"
+      unit: "R",
+      temperature: 506.79,
+      timestamp: 1451614900
     }
   })
   .expectJSONTypes({
@@ -141,13 +156,15 @@ frisby.create('Current temperature invalid unit test')
 // weeks, months, years in the past or future.
 
 frisby.create('Temperature at timestamp test')
-  .get('http://localhost:8888/api/temperature/1475196140')
+  .get('http://localhost:8888/api/temperature/1451610700')
   .expectStatus(200)
   .expectHeaderContains('content-type', 'application/json')
   .expectJSON({
     success: true,
     data: {
-      unit: "C"
+      unit: "C",
+      temperature: 27.35,
+      timestamp: 1451610700
     }
   })
   .expectJSONTypes({
@@ -160,13 +177,15 @@ frisby.create('Temperature at timestamp test')
 .toss();
 
 frisby.create('Temperature at timestamp C test')
-  .get('http://localhost:8888/api/temperature/1475196140?unit=C')
+  .get('http://localhost:8888/api/temperature/1451610700?unit=C')
   .expectStatus(200)
   .expectHeaderContains('content-type', 'application/json')
   .expectJSON({
     success: true,
     data: {
-      unit: "C"
+      unit: "C",
+      temperature: 27.35,
+      timestamp: 1451610700
     }
   })
   .expectJSONTypes({
@@ -179,13 +198,15 @@ frisby.create('Temperature at timestamp C test')
 .toss();
 
 frisby.create('Temperature at timestamp F test')
-  .get('http://localhost:8888/api/temperature/1475196140?unit=F')
+  .get('http://localhost:8888/api/temperature/1451610700?unit=F')
   .expectStatus(200)
   .expectHeaderContains('content-type', 'application/json')
   .expectJSON({
     success: true,
     data: {
-      unit: "F"
+      unit: "F",
+      temperature: 81.23,
+      timestamp: 1451610700
     }
   })
   .expectJSONTypes({
@@ -198,13 +219,15 @@ frisby.create('Temperature at timestamp F test')
 .toss();
 
 frisby.create('Temperature at timestamp K test')
-  .get('http://localhost:8888/api/temperature/1475196140?unit=K')
+  .get('http://localhost:8888/api/temperature/1451610700?unit=K')
   .expectStatus(200)
   .expectHeaderContains('content-type', 'application/json')
   .expectJSON({
     success: true,
     data: {
-      unit: "K"
+      unit: "K",
+      temperature: 300.5,
+      timestamp: 1451610700
     }
   })
   .expectJSONTypes({
@@ -217,13 +240,15 @@ frisby.create('Temperature at timestamp K test')
 .toss();
 
 frisby.create('Temperature at timestamp R test')
-  .get('http://localhost:8888/api/temperature/1475196140?unit=R')
+  .get('http://localhost:8888/api/temperature/1451610700?unit=R')
   .expectStatus(200)
   .expectHeaderContains('content-type', 'application/json')
   .expectJSON({
     success: true,
     data: {
-      unit: "R"
+      unit: "R",
+      temperature: 540.9,
+      timestamp: 1451610700
     }
   })
   .expectJSONTypes({
@@ -236,7 +261,7 @@ frisby.create('Temperature at timestamp R test')
 .toss();
 
 frisby.create('Temperature at timestamp invalid unit test')
-  .get('http://localhost:8888/api/temperature/1475196140?unit=X')
+  .get('http://localhost:8888/api/temperature/1451610700?unit=X')
   .expectStatus(400)
   .expectHeaderContains('content-type', 'application/json')
   .expectJSON({
@@ -255,7 +280,9 @@ frisby.create('Temperature at future timestamp test')
   .expectJSON({
     success: true,
     data: {
-      unit: "C"
+      unit: "C",
+      temperature: 8.4,
+      timestamp: 1451614900
     }
   })
   .expectJSONTypes({
@@ -277,6 +304,11 @@ frisby.create('Temperature array test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      full_count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "C"
     }
   })
@@ -301,6 +333,11 @@ frisby.create('Temperature array C test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      full_count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "C"
     }
   })
@@ -325,6 +362,11 @@ frisby.create('Temperature array F test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      full_count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "F"
     }
   })
@@ -349,6 +391,11 @@ frisby.create('Temperature array K test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      full_count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "K"
     }
   })
@@ -373,6 +420,11 @@ frisby.create('Temperature array R test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      full_count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "R"
     }
   })
@@ -410,6 +462,11 @@ frisby.create('Temperature average test')
   .expectJSON({
     success: true,
     data: {
+      ave: 10.6456,
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "C"
     }
   })
@@ -433,6 +490,11 @@ frisby.create('Temperature average C test')
   .expectJSON({
     success: true,
     data: {
+      ave: 10.6456,
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "C"
     }
   })
@@ -456,6 +518,11 @@ frisby.create('Temperature average F test')
   .expectJSON({
     success: true,
     data: {
+      ave: 51.16208,
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "F"
     }
   })
@@ -479,6 +546,11 @@ frisby.create('Temperature average K test')
   .expectJSON({
     success: true,
     data: {
+      ave: 283.7956,
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "K"
     }
   })
@@ -502,6 +574,11 @@ frisby.create('Temperature average R test')
   .expectJSON({
     success: true,
     data: {
+      ave: 510.83208,
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "R"
     }
   })
@@ -538,6 +615,10 @@ frisby.create('Temperature max test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "C"
     }
   })
@@ -564,6 +645,10 @@ frisby.create('Temperature max C test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "C"
     }
   })
@@ -590,6 +675,10 @@ frisby.create('Temperature max F test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "F"
     }
   })
@@ -616,6 +705,10 @@ frisby.create('Temperature max K test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "K"
     }
   })
@@ -642,6 +735,10 @@ frisby.create('Temperature max R test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "R"
     }
   })
@@ -681,6 +778,10 @@ frisby.create('Temperature min test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "C"
     }
   })
@@ -707,6 +808,10 @@ frisby.create('Temperature min C test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "C"
     }
   })
@@ -733,6 +838,10 @@ frisby.create('Temperature min F test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "F"
     }
   })
@@ -759,6 +868,10 @@ frisby.create('Temperature min K test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "K"
     }
   })
@@ -785,6 +898,10 @@ frisby.create('Temperature min R test')
   .expectJSON({
     success: true,
     data: {
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "R"
     }
   })
@@ -824,6 +941,11 @@ frisby.create('Temperature stats test')
   .expectJSON({
     success: true,
     data: {
+      ave: 10.6456,
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "C"
     }
   })
@@ -855,6 +977,11 @@ frisby.create('Temperature stats C test')
   .expectJSON({
     success: true,
     data: {
+      ave: 10.6456,
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "C"
     }
   })
@@ -886,6 +1013,11 @@ frisby.create('Temperature stats F test')
   .expectJSON({
     success: true,
     data: {
+      ave: 51.16208,
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "F"
     }
   })
@@ -917,6 +1049,11 @@ frisby.create('Temperature stats K test')
   .expectJSON({
     success: true,
     data: {
+      ave: 283.7956,
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "K"
     }
   })
@@ -948,6 +1085,11 @@ frisby.create('Temperature stats R test')
   .expectJSON({
     success: true,
     data: {
+      ave: 510.83208,
+      count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
       unit: "R"
     }
   })
