@@ -294,6 +294,111 @@ frisby.create('Temperature at future timestamp test')
   })
 .toss();
 
+frisby.create('Temperature at early timestamp test')
+  .get('http://localhost:8888/api/temperature/1000000000')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "C",
+      temperature: 10,
+      timestamp: 1451610000
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      unit: String,
+      temperature: Number,
+      timestamp: Number
+    }
+  })
+.toss();
+
+frisby.create('Temperature at zero timestamp test')
+  .get('http://localhost:8888/api/temperature/0')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "C",
+      temperature: 10,
+      timestamp: 1451610000
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      unit: String,
+      temperature: Number,
+      timestamp: Number
+    }
+  })
+.toss();
+
+frisby.create('Temperature at zero-string timestamp test')
+  .get('http://localhost:8888/api/temperature/00000000')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "C",
+      temperature: 10,
+      timestamp: 1451610000
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      unit: String,
+      temperature: Number,
+      timestamp: Number
+    }
+  })
+.toss();
+
+frisby.create('Temperature at midpoint1 timestamp test')
+  .get('http://localhost:8888/api/temperature/1451611640')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "C",
+      temperature: 35.5,
+      timestamp: 1451611600
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      unit: String,
+      temperature: Number,
+      timestamp: Number
+    }
+  })
+.toss();
+
+frisby.create('Temperature at midpoint2 timestamp test')
+  .get('http://localhost:8888/api/temperature/1451611665')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      unit: "C",
+      temperature: 32.2,
+      timestamp: 1451611700
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      unit: String,
+      temperature: Number,
+      timestamp: Number
+    }
+  })
+.toss();
+
 // Test that the temperature array endpoint exists
 // and returns reasonable data.
 
