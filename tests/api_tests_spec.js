@@ -710,6 +710,184 @@ frisby.create('Temperature average invalid unit test')
   })
 .toss();
 
+// Get the average specifying "from" and "to" that match exact data points
+frisby.create('Temperature average from-to match test')
+  .get('http://localhost:8888/api/temperature/ave?from=1451612500&to=1451613800')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: -3.919286,
+      count: 14,
+      from: 1451612500,
+      to: 1451613800,
+      lower: 1451612500,
+      upper: 1451613800,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+// Get the average specifying "from" and "to" that do not match exact data points
+frisby.create('Temperature average from-to non-match test')
+  .get('http://localhost:8888/api/temperature/ave?from=1451612401&to=1451613899')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: -3.919286,
+      count: 14,
+      from: 1451612401,
+      to: 1451613899,
+      lower: 1451612500,
+      upper: 1451613800,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+// Get the average specifying just "from" that matches an exact data point
+frisby.create('Temperature average from match test')
+  .get('http://localhost:8888/api/temperature/ave?from=1451612500')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: -3.9948,
+      count: 25,
+      from: 1451612500,
+      lower: 1451612500,
+      upper: 1451614900,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+// Get the average specifying just "from" that does not match an exact data point
+frisby.create('Temperature average from non-match test')
+  .get('http://localhost:8888/api/temperature/ave?from=1451612401')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: -3.9948,
+      count: 25,
+      from: 1451612401,
+      lower: 1451612500,
+      upper: 1451614900,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+// Get the average specifying just "to" that matches an exact data point
+frisby.create('Temperature average to match test')
+  .get('http://localhost:8888/api/temperature/ave?to=1451613800')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: 15.998205,
+      count: 39,
+      from: 0,
+      to: 1451613800,
+      lower: 1451610000,
+      upper: 1451613800,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+// Get the average specifying just "to" that does not match an exact data point
+frisby.create('Temperature average to non-match test')
+  .get('http://localhost:8888/api/temperature/ave?to=1451613899')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: 15.998205,
+      count: 39,
+      from: 0,
+      to: 1451613899,
+      lower: 1451610000,
+      upper: 1451613800,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
 // Test that the max temperature endpoint exists
 // and returns reasonable data.
 
