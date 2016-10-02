@@ -1915,3 +1915,276 @@ frisby.create('Temperature stats invalid unit test')
   })
 .toss();
 
+// Get stats specifying "from" and "to" that match exact data points
+frisby.create('Temperature stats from-to match test')
+  .get('http://localhost:8888/api/temperature/stats?from=1451613000&to=1451614000')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: -10.997273,
+      min: {
+        temperature: -20.0,
+        timestamp: 1451613800
+	  },
+      max: {
+        temperature: -0.1,
+        timestamp: 1451613000
+	  },
+      count: 11,
+      from: 1451613000,
+      to: 1451614000,
+      lower: 1451613000,
+      upper: 1451614000,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      min: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      max: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+// Get stats specifying "from" and "to" that do not match exact data points
+frisby.create('Temperature stats from-to non-match test')
+  .get('http://localhost:8888/api/temperature/stats?from=1451612985&to=1451614090')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: -10.997273,
+      min: {
+        temperature: -20.0,
+        timestamp: 1451613800
+	  },
+      max: {
+        temperature: -0.1,
+        timestamp: 1451613000
+	  },
+      count: 11,
+      from: 1451612985,
+      to: 1451614090,
+      lower: 1451613000,
+      upper: 1451614000,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      min: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      max: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+// Get stats specifying just "from" that matches an exact data point
+frisby.create('Temperature stats from match test')
+  .get('http://localhost:8888/api/temperature/stats?from=1451613000')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: -6.4335,
+      min: {
+        temperature: -20.0,
+        timestamp: 1451613800
+	  },
+      max: {
+        temperature: 8.4,
+        timestamp: 1451614900
+	  },
+      count: 20,
+      from: 1451613000,
+      lower: 1451613000,
+      upper: 1451614900,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      min: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      max: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+// Get stats specifying just "from" that does not match an exact data point
+frisby.create('Temperature stats from non-match test')
+  .get('http://localhost:8888/api/temperature/stats?from=1451612955')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: -6.4335,
+      min: {
+        temperature: -20.0,
+        timestamp: 1451613800
+	  },
+      max: {
+        temperature: 8.4,
+        timestamp: 1451614900
+	  },
+      count: 20,
+      from: 1451612955,
+      lower: 1451613000,
+      upper: 1451614900,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      min: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      max: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+// Get stats specifying just "to" that matches an exact data point
+frisby.create('Temperature stats to match test')
+  .get('http://localhost:8888/api/temperature/stats?to=1451613000')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: 22.822581,
+      min: {
+        temperature: -0.1,
+        timestamp: 1451613000
+	  },
+      max: {
+        temperature: 39.9,
+        timestamp: 1451611400
+	  },
+      count: 31,
+      from: 0,
+      to: 1451613000,
+      lower: 1451610000,
+      upper: 1451613000,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      min: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      max: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+// Get stats specifying just "to" that does not match an exact data point
+frisby.create('Temperature stats to non-match test')
+  .get('http://localhost:8888/api/temperature/stats?to=1451613077')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: 22.822581,
+      min: {
+        temperature: -0.1,
+        timestamp: 1451613000
+	  },
+      max: {
+        temperature: 39.9,
+        timestamp: 1451611400
+	  },
+      count: 31,
+      from: 0,
+      to: 1451613077,
+      lower: 1451610000,
+      upper: 1451613000,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      ave: Number,
+      min: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      max: {
+        temperature: Number,
+        timestamp: Number
+	  },
+      count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+    }
+  })
+.toss();
