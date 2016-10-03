@@ -277,8 +277,12 @@ function getInitialServerSetup() {
 
     info += '</p>';
 
-    if (!res.data.live) {
-      info += ' <p class="bg-warning">Server is in test mode generating random temperature data.</p>';
+    if (res.data.test_data) {
+        info += ' <p class="bg-warning">Server is in test mode using fixed test data from ' + res.data.test_data + '</p>';
+    } else {
+      if (!res.data.live) {
+        info += ' <p class="bg-warning">Server is in test mode generating random temperature data.</p>';
+      }
     }
 
     $('.server-info').html(info);
