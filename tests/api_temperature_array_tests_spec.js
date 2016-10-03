@@ -173,7 +173,7 @@ frisby.create('Temperature array from-to match test')
       lower: 1451612700,
       upper: 1451613100,
       unit: "C",
-      temperature_array: {[
+      temperature_array: [
         {
           temperature: 5.5,
           timestamp: 1451612700
@@ -194,7 +194,7 @@ frisby.create('Temperature array from-to match test')
           temperature: -1.0,
           timestamp: 1451613100
         }
-	  ]}
+	  ]
     }
   })
   .expectJSONTypes({
