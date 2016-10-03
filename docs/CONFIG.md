@@ -2,14 +2,20 @@
 
 Configuration for the server is managed with a json file.
 By default the server will look for `config.json` and read the values from that.
+
+## Command line args
+
 To specify an alternate config file, pass it on the command line like so:
 
 ```
-./run_server.sh -c test_config.json
+./run_server.sh --config=test_config.json
 ```
 
+Other arguments relating to the tornado module and logging are available. Run `./run_server.sh --help` for more info on
+those.
 
-## Options
+
+## Config file options
 
 Listing format: `name` [default value] help and explanation
 

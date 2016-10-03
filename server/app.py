@@ -1,18 +1,14 @@
 
 import json
-import argparse
+from tornado.options import define, options
 from server import server, config
 
 # parse command line arguments
-parser = argparse.ArgumentParser(description='Process some integers.')
-
-parser.add_argument('-c', '--config', default=config.cfg_file,
-                    help='config file')
-
-args = parser.parse_args()
+define('config', default=config.cfg_file, help='config file')
+options.parse_command_line()
 
 # load config data from specified file
-with open(args.config) as f:
+with open(options.config) as f:
     config_data = json.load(f)
 
 # set the data in config

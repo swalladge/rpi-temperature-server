@@ -24,7 +24,7 @@ install:
   - ./server_setup.sh
 
 before_script:
-  - ./run_server.sh --config tests/config.test.json &
+  - ./run_server.sh --config=tests/config.test.json &
   # The server needs a little time to ensure it has generated some data
   # before we start testing the API.
   - sleep 5
