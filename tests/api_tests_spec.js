@@ -1738,6 +1738,33 @@ frisby.create('Temperature min to non-match test')
   })
 .toss();
 
+// Get the min specifying "from" and "to" that contains no data points
+frisby.create('Temperature min from-to null test')
+  .get('http://localhost:8888/api/temperature/min?from=1451610666&to=1451610677')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      min: null,
+      count: 0,
+      from: 1451610666,
+      to: 1451610677,
+      lower: null,
+      upper: null,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      from: Number,
+      to: Number,
+      unit: String,
+    }
+  })
+.toss();
+
 // Test that the temperature stats endpoint exists
 // and returns reasonable data.
 
