@@ -121,23 +121,37 @@ class db():
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper)
 
+        data = {'ave': None,
+                'count': 0,
+                'lower': None,
+                'upper': None,
+                'from': lower,
+                'to': upper,
+                'unit': unit
+               }
         t = filtered.first()
         # t is a 4-tuple: (average, number_of_points, smallest timestamp, largest timestamp)
-        if t:
-            return {'ave': Temperature.convert(t[0], unit),
-                    'count': t[1],
-                    'from': lower,
-                    'to': upper,
-                    'unit': unit,
-                    'lower': t[2],
-                    'upper': t[3]
-            }
+        # only fill in values if we have at least a data point
+        if t[1] > 0:
+            data['ave'] = Temperature.convert(t[0], unit)
+            data['count'] = t[1]
+            data['lower'] = t[2]
+            data['upper'] = t[3]
+        return data
 
     def get_temperature_min(self, lower, upper, unit='C'):
         query = self.session.query(Temperature)
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper).order_by(Temperature.temperature)
 
+        data  = {'min': None,
+                 'count': 0,
+                 'from': lower,
+                 'to': upper,
+                 'unit': unit,
+                 'lower': None,
+                 'upper': None
+                }
         t = filtered.first()
         if t:
             # do another query to get the count and min and max timestamp
@@ -147,20 +161,27 @@ class db():
                                                     Temperature.timestamp <= upper)
             tsrange = filtered_tsrange.first()
 
-            return {'min': t.get_data(unit) if t else None,
-                    'count': tsrange[0],
-                    'from': lower,
-                    'to': upper,
-                    'unit': unit,
-                    'lower': tsrange[1],
-                    'upper': tsrange[2]
-            }
+            data['min'] = t.get_data(unit)
+            data['count'] = tsrange[0]
+            data['lower'] = tsrange[1]
+            data['upper'] = tsrange[2]
+
+        return data
+
 
     def get_temperature_max(self, lower, upper, unit='C'):
         query = self.session.query(Temperature)
         filtered = query.filter(Temperature.timestamp >= lower,
                                 Temperature.timestamp <= upper).order_by(desc(Temperature.temperature))
 
+        data  = {'max': None,
+                 'count': 0,
+                 'from': lower,
+                 'to': upper,
+                 'unit': unit,
+                 'lower': None,
+                 'upper': None
+                }
         t = filtered.first()
         if t:
             # do another query to get the count and min and max timestamp
@@ -170,14 +191,11 @@ class db():
                                                     Temperature.timestamp <= upper)
             tsrange = filtered_tsrange.first()
 
-            return {'max': t.get_data(unit) if t else None,
-                    'count': tsrange[0],
-                    'from': lower,
-                    'to': upper,
-                    'unit': unit,
-                    'lower': tsrange[1],
-                    'upper': tsrange[2]
-            }
+            data['max'] = t.get_data(unit)
+            data['count'] = tsrange[0]
+            data['lower'] = tsrange[1]
+            data['upper'] = tsrange[2]
+        return data
 
     def get_temperature_stats(self, lower, upper, unit='C'):
 
