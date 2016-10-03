@@ -697,3 +697,161 @@ frisby.create('Temperature array limit 3 test')
     }
   })
 .toss();
+
+// Get an array of temperatures with limit 9
+// This demonstrates that the returned array can have less than limit entries
+// which is valid - there is no guarantee to have exactly limit entries
+frisby.create('Temperature array limit 9 test')
+  .get('http://localhost:8888/api/temperature?limit=9')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      count: 8,
+      full_count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
+      unit: "C",
+      temperature_array: [
+        {
+          temperature: 10.0,
+          timestamp: 1451610000
+        },
+        {
+          temperature: 24.1,
+          timestamp: 1451610700
+        },
+        {
+          temperature: 39.9,
+          timestamp: 1451611400
+        },
+        {
+          temperature: 30.0,
+          timestamp: 1451612100
+        },
+        {
+          temperature: 2.2,
+          timestamp: 1451612800
+        },
+        {
+          temperature: -12.0,
+          timestamp: 1451613500
+        },
+        {
+          temperature: -13.0,
+          timestamp: 1451614200
+        },
+        {
+          temperature: 8.4,
+          timestamp: 1451614900
+        }
+	  ]
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      full_count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+      temperature_array: Array
+    }
+  })
+.toss();
+
+// Get an array of only 3 temperatures with limit 3
+// Checks that nothing goes wrong if the specified limit happens to be exactly the number of rows available
+frisby.create('Temperature array count 3 limit 3 test')
+  .get('http://localhost:8888/api/temperature?from=1451610700&to=1451610900&limit=3')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      count: 3,
+      full_count: 3,
+      from: 1451610700,
+      to: 1451610900,
+      lower: 1451610700,
+      upper: 1451610900,
+      unit: "C",
+      temperature_array: [
+        {
+          temperature: 24.1,
+          timestamp: 1451610700
+        },
+        {
+          temperature: 27.5,
+          timestamp: 1451610800
+        },
+        {
+          temperature: 30.7,
+          timestamp: 1451610900
+        }
+	  ]
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      full_count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+      temperature_array: Array
+    }
+  })
+.toss();
+
+// Get an array of only 3 temperatures with limit 10
+// Checks that nothing goes wrong if the specified limit is greater than the number of rows available
+frisby.create('Temperature array cont 3 limit 10 test')
+  .get('http://localhost:8888/api/temperature?from=1451610700&to=1451610900&limit=10')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      count: 3,
+      full_count: 3,
+      from: 1451610700,
+      to: 1451610900,
+      lower: 1451610700,
+      upper: 1451610900,
+      unit: "C",
+      temperature_array: [
+        {
+          temperature: 24.1,
+          timestamp: 1451610700
+        },
+        {
+          temperature: 27.5,
+          timestamp: 1451610800
+        },
+        {
+          temperature: 30.7,
+          timestamp: 1451610900
+        }
+	  ]
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      full_count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+      temperature_array: Array
+    }
+  })
+.toss();
