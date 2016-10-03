@@ -92,11 +92,21 @@ class db():
 
         # check if the number of rows returned will be too long
         if n > limit:
-            # if so, skip every jump_th row
-            jump = (n // limit) + 1
             first_id = query.first().id
-            last_id = first_id + n - 1
-            query = query.filter(((Temperature.id - first_id) % jump == 0) | (Temperature.id == last_id))
+            if limit == 1:
+              # They just want only 1 point, so choose a point near the middle
+              middle_id = first_id + (n // 2)
+              query = query.filter(Temperature.id == middle_id)
+            else:
+              # Choose up to (limit-1) rows from the first (n-1) rows
+              # by selecting every jump_th row
+              jump = ((n-1) // (limit-1)) + 1
+              # Organise the mod (%) calculation to always select the first row
+              # by calculating the offset of the id from the first_id
+              # And always select the last row,
+              # which could make at most((limit-1)+1)=limit rows in total
+              last_id = first_id + n - 1
+              query = query.filter(((Temperature.id - first_id) % jump == 0) | (Temperature.id == last_id))
 
         results = query.all()
         temps = list(map(lambda t: t.get_data(unit), results))

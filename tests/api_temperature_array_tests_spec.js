@@ -534,3 +534,166 @@ frisby.create('Temperature array from greater than to test')
   })
 .toss();
 
+// Get an array of temperatures with invalid limit
+frisby.create('Temperature array invalid limit 0 test')
+  .get('http://localhost:8888/api/temperature?limit=0')
+  .expectStatus(400)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: false,
+    reason: "invalid parameters ('from', 'to', or 'limit' was invalid)"
+  })
+.toss();
+
+// Get an array of temperatures with invalid limit
+frisby.create('Temperature array invalid limit 0.5 test')
+  .get('http://localhost:8888/api/temperature?limit=0.5')
+  .expectStatus(400)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: false,
+    reason: "invalid parameters ('from', 'to', or 'limit' was invalid)"
+  })
+.toss();
+
+// Get an array of temperatures with invalid limit
+frisby.create('Temperature array invalid limit -1 test')
+  .get('http://localhost:8888/api/temperature?limit=-1')
+  .expectStatus(400)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: false,
+    reason: "invalid parameters ('from', 'to', or 'limit' was invalid)"
+  })
+.toss();
+
+// Get an array of temperatures with invalid limit
+frisby.create('Temperature array invalid limit a test')
+  .get('http://localhost:8888/api/temperature?limit=a')
+  .expectStatus(400)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: false,
+    reason: "invalid parameters ('from', 'to', or 'limit' was invalid)"
+  })
+.toss();
+
+// Get an array of temperatures with limit 1 (returns just the middle point)
+frisby.create('Temperature array limit 1 test')
+  .get('http://localhost:8888/api/temperature?limit=1')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      count: 1,
+      full_count: 50,
+      from: 0,
+      lower: 1451612500,
+      upper: 1451612500,
+      unit: "C",
+      temperature_array: [
+        {
+          temperature: 12.3,
+          timestamp: 1451612500
+        }
+	  ]
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      full_count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+      temperature_array: Array
+    }
+  })
+.toss();
+
+// Get an array of temperatures with limit 2 (returns just the start and end point)
+frisby.create('Temperature array limit 2 test')
+  .get('http://localhost:8888/api/temperature?limit=2')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      count: 2,
+      full_count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
+      unit: "C",
+      temperature_array: [
+        {
+          temperature: 10.0,
+          timestamp: 1451610000
+        },
+        {
+          temperature: 8.4,
+          timestamp: 1451614900
+        }
+	  ]
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      full_count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+      temperature_array: Array
+    }
+  })
+.toss();
+
+// Get an array of temperatures with limit 3 (returns the start, middle and end point)
+frisby.create('Temperature array limit 3 test')
+  .get('http://localhost:8888/api/temperature?limit=3')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      count: 3,
+      full_count: 50,
+      from: 0,
+      lower: 1451610000,
+      upper: 1451614900,
+      unit: "C",
+      temperature_array: [
+        {
+          temperature: 10.0,
+          timestamp: 1451610000
+        },
+        {
+          temperature: 12.3,
+          timestamp: 1451612500
+        },
+        {
+          temperature: 8.4,
+          timestamp: 1451614900
+        }
+	  ]
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      full_count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+      temperature_array: Array
+    }
+  })
+.toss();
