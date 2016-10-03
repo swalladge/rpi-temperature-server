@@ -19,6 +19,10 @@ class Temperature(Base):
 
     @staticmethod
     def convert(t, unit='C'):
+        # Be happy to convert None Celsius to None in any other units
+        # This avoids having to always validate t before calling convert()
+        if t is None:
+          return None
         if unit == 'K':
           result = t + 273.15
         elif unit == 'F':
