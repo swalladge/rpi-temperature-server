@@ -1,13 +1,26 @@
-sudo: false
+
+sudo: required
+dist: trusty
 
 language: python
-
 python:
   - 3.4
 
 install:
+  # install java (needed by html validator)
+  - sudo apt-get update
+  - sudo apt-get install oracle-java8-installer
+  - sudo update-java-alternatives -s java-8-oracle
+
+  # install ruby
+  - rvm install 2.2
+  - ruby -v
+
+  # node.js deps
   - npm install -g jasmine-node
-  - npm install frisby
+  - npm install
+
+  # set up the server for testing
   - ./server_setup.sh
   - cp tests/config.test.py config.py
 
@@ -18,4 +31,12 @@ before_script:
   - sleep 5
 
 script:
+  # server tests
   - jasmine-node tests/
+
+  # webapp tests
+  # run each individually so it doesn't stop on the first error
+  - grunt htmllint
+  - grunt jshint
+  - grunt csslint
+  - grunt bootlint

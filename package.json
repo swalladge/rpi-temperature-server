@@ -1,0 +1,27 @@
+{
+  "name": "rpi-temperature-server",
+  "version": "0.0.0",
+  "description": "",
+  "main": "run-server.sh",
+  "dependencies": {
+    "frisby": "^0.8.5",
+    "grunt": "^1.0.1",
+    "grunt-bootlint": "^0.10.1",
+    "grunt-contrib-csslint": "^2.0.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-html": "^8.0.2"
+  },
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swalladge/rpi-temperature-server.git"
+  },
+  "author": "Samuel Walladge, Phil Davis",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/swalladge/rpi-temperature-server/issues"
+  },
+  "homepage": "https://github.com/swalladge/rpi-temperature-server#readme"
+}

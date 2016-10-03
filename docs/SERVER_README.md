@@ -52,6 +52,8 @@ The app hopefully will be self explanatory and easy to use.
 
 ## Tests
 
+### Server
+
 [Frisby.js](http://frisbyjs.com/) is used for testing the api. This is performed automatically with Travis CI on every
 commit, but if you wish to test locally on your machine, you can do the following:
 
@@ -59,7 +61,7 @@ commit, but if you wish to test locally on your machine, you can do the followin
 # jasmine is a cli command so should be installed globally if possible
 # sudo may be required depending on your setup
 npm install -g jasmine-node
-npm install frisby
+npm install
 
 # prepare
 ./server_setup.sh
@@ -68,4 +70,17 @@ cp tests/config.test.py config.py
 # run the actual tests
 jasmine-node tests/
 ```
+
+### Webapp
+
+There are various tests run using Grunt.
+They can be run with:
+
+```
+npm install
+grunt
+```
+
+Note that the html validation/linting tests require java installed on the system.
+
 
