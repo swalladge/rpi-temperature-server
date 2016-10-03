@@ -917,6 +917,33 @@ frisby.create('Temperature average from-to null test')
   })
 .toss();
 
+// Get the average specifying "from" greater than "to"
+frisby.create('Temperature average from greater than to test')
+  .get('http://localhost:8888/api/temperature/ave?from=1451612600&to=1451612599')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: null,
+      count: 0,
+      from: 1451612600,
+      to: 1451612599,
+      lower: null,
+      upper: null,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      from: Number,
+      to: Number,
+      unit: String,
+    }
+  })
+.toss();
+
 // Test that the max temperature endpoint exists
 // and returns reasonable data.
 
@@ -1341,6 +1368,33 @@ frisby.create('Temperature max from-to null test')
   })
 .toss();
 
+// Get the max specifying "from" greater than "to"
+frisby.create('Temperature max from greater than to test')
+  .get('http://localhost:8888/api/temperature/max?from=1451699999&to=1451611788')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      max: null,
+      count: 0,
+      from: 1451699999,
+      to: 1451611788,
+      lower: null,
+      upper: null,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      from: Number,
+      to: Number,
+      unit: String,
+    }
+  })
+.toss();
+
 // Test that the min temperature endpoint exists
 // and returns reasonable data.
 
@@ -1749,6 +1803,33 @@ frisby.create('Temperature min from-to null test')
       min: null,
       count: 0,
       from: 1451610666,
+      to: 1451610677,
+      lower: null,
+      upper: null,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      from: Number,
+      to: Number,
+      unit: String,
+    }
+  })
+.toss();
+
+// Get the min specifying "from" greater than "to"
+frisby.create('Temperature min from greater than to test')
+  .get('http://localhost:8888/api/temperature/min?from=1451610700&to=1451610677')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      min: null,
+      count: 0,
+      from: 1451610700,
       to: 1451610677,
       lower: null,
       upper: null,
@@ -2301,3 +2382,31 @@ frisby.create('Temperature stats from-to null test')
   })
 .toss();
 
+// Get stats specifying "from" greater than "to"
+frisby.create('Temperature stats from greater than to test')
+  .get('http://localhost:8888/api/temperature/stats?from=1451613555&to=1451613498')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: null,
+      min: null,
+      max: null,
+      count: 0,
+      from: 1451613555,
+      to: 1451613498,
+      lower: null,
+      upper: null,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      from: Number,
+      to: Number,
+      unit: String,
+    }
+  })
+.toss();
