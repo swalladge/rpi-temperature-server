@@ -12,7 +12,7 @@ with open(options.config) as f:
     config_data = json.load(f)
 
 # set the data in config
-config.data = config_data
+config.set_data(config_data)
 
 # run the server!!
 if __name__ == '__main__':

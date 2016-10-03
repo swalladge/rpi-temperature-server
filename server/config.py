@@ -3,7 +3,8 @@ import time
 import sys
 
 class Config():
-    data = {}
+    # warning - running a `self.something = something` in this class will fail
+    # spectacularly
 
     # the dictionary of default config values - if a new config value is wanted,
     # set a default here
@@ -23,6 +24,16 @@ class Config():
             'timezone': int(time.localtime().tm_gmtoff / 60)
     }
     cfg_file = 'config.json'
+
+
+    def __init__(self):
+        object.__setattr__(self, 'data', {})
+
+    def set_data(self, data):
+        ''' sets the data dictionary for use - overwrites any previously set '''
+        if not isinstance(data, dict):
+            raise ValueError('data must be a dictionary')
+        object.__setattr__(self, 'data', data)
 
     def __getattr__(self, name):
         return self.data.get(name, self.defaults.get(name, None))
