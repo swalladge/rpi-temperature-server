@@ -2271,3 +2271,33 @@ frisby.create('Temperature stats to non-match test')
     }
   })
 .toss();
+
+// Get stats specifying "from" and "to" that contains no data points
+frisby.create('Temperature stats from-to null test')
+  .get('http://localhost:8888/api/temperature/stats?from=1451613444&to=1451613498')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: null,
+      min: null,
+      max: null,
+      count: 0,
+      from: 1451613444,
+      to: 1451613498,
+      lower: null,
+      upper: null,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      from: Number,
+      to: Number,
+      unit: String,
+    }
+  })
+.toss();
+
