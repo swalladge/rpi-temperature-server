@@ -1,7 +1,7 @@
 
 from tornado.web import RequestHandler
 
-import config as cfg
+from server import config as cfg
 
 class BaseHandler(RequestHandler):
     """ a base handler abstractions for the other handlers to inherit from """

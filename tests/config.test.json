@@ -1,0 +1,15 @@
+{
+        "database_url": "sqlite:///db.sqlite3",
+        "cors_origin": "*",
+        "listen_port": 8888,
+        "debug_mode": true,
+        "serve_webapp": true,
+        "on_rpi": false,
+        "test_data": "tests/api_test_data.txt",
+        "sensor_params": null,
+        "temp_interval": 5,
+        "temp_max_length": 300,
+        "server_name": "Test Temperature Server",
+        "location": "Inside a Travis container",
+        "timezone": 570
+}

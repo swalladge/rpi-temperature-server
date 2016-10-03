@@ -4,8 +4,8 @@
 
 1. Make sure you have followed the main instructions to install the environment and get the test file running first.
 
-2. Copy `server/config.template.py` to `config.py` and edit the new file to your liking. See comments in that file for more
-   information on configuring the server.
+2. Copy `server/config.template.json` to `config.json` and edit the values to your liking. See
+   [docs/CONFIG.md](docs/CONFIG.md) for important information on configuring.
 
 3. You can then run the server with the included script:
 
@@ -20,8 +20,8 @@ the tornado module):
 ./run_server.sh --log-file-prefix=server.log
 ```
 
-Note: this script will create the `config.py` if you forgot step 2, but you will probably still want to edit the config
-sooner or later.
+Note: this script will create the `config.json` if you forgot step 2, but you will probably still want to edit the
+config sooner or later.
 
 Once the server is running successfuly, scroll down and read the information about the webapp/client.
 
