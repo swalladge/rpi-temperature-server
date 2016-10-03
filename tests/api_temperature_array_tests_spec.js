@@ -498,8 +498,36 @@ frisby.create('Temperature array from-to null test')
       full_count: Number,
       from: Number,
       to: Number,
-      lower: Number,
-      upper: Number,
+      unit: String,
+      temperature_array: Array
+    }
+  })
+.toss();
+
+// Get an array of temperatures with "from" greater than "to"
+frisby.create('Temperature array from greater than to test')
+  .get('http://localhost:8888/api/temperature?from=1451612777&to=1451612666')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      count: 0,
+      full_count: 0,
+      from: 1451612777,
+      to: 1451612666,
+      lower: null,
+      upper: null,
+      unit: "C",
+      temperature_array: []
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      full_count: Number,
+      from: Number,
+      to: Number,
       unit: String,
       temperature_array: Array
     }
