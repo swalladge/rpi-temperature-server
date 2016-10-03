@@ -1314,6 +1314,33 @@ frisby.create('Temperature max to non-match test')
   })
 .toss();
 
+// Get the max specifying "from" and "to" that contains no data points
+frisby.create('Temperature max from-to null test')
+  .get('http://localhost:8888/api/temperature/max?from=1451611707&to=1451611788')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      max: null,
+      count: 0,
+      from: 1451611707,
+      to: 1451611788,
+      lower: null,
+      upper: null,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      from: Number,
+      to: Number,
+      unit: String,
+    }
+  })
+.toss();
+
 // Test that the min temperature endpoint exists
 // and returns reasonable data.
 
