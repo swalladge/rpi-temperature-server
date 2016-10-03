@@ -193,7 +193,7 @@ frisby.create('Temperature array from-to match test')
         {
           temperature: -1.0,
           timestamp: 1451613100
-        },
+        }
 	  ]},
     }
   })
