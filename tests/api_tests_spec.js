@@ -890,6 +890,33 @@ frisby.create('Temperature average to non-match test')
   })
 .toss();
 
+// Get the average specifying "from" and "to" that contains no data points
+frisby.create('Temperature average from-to null test')
+  .get('http://localhost:8888/api/temperature/ave?from=1451612501&to=1451612599')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      ave: null,
+      count: 0,
+      from: 1451612501,
+      to: 1451612599,
+      lower: null,
+      upper: null,
+      unit: "C"
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      from: Number,
+      to: Number,
+      unit: String,
+    }
+  })
+.toss();
+
 // Test that the max temperature endpoint exists
 // and returns reasonable data.
 
