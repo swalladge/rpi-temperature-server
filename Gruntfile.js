@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     },
     jshint: {
       all: {
-        src: ['Gruntfile.js', 'webapp/js/**/*.js']
+        src: ['Gruntfile.js', 'webapp/js/**/*.js', 'tests/*.js']
       }
     },
     csslint: {

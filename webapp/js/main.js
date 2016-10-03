@@ -6,9 +6,9 @@ window.dateFormat = 'YYYY-MM-DD HH:mm';
 
 // fake ajax that doesn't do anything
 var fakeAjax = function() {
-}
+};
 fakeAjax.prototype.done = function() {
-}
+};
 
 var Temperature = function() {
   this.url = null;
@@ -144,8 +144,9 @@ function getLimits() {
 
 function updateGraph(markers, baselines) {
   var limit = getLimits();
-  var markers = markers || [];
-  var baselines = baselines || [];
+
+  markers = markers || [];
+  baselines = baselines || [];
 
   t.getList(limit.from, limit.to, getUnit()).done(function(res, statustext) {
 
@@ -232,7 +233,7 @@ function updateStats() {
               'value': 0,
               'label': '0°' + data.unit
             }
-          )
+          );
         }
       }
 
