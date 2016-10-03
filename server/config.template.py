@@ -56,4 +56,6 @@ server_name = "the temperature server"
 location = None
 
 ## timezone as minutes offset from utc
+##  use this to override system timezone - if this is set to None or removed,
+##  the server will use the system timezone
 timezone = 570 # utc+09:30
