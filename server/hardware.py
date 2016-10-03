@@ -4,8 +4,7 @@ import random
 from tornado.log import gen_log
 
 import Adafruit_MCP9808.MCP9808 as MCP9808
-from server import utils
-import config as cfg
+from server import utils, config as cfg
 
 
 class Temperature():

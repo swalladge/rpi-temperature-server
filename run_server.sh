@@ -2,11 +2,11 @@
 
 set -e
 
-if [ ! -f "config.py" ]; then
-  echo "config.py does not exist in the server directory!"
-  echo "creating new one from config.template.py"
-  cp server/config.template.py config.py
-  echo "please edit config.py to your liking and re-run this script to start the server"
+if [ ! -f "config.json" ]; then
+  echo "config.json does not exist in the server directory!"
+  echo "creating new one from config.template.json"
+  cp server/config.template.json config.json
+  echo "please edit config.json to your liking and re-run this script to start the server"
   exit 1
 fi
 
