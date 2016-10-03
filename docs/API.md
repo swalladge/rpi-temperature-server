@@ -197,6 +197,7 @@ Retrieve some useful information from the server.
 Data attributes returned:
 
 - `live`: [boolean] whether or not the server is recording real data
+- `test_data`: [string] if the server is using fixed test data, the name of the file containing the test data
 - `log_interval`: [number] the configured interval in seconds at which the server logs the current temperature.
 
 Other possible attributes if enabled in configuration:

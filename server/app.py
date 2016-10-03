@@ -125,6 +125,9 @@ class info_handler(BaseHandler):
 
         data['live'] = cfg.on_rpi
 
+        if cfg.test_data is not None:
+            data['test_data'] = cfg.test_data
+
         if cfg.location is not None:
             data['location'] = cfg.location
 
