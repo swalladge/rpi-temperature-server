@@ -1,6 +1,6 @@
 
 
-#chart {
+.chart {
   width: 100%;
 }
 
@@ -13,12 +13,12 @@
   color: #ffffff;
 }
 
-#chart svg .mg-active-datapoint {
+.chart svg .mg-active-datapoint {
   font-size: 120%;
   font-weight: bold;
 }
 
 .child-paragraphs-padding p {
-  padding: 10px;
   border-radius: 4px;
+  padding: 10px;
 }
