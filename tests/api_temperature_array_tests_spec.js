@@ -179,7 +179,7 @@ frisby.create('Temperature array from-to match test')
           timestamp: 1451612700
         },
         {
-          temperature: 2.2,
+          temperature: 2.3,
           timestamp: 1451612800
         },
         {
