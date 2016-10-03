@@ -136,31 +136,27 @@ class info_handler(BaseHandler):
 
 def run():
 
-    # let tornado grab command line args (ie. for setting log files)
-    tornado.options.parse_command_line()
-
     # init the database
     db = database.db(cfg.database_url)
     db.create_all()
 
     if cfg.test_data:
-      gen_log.info('Deleting any existing temperature data from database')
-      db.delete_temperature_data()
-      gen_log.info('Loading test data to database')
-      lines = open('tests/api_test_data.txt').read().splitlines()
-      with open(cfg.test_data,'r') as f:
-        for line in f:
-          line = line.strip()
-          if not line: continue
-          # 1st number is the timestamp, 2nd the temperature
-          data = line.split()
-          if data[0] == '#': continue
-          db.save_temperature(data[1], data[0])
-      gen_log.info('Test data written to database. Starting server.')
+        gen_log.info('Deleting any existing temperature data from database')
+        db.delete_temperature_data()
+        gen_log.info('Loading test data to database')
+        with open(cfg.test_data) as f:
+            for line in f:
+                line = line.strip()
+                # 1st number is the timestamp, 2nd the temperature
+                data = line.split()
+                if data[0] == '#':
+                    continue
+                db.save_temperature(data[1], data[0])
+        gen_log.info('Test data written to database. Starting server.')
     else:
-      # init the temperature sensor
-      temp = hardware.Temperature(db, cfg.sensor_params)
-      temp.save_current()
+        # init the temperature sensor
+        temp = hardware.Temperature(db, cfg.sensor_params)
+        temp.save_current()
 
     # settings for the tornado app
     settings = {
