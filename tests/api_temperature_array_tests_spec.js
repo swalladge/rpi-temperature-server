@@ -320,3 +320,59 @@ frisby.create('Temperature array from match test')
   })
 .toss();
 
+// Get an array of temperatures specifying just "from" that does not match an exact data point
+frisby.create('Temperature array from non-match test')
+  .get('http://localhost:8888/api/temperature?from=1451614345')
+  .expectStatus(200)
+  .expectHeaderContains('content-type', 'application/json')
+  .expectJSON({
+    success: true,
+    data: {
+      count: 6,
+      full_count: 6,
+      from: 1451614345,
+      lower: 1451614400,
+      upper: 1451614900,
+      unit: "C",
+      temperature_array: [
+        {
+          temperature: -0.5,
+          timestamp: 1451614400
+        },
+        {
+          temperature: 0.5,
+          timestamp: 1451614500
+        },
+        {
+          temperature: 5.1,
+          timestamp: 1451614600
+        },
+        {
+          temperature: 6.2,
+          timestamp: 1451614700
+        },
+        {
+          temperature: 7.3,
+          timestamp: 1451614800
+        },
+        {
+          temperature: 8.4,
+          timestamp: 1451614900
+        }
+	  ]
+    }
+  })
+  .expectJSONTypes({
+    data: {
+      count: Number,
+      full_count: Number,
+      from: Number,
+      to: Number,
+      lower: Number,
+      upper: Number,
+      unit: String,
+      temperature_array: Array
+    }
+  })
+.toss();
+
