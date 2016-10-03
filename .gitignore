@@ -15,7 +15,7 @@ Adafruit_Python_MCP9808/
 *.log
 
 # the live config
-/config.py
+/config.json
 
 # temporary/backup stuff
 *.temp
