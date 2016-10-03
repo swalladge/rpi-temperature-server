@@ -123,9 +123,9 @@
               </div>
             </div>
             <div class="row text-left">
-              <div class="col-md-8 col-sm-8">
+              <div class="col-sm-8">
                 <div class="form-group">
-                  <label for="preset-group" class="control-label">Range presets: </label>
+                  <label class="control-label">Range presets: </label>
                   <div class="btn-group" role="group" id="preset-group" aria-label="Basic example">
                     <input type="button" id="set-date-24h" class="btn btn-default" value="24 hours" />
                     <input type="button" id="set-date-1w" class="btn btn-default" value="1 week" />
@@ -133,7 +133,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 col-sm-4 text-right">
+              <div class="col-sm-4 text-right">
                 <div class="form-group">
                   <input type="button" id="requery-data" class="btn btn-primary" value="Display" />
                 </div>
@@ -188,7 +188,7 @@
         </div>
         <div class="panel-body">
           <div id="chart-info" class="text-center"></div>
-          <div id="chart"></div>
+          <div id="chart" class="chart"></div>
         </div>
       </div>
 
@@ -225,10 +225,9 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="server-conf-modal-label">About</h4>
+            <h4 class="modal-title">About</h4>
           </div>
           <div class="modal-body">
-            <! -- about info here -->
             <p>
               This is a webapp that is part of <b>rpi-temperature-server</b> (available on
               <a href="https://github.com/swalladge/rpi-temperature-server/">GitHub</a>), a project for PRT452, semester 2, 2016.
