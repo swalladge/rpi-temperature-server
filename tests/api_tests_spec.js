@@ -14,6 +14,7 @@ frisby.create('Temperature sensor info test')
       log_interval: 5,
       server_name: "Test Temperature Server",
       location: "Inside a Travis container",
+      test_data: "tests/api_test_data.txt",
       timezone: 570
     }
   })
@@ -23,6 +24,7 @@ frisby.create('Temperature sensor info test')
       log_interval: Number,
       server_name: String,
       location: String,
+      test_data: String,
       timezone: Number
     }
   })
