@@ -23,8 +23,8 @@ module.exports = function(grunt) {
     },
     bootlint: {
       options: {
-        stoponerror: false,
-        relaxerror: []
+        stoponerror: true,
+        relaxerror: ['E006']
       },
       files: ['webapp/*.html']
     }
