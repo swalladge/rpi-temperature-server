@@ -22,10 +22,9 @@ install:
 
   # set up the server for testing
   - ./server_setup.sh
-  - cp tests/config.test.py config.py
 
 before_script:
-  - ./run_server.sh &
+  - ./run_server.sh --config=tests/config.test.json &
   # The server needs a little time to ensure it has generated some data
   # before we start testing the API.
   - sleep 5
