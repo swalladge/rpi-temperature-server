@@ -394,7 +394,7 @@ frisby.create('Temperature array to match test')
       temperature_array: [
         {
           temperature: 10.0,
-          timestamp: 145161000
+          timestamp: 1451610000
         },
         {
           temperature: 11.5,
@@ -443,7 +443,7 @@ frisby.create('Temperature array to non-match test')
       temperature_array: [
         {
           temperature: 10.0,
-          timestamp: 145161000
+          timestamp: 1451610000
         },
         {
           temperature: 11.5,
