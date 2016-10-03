@@ -8,10 +8,14 @@ import tornado.options
 from tornado.web import Application, url, StaticFileHandler
 from tornado.ioloop import PeriodicCallback
 from tornado.log import gen_log
+import time
 
 from server import database, utils, hardware
 from server.basehandlers import BaseHandler
 import config as cfg
+
+if not hasattr(cfg, 'timezone') or cfg.timezone is None:
+    cfg.timezone = int(time.localtime().tm_gmtoff / 60)
 
 
 class temperature_handler(BaseHandler):
@@ -131,8 +135,7 @@ class info_handler(BaseHandler):
         if cfg.location is not None:
             data['location'] = cfg.location
 
-        if cfg.timezone is not None:
-            data['timezone'] = cfg.timezone
+        data['timezone'] = cfg.timezone
 
         return self.send_data(data)
 
