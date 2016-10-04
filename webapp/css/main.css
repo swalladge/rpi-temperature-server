@@ -1,4 +1,7 @@
 
+body {
+  overflow-wrap: break-word;
+}
 
 .chart {
   width: 100%;
