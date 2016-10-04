@@ -20,9 +20,6 @@ the tornado module):
 ./run_server.sh --log-file-prefix=server.log
 ```
 
-Note: this script will create the `config.json` if you forgot step 2, but you will probably still want to edit the
-config sooner or later.
-
 Once the server is running successfuly, scroll down and read the information about the webapp/client.
 
 See [API.md](API.md) for documentation on the API.

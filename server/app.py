@@ -1,4 +1,5 @@
 
+import sys
 import json
 from tornado.options import define, options
 from server import server, config
@@ -8,8 +9,12 @@ define('config', default=config.cfg_file, help='config file')
 options.parse_command_line()
 
 # load config data from specified file
-with open(options.config) as f:
-    config_data = json.load(f)
+try:
+    with open(options.config) as f:
+        config_data = json.load(f)
+except Exception as e:
+    print('Error loading config -', e)
+    sys.exit(1)
 
 # set the data in config
 config.set_data(config_data)
