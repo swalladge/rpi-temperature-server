@@ -1,0 +1,6 @@
+# Acceptance Test time and temperature data
+# Generate a year of pseudo-random temperature records
+# starting from 2016-07-01 (which is Unix timestamp 1435708800)
+# at 5-minute intervals (300 seconds)
+# for 12 records/hour * 24 hours/day * 365 days/year = 105120 records/year
+generate 1435708800 300 105120

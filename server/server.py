@@ -147,10 +147,30 @@ def run():
         with open(cfg.test_data) as f:
             for line in f:
                 line = line.strip()
-                # 1st number is the timestamp, 2nd the temperature
                 data = line.split()
+                # Lines starting with # are comments
                 if data[0] == '#':
                     continue
+                # Automatically generate a (large) number of entries using a line like:
+                # generate start_timestamp interval_secs count
+                # For example, generate data at 5 minute intervals for 12*24*365=105120, a year of data
+                # generate 1435708800 300 105120
+                if data[0].lower() == 'generate':
+                    temp = hardware.Temperature(db, cfg.sensor_params)
+                    start_ts = int(data[1])
+                    interval_sec = int(data[2])
+                    generate_count = int(data[3])
+                    gen_log.info('Generating {} records at {} second intervals from timestamp {}'
+                     .format(generate_count, interval_sec, start_ts))
+                    for loop_count in range(generate_count):
+                        # On an RPi3 it takes about 30 seconds to generate 1000 records.
+                        # Give some output every 1000 records so the user can see progress.
+                        if (loop_count+1) % 1000 == 0:
+                            gen_log.info('Generating temperature record {}'
+                             .format(loop_count+1))
+                        db.save_temperature(temp.get_temp(), start_ts + (loop_count*interval_sec))
+                    continue
+                # 1st number data[0] is the timestamp, 2nd number data[1] is the temperature
                 db.save_temperature(data[1], data[0])
         gen_log.info('Test data written to database. Starting server.')
     else:
