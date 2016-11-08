@@ -26,7 +26,7 @@ The graph showing the temperature over a day.
 
 ![](media/graph-example-day.png)
 
-The garph showing the temperature over a whole week.
+The graph showing the temperature over a whole week.
 
 ![](media/graph-example-week.png)
 
