@@ -8,9 +8,9 @@ python:
 
 install:
   # install java (needed by html validator)
-  - sudo apt-get update
-  - sudo apt-get install oracle-java8-installer
-  - sudo update-java-alternatives -s java-8-oracle
+  - sudo apt-get --yes update
+  - sudo apt-get --yes install oracle-java8-installer
+  - sudo apt-get --yes install oracle-java8-set-default
 
   # install ruby
   - rvm install 2.2
