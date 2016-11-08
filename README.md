@@ -5,10 +5,38 @@
 
 The project for PRT452, 2016.
 
-A server and web app for displaying the temperature and various stats from a Raspberry Pi with a MCP9808
-temperature sensor.
+A server and web app for displaying/logging the temperature and various stats about it from a Raspberry Pi with a
+MCP9808 temperature sensor.
 
 Copyright © 2016 Samuel Walladge, Phil Davis
+
+
+## Screenshots/Photos
+
+
+General screenshot of webapp.
+
+![](media/web-screenshot.png)
+
+A view of the controls.
+
+![](media/controls-screenshot.png)
+
+The graph showing the temperature over a day.
+
+![](media/graph-example-day.png)
+
+The garph showing the temperature over a whole week.
+
+![](media/graph-example-week.png)
+
+Screenshot of the webapp on a small mobile device.
+
+![](media/mobile-screenshot.png)
+
+Photo of a Raspberry Pi monitoring the temperature. (note the temperature sensor wired to it)
+
+![](media/server-in-the-wild.jpg)
 
 
 ## About
@@ -36,9 +64,9 @@ Pick an option, depending on your RPi case and how neat you want it to look.
 
 ## Installation instructions (with test code to verify)
 
-1. The hardware comes with a separate header strip. 
-   [Solder](https://learn.adafruit.com/adafruit-mcp9808-precision-i2c-temperature-sensor-guide/wiring) 
-   the header strip to the MCP9808 board. 
+1. The hardware comes with a separate header strip.
+   [Solder](https://learn.adafruit.com/adafruit-mcp9808-precision-i2c-temperature-sensor-guide/wiring)
+   the header strip to the MCP9808 board.
    Connect the MCP9808 sensor to the I2C bus (as described in the [Adafruit
    tutorial](https://learn.adafruit.com/mcp9808-temperature-sensor-python-library/hardware)).
    Connect Pi Gnd to MCP9808 Gnd, Pi 3.3V to MCP9808 Vdd, Pi SCL to MCP9808 SCL, Pi SCA to MCP9808 SCA.
