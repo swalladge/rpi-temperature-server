@@ -1,0 +1,6 @@
+
+Built from metrics-graphics source at commit
+f2cdd70466d2f96066190a48f5edaa4a96e71b9c to incorporate fix for displaying
+min/max at extremities.
+
+Browsable at https://github.com/mozilla/metrics-graphics/tree/f2cdd70466d2f96066190a48f5edaa4a96e71b9c
