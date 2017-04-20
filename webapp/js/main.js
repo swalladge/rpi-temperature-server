@@ -206,16 +206,34 @@ function updateStats() {
       $('.ave-temperature-date-lower').text(moment.unix(data.lower).format(dateFormat));
       $('.ave-temperature-date-upper').text(moment.unix(data.upper).format(dateFormat));
 
+      // If the max or min occurs exactly at the first or last data point then the 
+      // graphics library does not display the marker. So in these cases we move the
+      // marker a smidgen in from the lower or upper end repectively.
+      var max_ts = data.max.timestamp*1000;
+      if (data.max.timestamp == data.upper) {
+        max_ts--;
+      }
+      if (data.max.timestamp == data.lower) {
+        max_ts++;
+      }
+
+      var min_ts = data.min.timestamp*1000;
+      if (data.min.timestamp == data.upper) {
+        min_ts--;
+      }
+      if (data.min.timestamp == data.lower) {
+        min_ts++;
+      }
       var markers = [];
       var baselines = [];
       if (data.count > 1) {
         markers = [
           {
-            'date': new Date(data.max.timestamp*1000),
+            'date': new Date(max_ts),
             'label': 'max: ' + data.max.temperature.toFixed(1) + '°' + data.unit
           },
           {
-            'date': new Date(data.min.timestamp*1000),
+            'date': new Date(min_ts),
             'label': 'min: ' + data.min.temperature.toFixed(1) + '°' + data.unit
           },
         ];
